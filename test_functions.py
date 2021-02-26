@@ -2,7 +2,7 @@ import numpy as np
 
 class Rosenbrock:
 	def __init__(self):
-		pass
+		self.minima = [1, 1]
 	def f(self, x, y):
 		return (1 - x**2) + 100*(y - x**2)**2
 	def df(self, x, y):

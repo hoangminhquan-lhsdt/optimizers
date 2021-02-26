@@ -17,7 +17,14 @@ This repository serves as the source for visualizations and evaluations used in 
 - [ ] AMSGrad ([Manzil Zaheer et al, 2018](https://openreview.net/pdf?id=ryQu7f-RZ))
 
 ## Implementations
+View the full source code for each algorithm in [optimizers.py](https://github.com/hoangminhquan-lhsdt/optimizers/blob/main/optimizers.py)
 ### 1. Stochastic Gradient Descent with Momentum
+```
+def step(self, x, y):
+	g_t = self.func.df(x, y)
+	self.v = self.momentum*self.v + self.lr*g_t
+	return (x - self.v[0], y - self.v[1])
+```
 ![SGD with Momentum](gifs/momentum.gif)
 
 ## Authors

@@ -11,6 +11,7 @@ This repository serves as the source for visualizations and evaluations used in 
   - [5. Adam](#5-adam)
   - [6. NAdam](#6-nadam)
   - [7. AMSGrad](#7-amsgrad)
+- [Limitations](#limitations)
 - [Authors](#authors)
 
 ## Tasks list
@@ -55,6 +56,9 @@ def step(self, x, y):
 ### 6. NAdam
 
 ### 7. AMSGrad
+
+## Limitations
+All algorithms are currently implemented in $\R^3$ space mainly for visualization purpose. $\R^N$ space implementation may be updated in the future.
 
 ## Authors
 This repository is maintained and developed by Hoàng Minh Quân and Nguyễn Ngọc Lan Như, students at University of Science, VNU-HCM.

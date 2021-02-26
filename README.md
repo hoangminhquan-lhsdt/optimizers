@@ -1,5 +1,7 @@
 # Optimizers
 Implementations of various optimization algorithms using Python and numerical libraries.
+
+This repository serves as the source for visualizations and evaluations used in our thesis.
 - [Tasks list](#tasks-list)
 - [Implementations](#implementations)
   - [Stochastic Gradient Descent with Momentum](#stochastic-gradient-descent-with-momentum)
@@ -19,4 +21,4 @@ Implementations of various optimization algorithms using Python and numerical li
 ![SGD with Momentum](gifs/momentum.gif)
 
 ## Authors
-This repository is maintained and developed by Hoàng Minh Quân and Nguyễn Ngọc Lan Như, student at University of Science, VNU-HCM.
+This repository is maintained and developed by Hoàng Minh Quân and Nguyễn Ngọc Lan Như, students at University of Science, VNU-HCM.

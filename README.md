@@ -58,7 +58,7 @@ def step(self, x, y):
 ### 7. AMSGrad
 
 ## Limitations
-All algorithms are currently implemented in <img src="https://render.githubusercontent.com/render/math?math=\R^3"> space mainly for visualization purpose. <img src="https://render.githubusercontent.com/render/math?math=\R^N"> space implementation may be updated in the future.
+All algorithms are currently implemented in ℝ<sup>3</sup> space mainly for visualization purpose. ℝ<sup>N</sup> space implementation may be updated in the future.
 
 ## Authors
 This repository is maintained and developed by Hoàng Minh Quân and Nguyễn Ngọc Lan Như, students at University of Science, VNU-HCM.

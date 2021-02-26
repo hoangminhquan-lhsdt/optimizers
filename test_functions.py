@@ -4,6 +4,6 @@ class Rosenbrock:
 	def __init__(self):
 		self.minima = [1, 1]
 	def f(self, x, y):
-		return (1 - x**2) + 100*(y - x**2)**2
+		return (1 - x)**2 + 5*(y - x**2)**2
 	def df(self, x, y):
 		return np.array((2*(10*(x**3) - 10*x*y + x - 1), 10*(y - x**2)))

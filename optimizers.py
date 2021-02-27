@@ -8,16 +8,16 @@ class Momentum:
 		lr (float, optional): learning rate
 		momentum (float, optional): momentum term
 	'''
-	def __init__(self, lr=0.001, momentum=0.9):
+	def __init__(self, a=0.001, momentum=0.9):
 		self.name = 'SGD with Momentum'
 		self.func = F()
-		self.lr = lr
+		self.a = a
 		self.momentum = momentum
 		self.v = np.zeros(2)
-	def step(self, x, y):
-		g_t = self.func.df(x, y)
-		self.v = self.momentum*self.v + self.lr*g_t
-		return (x - self.v[0], y - self.v[1])
+	def step(self, x):
+		g_t = self.func.df(x[0], x[1])
+		self.v = self.momentum*self.v + self.a*g_t
+		return x - self.v
 
 class Adam:
 	'''Implementation of Adam from "Adam: A Method for Stochastic Optimization"
@@ -47,6 +47,6 @@ class Adam:
 		m_hat = self.m / (1 - self.b1**self.t)
 		v_hat = self.v / (1 - self.b2**self.t)
 		# return (x - (self.a*m_hat[0] / (np.sqrt(v_hat[0]) + self.eps)), y - (self.a*m_hat[1] / (np.sqrt(v_hat[1]) + self.eps)))
-		# return x - self.a*m_hat/ (np.sqrt(v_hat) + self.eps)
-		step_size = self.a * np.sqrt(1 - self.b2 ** self.t) / (1 - self.b1**self.t)
-		return x - step_size*m_hat / (np.sqrt(v_hat) + self.eps)
+		return x - self.a*m_hat/ (np.sqrt(v_hat) + self.eps)
+		# step_size = self.a * np.sqrt(1 - self.b2 ** self.t) / (1 - self.b1**self.t)
+		# return x - step_size*m_hat / (np.sqrt(v_hat) + self.eps)

@@ -5,7 +5,7 @@ from matplotlib import animation
 # put desired optimizer name here
 from optimizers import Momentum as Opt
 # put desired test function name here
-from test_functions import Booth as Func
+from test_functions import Himmelblau as Func
 
 fig = plt.figure()
 func = Func()
@@ -16,12 +16,12 @@ if func.name == "Rosenbrock":
 	ax = plt.axes(xlim=(-4, 3), ylim=(-2, 4))
 	x0 = -2
 	y0 = -1
-elif func.name == "Himmelblaus":
+elif func.name == "Himmelblau":
 	X = np.arange(-5,5.1,0.1)
 	Y = np.arange(-5,5.1,0.1)
 	ax = plt.axes(xlim=(-5, 5), ylim=(-5, 5))
-	x0 = 0
-	y0 = -4.8
+	x0 = 4.5
+	y0 = 4.5
 elif func.name == 'Booth':
 	X = np.arange(-10,10.1,0.1)
 	Y = np.arange(-10,10.1,0.1)
@@ -63,8 +63,8 @@ def animate(i):
 	df = func.df(p[i-1][0], p[i-1][1])
 	grad_text.set_text(f'grad: ({df[0]:.3f}, {df[1]:.3f})')
 	return point, step_text, value_text
-anim = animation.FuncAnimation(fig, animate, init_func=init, frames=N, blit=True)
 plt.legend(loc='lower right')
+anim = animation.FuncAnimation(fig, animate, init_func=init, frames=N, blit=True)
 anim.save('gifs/'+func.name+'/'+opt.name+'.gif', writer='imagemagick', fps=30)
 
 

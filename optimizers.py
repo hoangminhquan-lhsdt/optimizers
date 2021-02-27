@@ -31,7 +31,7 @@ class Adam:
 	def __init__(self, a=0.001, b1=0.9, b2=0.999, eps=1e-8):
 		self.name = 'Adam'
 		self.F = F()
-		self.a = 1-a
+		self.a = a
 		self.b1 = b1
 		self.b2 = b2
 		self.eps = eps
@@ -39,11 +39,14 @@ class Adam:
 		self.v = np.zeros(2) # 2nd moment vector (variance)
 		self.t = 0 # timestep
 	
-	def step(self, x, y):
+	def step(self, x):
 		self.t += 1
-		g_t = self.F.df(x, y)
+		g_t = self.F.df(x[0], x[1])
 		self.m = self.b1*self.m + (1-self.b1)*g_t
 		self.v = self.b2*self.v + (1-self.b2)*g_t*g_t
 		m_hat = self.m / (1 - self.b1**self.t)
 		v_hat = self.v / (1 - self.b2**self.t)
-		return (x - (self.a*m_hat[0] / (np.sqrt(v_hat[0]) + self.eps)), y - (self.a*m_hat[1] / (np.sqrt(v_hat[1]) + self.eps)))
+		# return (x - (self.a*m_hat[0] / (np.sqrt(v_hat[0]) + self.eps)), y - (self.a*m_hat[1] / (np.sqrt(v_hat[1]) + self.eps)))
+		# return x - self.a*m_hat/ (np.sqrt(v_hat) + self.eps)
+		step_size = self.a * np.sqrt(1 - self.b2 ** self.t) / (1 - self.b1**self.t)
+		return x - step_size*m_hat / (np.sqrt(v_hat) + self.eps)

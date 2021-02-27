@@ -1,0 +1,17 @@
+# Himmelblau Function
+  - <a href="https://www.codecogs.com/eqnedit.php?latex=f(x,&space;y)&space;=&space;(x^2&space;-&space;y&space;&plus;&space;11)^2&space;&plus;&space;(x&space;&plus;&space;y^2&space;-&space;7)^2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f(x,&space;y)&space;=&space;(x^2&space;-&space;y&space;&plus;&space;11)^2&space;&plus;&space;(x&space;&plus;&space;y^2&space;-&space;7)^2" title="f(x, y) = (x^2 - y + 11)^2 + (x + y^2 - 7)^2" /></a>
+## 1. Stochastic Gradient Descent with Momentum
+![SGD with Momentum](SGD%20with%20Momentum.gif)
+
+### 2. AdaGrad
+
+### 3. AdaDelta
+
+### 4. RMSProp
+
+### 5. Adam
+![Adam](Adam.gif)
+
+### 6. NAdam
+
+### 7. AMSGrad

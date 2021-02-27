@@ -2,49 +2,32 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
 
-# put desired optimizer name here
-from optimizers import Adam as Opt
-# put desired test function name here
+from optimizers import Momentum as Opt
 from test_functions import Rosenbrock as Func
 
-X = np.arange(-4,3.1,0.1)
-Y = np.arange(-2,4.1,0.1)
+X = np.arange(-2.5,2.1,0.1)
+Y = np.arange(-2,3.1,0.1)
 X, Y = np.meshgrid(X, Y)
 func = Func()
 Z = func.f(X, Y)
 
 fig = plt.figure()
-ax = plt.axes(xlim=(-4, 3), ylim=(-2, 4))
-ax.contourf(X, Y, Z, 100, cmap='viridis')
+ax = plt.axes(xlim=(-2.5, 2), ylim=(-2, 3))
+ax.contourf(X, Y, Z, 50)
 ax.plot(func.minima[0], func.minima[1], 'ro', label='Global Minima')
 
-# Optimizing Rosenbrock
-opt = Opt()
-p = []
-point, = ax.plot([], [], 'yo', label=opt.name)
-step_text = ax.text(0.02, 0.95, '', c='white', transform=ax.transAxes)
-value_text = ax.text(0.02, 0.91, '', c='white', transform=ax.transAxes)
-x0 = -2
-y0 = -1
-p.append(opt.step(x0, y0))
-N = 1000
-for i in range(1, N):
-	p.append(opt.step(p[i-1][0], p[i-1][1]))
-
-def init():
-	point.set_data([], [])
-	step_text.set_text('')
-	value_text.set_text('')
-	return point, step_text, value_text
-def animate(i):
-	global p
-	point.set_data(p[i-1][0], p[i-1][1])
-	step_text.set_text(f'step: {i}')
-	value_text.set_text(f'z: {func.f(p[i-1][0], p[i-1][1]):.3f}')
-	return point, step_text, value_text
-anim = animation.FuncAnimation(fig, animate, init_func=init, frames=N, blit=True)
-plt.legend(loc='lower right')
-anim.save('gifs/'+opt.name+'.gif', writer='imagemagick', fps=30)
-
-
-# plt.show()
+# startPoint = (-2,-1)
+# x,y = np.array([0,0]),np.array([0,0])
+x = [-2,-1]
+maxIters = 9000
+Optimizers = Opt(a = 2e-2)
+solution = []
+for i in range(maxIters):
+	# print(x,y)
+	x = Optimizers.step(x)
+	solution.append(x)
+	# print(x,y, (np.sqrt((func.minima[0] - x)**2 + (func.minima[1] - y)**2)))
+	print(x[0],x[1],func.f(x[0],x[1]))
+plt.plot(solution[-1][0],solution[-1][1],'yo')
+plt.legend()
+plt.show()

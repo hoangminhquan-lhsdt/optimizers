@@ -32,7 +32,7 @@ def step(self, x, y):
 	self.v = self.momentum*self.v + self.lr*g_t
 	return (x - self.v[0], y - self.v[1])
 ```
-![SGD with Momentum](gifs/SGD%20with%20Momentum.gif)
+![SGD with Momentum](gifs/Rosenbrock/SGD%20with%20Momentum.gif)
 
 ### 2. AdaGrad
 
@@ -51,7 +51,7 @@ def step(self, x, y):
 	v_hat = self.v / (1 - self.b2**self.t)
 	return (x - (self.a*m_hat[0] / (np.sqrt(v_hat[0]) + self.eps)), y - (self.a*m_hat[1] / (np.sqrt(v_hat[1]) + self.eps)))
 ```
-![Adam](gifs/Adam.gif)
+![Adam](gifs/Rosenbrock/Adam.gif)
 
 ### 6. NAdam
 

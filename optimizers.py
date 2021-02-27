@@ -1,5 +1,5 @@
 import numpy as np
-from test_functions import Rosenbrock as F
+# put desired test function name here
 
 class Momentum:
 	'''Implementation of SGD with Momentum from "On the Momentum Term in Gradient Descent Learning Algorithms"
@@ -8,9 +8,9 @@ class Momentum:
 		lr (float, optional): learning rate
 		momentum (float, optional): momentum term
 	'''
-	def __init__(self, lr=0.001, momentum=0.9):
+	def __init__(self, F, lr=0.001, momentum=0.9):
 		self.name = 'SGD with Momentum'
-		self.func = F()
+		self.func = F
 		self.lr = lr
 		self.momentum = momentum
 		self.v = np.zeros(2)
@@ -18,6 +18,22 @@ class Momentum:
 		g_t = self.func.df(x, y)
 		self.v = self.momentum*self.v + self.lr*g_t
 		return (x - self.v[0], y - self.v[1])
+
+
+class AdaGrad:
+	'''Implementation of Adam from "Adam: A Method for Stochastic Optimization"
+
+	Arguments:
+		a (float, optional): alpha
+		b1 (float, optional): beta1
+		b2 (float, optional): beta2
+		eps (float, optional): epsilon
+	'''
+	def __init__(self):
+		pass
+	def step(self, x, y):
+		pass
+
 
 class Adam:
 	'''Implementation of Adam from "Adam: A Method for Stochastic Optimization"
@@ -28,10 +44,10 @@ class Adam:
 		b2 (float, optional): beta2
 		eps (float, optional): epsilon
 	'''
-	def __init__(self, a=0.001, b1=0.9, b2=0.999, eps=1e-8):
+	def __init__(self, F, a=0.001, b1=0.9, b2=0.999, eps=1e-8):
 		self.name = 'Adam'
-		self.F = F()
-		self.a = 1-a
+		self.F = F
+		self.a = a
 		self.b1 = b1
 		self.b2 = b2
 		self.eps = eps

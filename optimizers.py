@@ -40,7 +40,7 @@ Online Learning and Stochastic Optimization".
 	Arguments:
 	----------
 	lr : float, optional
-		learning rate (default: 0.001)
+		learning rate (default: 0.01)
 	lr_decay : float, optional
 		learning rate decay (default: 0)
 	weight_decay : float, optional
@@ -66,7 +66,7 @@ class Adam:
 
 	Arguments:
 	----------
-	a   : float, optional
+	lr   : float, optional
 		alpha, learning rate
 	b1  : float, optional
 		beta2, exponential decay for moving averages of gradient
@@ -75,10 +75,10 @@ class Adam:
 	eps : float, optional
 		epsilon
 	'''
-	def __init__(self, F, a=0.001, b1=0.9, b2=0.999, eps=1e-8):
+	def __init__(self, F, lr=0.001, b1=0.9, b2=0.999, eps=1e-8):
 		self.name = 'Adam'
 		self.F = F
-		self.a = a
+		self.lr = lr
 		self.b1 = b1
 		self.b2 = b2
 		self.eps = eps
@@ -93,5 +93,5 @@ class Adam:
 		self.v = self.b2*self.v + (1-self.b2)*g_t*g_t
 		m_hat = self.m / (1 - self.b1**self.t)
 		v_hat = self.v / (1 - self.b2**self.t)
-		v = self.a*m_hat / (np.sqrt(v_hat) + self.eps)
+		v = self.lr*m_hat / (np.sqrt(v_hat) + self.eps)
 		return (x - v[0], y - v[1])

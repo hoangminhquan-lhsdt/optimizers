@@ -3,7 +3,7 @@ import numpy as np
 
 class SGD:
 	def __init__(self, F, lr=0.001):
-		self.name = 'Stochastic Gradient Descent'
+		self.name = 'SGD'
 		self.func = F
 		self.lr = lr
 	def step(self, x, y):
@@ -22,7 +22,7 @@ class Momentum:
 		momentum term (default: 0.9)
 	'''
 	def __init__(self, F, lr=0.001, momentum=0.9):
-		self.name = 'SGD with Momentum'
+		self.name = 'Momentum'
 		self.func = F
 		self.lr = lr
 		self.momentum = momentum
@@ -49,7 +49,7 @@ Online Learning and Stochastic Optimization".
 		epsilon
 	'''
 	def __init__(self, F, lr=0.01, eps=1e-10):
-		self.name = 'Adagrad'
+		self.name = 'AdaGrad'
 		self.func = F
 		self.lr = lr
 		self.eps = eps

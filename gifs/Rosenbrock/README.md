@@ -3,10 +3,10 @@
   - b = 5
   - <a href="https://www.codecogs.com/eqnedit.php?latex=f(x,&space;y)&space;=&space;(a&space;-&space;x)^2&space;&plus;&space;b(y&space;-&space;x^2)^2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f(x,&space;y)&space;=&space;(a&space;-&space;x)^2&space;&plus;&space;b(y&space;-&space;x^2)^2" title="f(x, y) = (a - x)^2 + b(y - x^2)^2" /></a>
 ## 1. Stochastic Gradient Descent with Momentum
-![SGD with Momentum](SGD%20with%20Momentum.gif)
+![SGD with Momentum](Momentum.gif)
 
 ### 2. AdaGrad
-
+![AdaGrad](AdaGrad.gif)
 ### 3. AdaDelta
 
 ### 4. RMSProp

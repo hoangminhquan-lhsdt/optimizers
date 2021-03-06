@@ -118,7 +118,7 @@
       \item Output: Bộ trọng số của mạng nơ-ron nhiều tầng ẩn cho giá trị của hàm chi phí là nhỏ nhất.
     \end{itemize}
     
-   Giải quyết được bài toán giúp giảm đáng kể thời gian huấn luyện và tăng độ chính xác trên dữ liệu thực của mạng nơ-ron nhiều tầng ẩn. Tuy nhiên, đi tìm lời giải của bài toán gặp nhiều khó khăn. Thứ nhất, vì hàm mục tiêu có thể có nhiều cực tiểu địa phương, điểm yên ngựa, plateau,... có thể gây cản trở quá trình tối ưu hóa. Thứ hai, việc điều chỉnh các siêu tham số như tỷ lệ học đòi hỏi phải thử nghiệm nhiều lần và đặc trưng cho từng tập dữ liệu. Thêm nữa, khi sử dụng các hướng tiếp cận như gradient descent, stochastic gradient descent sẽ gặp khó khăn trên những tập dữ liệu không đủ thông tin để cập nhật các trọng số khi sử dụng một tỷ lệ học cố định.
+   Giải quyết được bài toán giúp giảm đáng kể thời gian huấn luyện và tăng độ chính xác trên dữ liệu thực của mạng nơ-ron nhiều tầng ẩn. Tuy nhiên, quá trình đi tìm lời giải của bài toán gặp nhiều khó khăn. Thứ nhất, hàm mục tiêu có thể có nhiều cực tiểu địa phương, điểm yên ngựa, plateau,... có thể gây cản trở quá trình tối ưu hóa. Thứ hai, việc điều chỉnh các siêu tham số như tỷ lệ học đòi hỏi phải thử nghiệm nhiều lần và đặc trưng cho từng tập dữ liệu. Thêm nữa, khi sử dụng các hướng tiếp cận như gradient descent, stochastic gradient descent sẽ gặp khó khăn trên những tập dữ liệu không đủ thông tin để cập nhật các trọng số khi sử dụng một tỷ lệ học cố định.
    
    Trong thời gian gần đây, một hướng tiếp cận đạt được kết quả tốt trong việc huấn luyện mạng nơ-ron nhiều tầng ẩn là sử dụng tỷ lệ học tự điều chỉnh tương ứng với từng trọng số trong quá trình huấn luyện. Đây là hướng mà chúng em sẽ tập trung tìm hiểu.
     

@@ -110,36 +110,35 @@
     %Mỗi mục dưới đây phải viết ít nhất là 5 câu mô tả/giới thiệu.
     
     \subsection{Giới thiệu về đề tài}
-    Trong những năm gần đây, trí tuệ nhân tạo ngày càng nhận được nhiều sự quan tâm vì tính ứng dụng cao của nó trong thực tế. Trong đó, học máy (machine learning) là một nhánh dựa trên khả năng tự động rút trích đặc trưng và đưa ra quyết định từ dữ liệu của máy tính. Một hướng tiếp cận trong học máy đã và đang đạt được những thành tựu vượt trội và được ứng dụng rộng rãi là phương pháp sử dụng mạng nơ-ron nhiều tầng ẩn, hay còn gọi là mạng học sâu (deep neural network). Những mạng nơ-ron này được huấn luyện để tự động đưa ra những dự đoán và rút kinh nghiệm để thích ứng với dữ liệu giúp nâng cao chất lượng cuộc sống và tăng cường khả năng khám phá và chinh phục tự nhiên của con người. Tuy nhiên, việc huấn luyện một mạng nơ-ron nhiều tầng ẩn gặp nhiều khó khăn dẫn đến không có ý nghĩa thực tiễn. Vì thế việc khắc phục những khó khăn này là cần thiết. \par
+    Trong những năm gần đây, trí tuệ nhân tạo ngày càng nhận được nhiều sự quan tâm vì tính ứng dụng cao của nó trong thực tế. Trong đó, học máy (machine learning) là một nhánh dựa trên khả năng rút trích đặc trưng và đưa ra quyết định từ dữ liệu của máy tính. Một hướng tiếp cận trong học máy đã và đang đạt được những thành tựu vượt trội và được ứng dụng rộng rãi là phương pháp sử dụng mạng nơ-ron nhiều tầng ẩn, hay còn gọi là mạng học sâu (deep neural network). \par
     
-    Huấn luyện mạng nơ-ron nhiều tầng ẩn chủ yếu là quá trình đi tìm cực tiểu toàn cục của hàm chi phí thông qua việc điều chỉnh các trọng số của mạng nơ-ron nhiều tầng ẩn sao cho giá trị của hàm chi phí là nhỏ nhất. Hàm chi phí có giá trị nhỏ có nghĩa là mạng nơ-ron nhiều tầng ẩn hiệu quả trên tập huấn luyện, và được kỳ vọng hoạt động tốt trên dữ liệu thực. Quá trình đi tìm giá trị nhỏ nhất của hàm chi phí còn được gọi là tối ưu hóa hàm chi phí. Trong lĩnh vực học máy, việc tối ưu hóa hàm chi phí cho mạng nơ-ron nhiều tầng ẩn là một vấn đề hiện hữu trong các kiến trúc mạng nơ-ron nhiều tầng ẩn hiện nay. Bài toán được phát biểu như sau: \par
+    Để có thể sử dụng mạng nơ-ron nhiều tầng ẩn (ví dụ, ứng dụng mạng nơ-ron để dự đoán đối tượng có trong một tấm ảnh) thì ta cần huấn luyện mạng trên một tập dữ liệu, gọi là tập dữ liệu huấn luyện (ví dụ, tập dữ liệu gồm có các ảnh và nhãn đúng cho biết đối tượng có trong ảnh). Bài toán huấn luyện mạng nơ-ron nhiều tầng ẩn được phát biểu như sau: \par
    \begin{itemize}
-      \item Input: Hàm chi phí với các tham số là bộ trọng số của mạng nơ-ron nhiều tầng ẩn.
-      \item Output: Bộ trọng số của mạng nơ-ron nhiều tầng ẩn cho giá trị của hàm chi phí là nhỏ nhất.
+      \item Input: Hàm chi phí với các tham số là bộ trọng số của mạng nơ-ron nhiều tầng ẩn. Hàm chi phí cho biết độ lỗi trung bình của mạng nơ-ron trên tập dữ liệu huấn luyện (độ lỗi là sự sai biệt giữa giá trị dự đoán của mạng với giá trị đúng). Ngoài ra, trong hàm chi phí có thể có thêm lượng "regularization" để củng cố kết quả mong muốn: bộ trọng số mà có giá trị của hàm chi phí nhỏ là bộ trọng số không chỉ có độ lỗi nhỏ trên tập huấn luyện mà còn có độ lỗi nhỏ ngoài tập dữ liệu huấn luyện.  
+      \item Output: Bộ trọng số của mạng nơ-ron nhiều tầng ẩn cho giá trị của hàm chi phí là nhỏ nhất (hoặc ít nhất là tương đối nhỏ).
     \end{itemize}
     
-   Giải quyết được bài toán giúp giảm đáng kể thời gian huấn luyện và tăng độ chính xác trên dữ liệu thực của mạng nơ-ron nhiều tầng ẩn. Tuy nhiên, quá trình đi tìm lời giải của bài toán gặp nhiều khó khăn. Thứ nhất, hàm mục tiêu có nhiều cực tiểu địa phương, điểm yên ngựa, plateau,... gây cản trở quá trình tối ưu hóa. Thứ hai, việc điều chỉnh các siêu tham số như tỷ lệ học đòi hỏi phải thử nghiệm nhiều lần và đặc trưng cho từng tập dữ liệu. Thêm nữa, khi sử dụng các hướng tiếp cận như stochastic gradient descent sẽ gặp khó khăn khi sử dụng một tỷ lệ học cố định nếu tập dữ liệu không đủ thông tin để cập nhật trọng số.
-   
-   Trong thời gian gần đây, một hướng tiếp cận đạt được kết quả tốt trong việc huấn luyện mạng nơ-ron nhiều tầng ẩn là sử dụng tỷ lệ học tự điều chỉnh tương ứng với từng trọng số trong quá trình huấn luyện. Đây là hướng mà chúng em sẽ tập trung tìm hiểu.
+    Một hướng tiếp cận thường được sử dụng để giải bài toán là SGD (Stochastic Gradient Descent) đã gặp phải nhiều khó khăn. Thứ nhất, hàm mục tiêu có nhiều cực tiểu địa phương, điểm yên ngựa, plateau,... gây cản trở quá trình đi tìm cực tiểu toàn cục với một tỷ lệ học cố định. Thứ hai, việc điều chỉnh các siêu tham số như tỷ lệ học đòi hỏi phải thử nghiệm nhiều lần và đặc trưng cho từng tập dữ liệu.
+
+    Trong thời gian gần đây, một hướng tiếp cận khác đạt được kết quả tốt trong việc huấn luyện mạng nơ-ron nhiều tầng ẩn là sử dụng tỷ lệ học tự điều chỉnh tương ứng với từng trọng số trong quá trình huấn luyện. Đây là hướng mà chúng em sẽ tập trung tìm hiểu.
     
     \subsection{Mục tiêu đề tài}
     
     \begin{itemize}
         \item Nắm rõ các khó khăn khi huấn luyện mạng nơ-ron nhiều tầng ẩn.
-        \item Nắm rõ cách thức hoạt động cũng như ưu, nhược điểm của thuật toán Adam trong huấn luyện mạng nơ-ron nhiều tầng ẩn
-        \item Hiểu sâu về nguyên lí hoạt động, ưu và nhược điểm của các thuật toán có tỷ lệ học thay đổi trong quá trình huấn luyện.
-        \item Cài đặt lại thuật toán và tái tạo lại các kết quả trong bài báo tương ứng, tiến hành thêm các thí nghiệm so sánh giữa các phương pháp khác để thấy rõ hơn về ưu/nhược điểm của thuật toán Adam trong việc giải quyết những khó khăn khi huấn luyện mạng nơ-ron nhiều tầng ẩn.
-        \item Nếu còn thời gian sau khi đã nắm rõ các nguyên lí hoạt động thì có thể xem xét các cải tiến có thể có (chẳng hạn như sử dụng lập trình song song để tăng tốc độ xử lý)
+        \item Nắm rõ cách thức hoạt động cũng như ưu, nhược điểm của thuật toán có tỷ lệ học thay đổi trong huấn luyện mạng nơ-ron nhiều tầng ẩn.
+        \item Cài đặt lại thuật toán và tái tạo lại các kết quả trong bài báo tương ứng, tiến hành thêm các thí nghiệm so sánh giữa các phương pháp khác để thấy rõ hơn về ưu/nhược điểm của thuật toán có tỷ lệ học thay đổi trong việc giải quyết những khó khăn khi huấn luyện mạng nơ-ron nhiều tầng ẩn.
+        \item Nếu còn thời gian sau khi đã nắm rõ các nguyên lí hoạt động thì có thể xem xét các cải tiến có thể có (chẳng hạn như sử dụng lập trình song song để tăng tốc độ xử lý).
         \item Rèn luyện các kỹ năng mềm như: suy nghĩ logic, lên kế hoạch, làm việc nhóm, thuyết trình,...
     \end{itemize}
     
     \subsection{Phạm vi của đề tài}
     
     \begin{itemize}
-        \item Đề tài tập trung cài đặt lại thuật toán Adam, tái tạo lại các kết quả đã đạt được trong một bài báo uy tín và giải thích vì sao thuật toán lại có hiệu quả trong việc khắc phục những khó khăn khi huấn luyện mạng nơ-ron nhiều tầng ẩn; ngoài ra có thể có thêm các thí nghiệm ngoài bài báo để thấy rõ hơn ưu/nhược điểm của thuật toán trong việc giải quyết những khó khăn khi huấn luyện mạng nơ-ron nhiều tầng ẩn. Lý do chúng em giới hạn đề tài như vậy là vì:
+        \item Đề tài tập trung cài đặt lại thuật toán, tái tạo lại các kết quả đã đạt được trong một bài báo gốc và giải thích vì sao thuật toán lại có hiệu quả trong việc khắc phục những khó khăn khi huấn luyện mạng nơ-ron nhiều tầng ẩn; ngoài ra có thể có thêm các thí nghiệm ngoài bài báo để thấy rõ hơn ưu/nhược điểm của thuật toán trong việc giải quyết những khó khăn khi huấn luyện mạng nơ-ron nhiều tầng ẩn. Lý do chúng em giới hạn đề tài như vậy là vì:
         \begin{enumerate}
-            \item Chúng em thấy chỉ riêng việc tìm hiểu những khó khăn trong quá trình huấn luyện mạng nơ-ron nhiều tầng ẩn, nguyên lí hoạt động của thuật toán Adam (và các kiến thức nền tảng bên dưới, cũng như các thuật toán liên quan) và có thể tái tạo lại được kết quả thí nghiệm trong bài báo đã tốn rất nhiều thời gian.
-            \item Chúng em xác định là chỉ trên cơ sở nắm rõ những khó khăn trong việc huấn luyện mạng nơ-ron nhiều tầng ẩn và hiểu rõ cách thuật toán Adam khắc phục những khó khăn đó (và các kiến thức nền tảng bên dưới) thì mới có thể có được các cải tiến thật sự trong tương lai.
+            \item Chúng em thấy chỉ riêng việc tìm hiểu những khó khăn trong quá trình huấn luyện mạng nơ-ron nhiều tầng ẩn, nguyên lí hoạt động của thuật toán có tỷ lệ học thay đổi (và các kiến thức nền tảng bên dưới, cũng như các thuật toán liên quan) và có thể tái tạo lại được kết quả thí nghiệm trong bài báo đã tốn rất nhiều thời gian.
+            \item Chúng em xác định là chỉ trên cơ sở nắm rõ những khó khăn trong việc huấn luyện mạng nơ-ron nhiều tầng ẩn và hiểu rõ cách thuật toán có tỷ lệ học thay đổi khắc phục những khó khăn đó (và các kiến thức nền tảng bên dưới) thì mới có thể có được các cải tiến thật sự trong tương lai.
         \end{enumerate}
    \item Có thể đề xuất thêm các cải tiến, tuy nhiên, đây không phải là mục tiêu chính.
     \end{itemize}
@@ -154,7 +153,7 @@
     Dưới đây sẽ trình bày một số bài báo liên quan đến các thuật toán có tỷ lệ học thay đổi trong quá trình huấn luyện mạng nơ-ron nhiều tầng ẩn mà chúng em đã tìm hiểu được đến thời điểm hiện tại, cũng như là bài báo mà chúng em dự kiến sẽ tập trung tìm hiểu sâu và tái tạo lại kết quả thí nghiệm.
     \begin{itemize}
         \item Thuật toán đầu tiên sử dụng tỷ lệ học thay đổi trong quá trình huấn luyện mạng nơ-ron nhiều tầng ẩn là thuật toán AdaGrad được đề xuất lần đầu trong bài báo \cite{Duchi2011AdaptiveSM} được xuất bản vào năm 2011 (số lần trích dẫn bài báo theo trang semantic scholar là 6464). Về cơ bản thì thuật toán sử dụng một tỷ lệ học tự điều chỉnh tương ứng với từng trọng số trong quá trình huấn luyện mạng nơ-ron nhiều tầng ẩn.
-        \item Dựa trên nền tảng đó, nhiều thuật toán liên quan đến việc sử dụng tỷ lệ học thay đổi ra đời, như các thuật toán RMSProp \cite{Tieleman2012RMSProp} và Adam \cite{Kingma2015AdamAM}. Trong đó nổi bật nhất là Adam của Diederik P. Kingma và Jimmy L. Ba xuất bản năm 2015 tại hội nghị ICLR với 57333 lượt trích dẫn đã tạo nên sự khác biệt lớn về cả tốc độ huấn luyện và độ chính xác của mạng nơ-ron nhiều tầng ẩn. Tuy nhiên, \cite{Reddi2018OnTC} chứng minh tồn tại trường hợp ADAM không thể tìm được đến cực tiểu toàn cục ngay cả trong các hàm lồi đơn giản. Từ đó, những cải tiến như \cite{Reddi2018OnTC}, \cite{Dozat2016IncorporatingNM}, \cite{Zhang2017NormalizedDA} đã được đề xuất nhằm khắc phục nhược điểm của thuật toán Adam.
+        \item Dựa trên nền tảng đó, nhiều thuật toán liên quan đến việc sử dụng tỷ lệ học thay đổi ra đời, như các thuật toán RMSProp \cite{Tieleman2012RMSProp} và Adam \cite{Kingma2015AdamAM}. Trong đó nổi bật nhất là Adam của Diederik P. Kingma và Jimmy L. Ba xuất bản năm 2015 tại hội nghị ICLR với 57333 lượt trích dẫn đã tạo nên sự khác biệt lớn về cả tốc độ huấn luyện và độ chính xác của mạng nơ-ron nhiều tầng ẩn. Tuy nhiên, \cite{Reddi2018OnTC} chứng minh tồn tại trường hợp Adam không thể tìm được đến cực tiểu toàn cục ngay cả trong các hàm lồi đơn giản. Từ đó, những cải tiến như \cite{Reddi2018OnTC}, \cite{Dozat2016IncorporatingNM}, \cite{Zhang2017NormalizedDA} đã được đề xuất nhằm khắc phục nhược điểm của thuật toán Adam.
     \end{itemize}
     Với những gì đã trình bày ở trên, trong khóa luận, chúng em dự kiến sẽ tập trung tìm hiểu và cài đặt thuật toán Adam dựa trên \cite{Kingma2015AdamAM} vì:
     \begin{itemize}
@@ -210,5 +209,4 @@
     \end{table}
     
 \end{document}
-
 

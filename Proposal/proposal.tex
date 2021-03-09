@@ -110,12 +110,13 @@
     %Mỗi mục dưới đây phải viết ít nhất là 5 câu mô tả/giới thiệu.
     
     \subsection{Giới thiệu về đề tài}
+
     Trong những năm gần đây, trí tuệ nhân tạo ngày càng nhận được nhiều sự quan tâm vì tính ứng dụng cao của nó trong thực tế. Trong đó, học máy (machine learning) là một nhánh dựa trên khả năng rút trích đặc trưng và đưa ra quyết định từ dữ liệu của máy tính \cite{Goodfellow-et-al-2016}. Một hướng tiếp cận trong học máy đã và đang đạt được những thành tựu vượt trội và được ứng dụng rộng rãi là phương pháp sử dụng mạng nơ-ron nhiều tầng ẩn, hay còn gọi là mạng học sâu (deep neural network). \par
     
     Để có thể sử dụng mạng nơ-ron nhiều tầng ẩn (ví dụ, ứng dụng mạng nơ-ron để dự đoán đối tượng có trong một tấm ảnh) thì ta cần huấn luyện mạng trên một tập dữ liệu, gọi là tập dữ liệu huấn luyện (ví dụ, tập dữ liệu gồm có các ảnh và nhãn đúng cho biết đối tượng có trong ảnh). Bài toán huấn luyện mạng nơ-ron nhiều tầng ẩn được phát biểu như sau: \par
    \begin{itemize}
-      \item Input: Hàm chi phí với các tham số là bộ trọng số của mạng nơ-ron nhiều tầng ẩn. Hàm chi phí cho biết độ lỗi trung bình của mạng nơ-ron trên tập dữ liệu huấn luyện (độ lỗi là sự sai biệt giữa giá trị dự đoán của mạng với giá trị đúng). Ngoài ra, trong hàm chi phí có thể có thêm lượng "regularization" để củng cố kết quả mong muốn: bộ trọng số mà có giá trị của hàm chi phí nhỏ là bộ trọng số không chỉ có độ lỗi nhỏ trên tập huấn luyện mà còn có độ lỗi nhỏ ngoài tập dữ liệu huấn luyện.  
-      \item Output: Bộ trọng số của mạng nơ-ron nhiều tầng ẩn cho giá trị của hàm chi phí là nhỏ nhất (hoặc ít nhất là tương đối nhỏ).
+      \item Input: Hàm chi phí với các tham số là bộ trọng số của mạng nơ-ron nhiều tầng ẩn. Hàm chi phí cho biết độ lỗi trung bình của mạng nơ-ron trên tập dữ liệu huấn luyện (độ lỗi là sự sai biệt giữa giá trị dự đoán của mạng với giá trị đúng). Ngoài ra, trong hàm chi phí có thể có thêm lượng "regularization" để củng cố kết quả mong muốn: bộ trọng số cho giá trị của hàm chi phí nhỏ là bộ trọng số không chỉ có độ lỗi nhỏ trên tập huấn luyện mà còn có độ lỗi nhỏ ngoài tập dữ liệu huấn luyện.  
+      \item Output: Bộ trọng số của mạng nơ-ron nhiều tầng ẩn cho giá trị của hàm chi phí nhỏ nhất (hoặc ít nhất là tương đối nhỏ).
     \end{itemize}
     
     Một hướng tiếp cận thường được sử dụng để giải bài toán là SGD (Stochastic Gradient Descent) đã gặp phải nhiều khó khăn. Thứ nhất, hàm mục tiêu có nhiều cực tiểu địa phương, điểm yên ngựa, plateau,... gây cản trở quá trình đi tìm cực tiểu toàn cục với một tỷ lệ học cố định. Thứ hai, việc điều chỉnh các siêu tham số như tỷ lệ học đòi hỏi phải thử nghiệm nhiều lần và đặc trưng cho từng tập dữ liệu.

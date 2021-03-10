@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 # put desired optimizer name here
-from optimizers import Momentum as Opt
+from optimizers import AdaDelta as Opt
 # put desired test function name here
-from test_functions import Rosenbrock as Func
+from test_functions import Booth as Func
 
 
 df = pd.read_csv('lr.csv')
@@ -45,8 +45,8 @@ for i in range(1, len(func.minima)):
 
 # Optimizing
 # lr = df.loc[Opt(func, 0).name, func.name]
-lr = 0.005
-opt = Opt(func, lr=lr)
+lr = 0.95
+opt = Opt(func, lr=lr, eps=1e-4)
 p = []
 point, = ax.plot([], [], 'yo', label=opt.name + f'(lr={lr:.3f})')
 step_text = ax.text(0.02, 0.95, '', c='white', transform=ax.transAxes)

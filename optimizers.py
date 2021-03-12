@@ -34,8 +34,7 @@ class Momentum:
 
 
 class AdaGrad:
-	'''Implementation of AdaGrad from "Adaptive Subgradient Methods for
-Online Learning and Stochastic Optimization".
+	'''Implementation of AdaGrad from "Adaptive Subgradient Methods for Online Learning and Stochastic Optimization".
 
 	Arguments:
 	----------
@@ -61,12 +60,36 @@ Online Learning and Stochastic Optimization".
 		return x - v[0], y - v[1]
 
 
+class AdaDelta:
+	'''Implementation of AdaDelta from "AdaDelta: An Adaptive Learning Rate Method".
+	lr  : float, optional
+		alpha, learning rate
+	eps : float, optional
+		epsilon
+	'''
+	def __init__(self, F, lr=0.95, eps=1e-6):
+		self.name = 'AdaDelta'
+		self.F = F
+		self.lr = lr
+		self.eps = eps
+		self.E_gt = np.zeros(2)
+		self.E_delta = np.zeros(2)
+	def step(self, x, y):
+		gt = self.F.df(x, y)
+		self.E_gt = self.lr*self.E_gt + (1 - self.lr)*(gt**2)
+		RMS_gt = np.sqrt(self.E_gt + self.eps)
+		RMS_delta = np.sqrt(self.E_delta + self.eps)
+		delta = -(RMS_delta / RMS_gt)*gt
+		self.E_delta = self.lr*self.E_delta + (1 - self.lr)*(delta**2)
+		return (x + delta[0], y + delta[1])
+
+
 class Adam:
 	'''Implementation of Adam from "Adam: A Method for Stochastic Optimization".
 
 	Arguments:
 	----------
-	lr   : float, optional
+	lr  : float, optional
 		alpha, learning rate
 	b1  : float, optional
 		beta2, exponential decay for moving averages of gradient

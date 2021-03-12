@@ -4,9 +4,13 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 # put desired optimizer name here
+<<<<<<< HEAD
 from optimizers import AMSGrad as Opt
+=======
+from optimizers import AdaDelta as Opt
+>>>>>>> c1fbe2b7d2eb2c8c6eb6c0d16f4c4c5bafa3f188
 # put desired test function name here
-from test_functions import Rosenbrock as Func
+from test_functions import Booth as Func
 
 
 df = pd.read_csv('lr_amsgrad.csv')
@@ -44,9 +48,15 @@ for i in range(1, len(func.minima)):
 	ax.plot(func.minima[i][0], func.minima[i][1], 'ro')
 
 # Optimizing
+<<<<<<< HEAD
 lr = df.loc[Opt(func, 0).name, func.name]
 # lr = 0.1
 opt = Opt(func, lr=lr)
+=======
+# lr = df.loc[Opt(func, 0).name, func.name]
+lr = 0.95
+opt = Opt(func, lr=lr, eps=1e-4)
+>>>>>>> c1fbe2b7d2eb2c8c6eb6c0d16f4c4c5bafa3f188
 p = []
 point, = ax.plot([], [], 'yo', label=opt.name + f'(lr={lr:.3f})')
 step_text = ax.text(0.02, 0.95, '', c='white', transform=ax.transAxes)

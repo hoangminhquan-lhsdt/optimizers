@@ -7,6 +7,7 @@
 ![AdaGrad](AdaGrad.gif)
 
 ### 3. AdaDelta
+![AdaDelta](AdaDelta.gif)
 
 ### 4. RMSProp
 

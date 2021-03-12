@@ -8,12 +8,12 @@ from test_functions import linear_func as Func
 # X = np.arange(-2.5,2.1,0.1)
 # Y = np.arange(-2,3.1,0.1)
 # X, Y = np.meshgrid(X, Y)
-func = Func(1010,10,101)
+func = Func(4,1,3)
 # Z = func.f(X, Y)
 # Y = func.f(X,[_ for _ in range(100)])
 
 fig = plt.figure()
-# ax = plt.axes(xlim=(-2.5, 2), ylim=(-2, 3))
+ax = plt.axes(ylim=(-3, 3))
 ax = plt.axes()
 # ax.contourf(X, Y, Z, 50)
 # ax.plot(func.minima[0], func.minima[1], 'ro', label='Global Minima')
@@ -26,20 +26,28 @@ ax = plt.axes()
 # 	print(x[0],x[1],func.f(x[0],x[1]))
 
 x = 0
-maxIter = 25000
+maxIter = 200
 x_t = []
 for t in range(maxIter):
-	x = func.Adam(x,0.001,1e-8,amsgrad = True)
+	x = func.Adam(x,0.2,1e-8,amsgrad = True)
 	# print(x)
 	if x > 1:
-		x = 1
+		x_t.append(1)
 	elif x < -1:
-		x = -1
-	# print(func.f(x,t+1))
-	x_t.append(x)
+		x_t.append(-1)
+	else: 
+		x_t.append(x)
+	# print(func.f(x,t))
+	print(x)
 
 # ax.plot(range(maxIter),func.fs(x_t,range(maxIter)),'yo')
 ax.plot(range(maxIter),x_t,'y')
 # ax.plot(0,x_t[0],'yo')
 # plt.legend()
 plt.show()
+
+
+
+
+
+

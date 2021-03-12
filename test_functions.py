@@ -16,8 +16,8 @@ class linear_func:
 		self.a = a
 		self.b = b
 		self.k = k
-		self.b1 = 0.9
-		self.b2 = 0.99#1/(1 + self.C**2)
+		self.b1 = 0
+		self.b2 = 1/(1 + self.a**2)
 		self.t = 0
 		self.m = 0
 		self.v = 0
@@ -34,11 +34,12 @@ class linear_func:
 		return -self.b
 	def Adam(self,x,lr,eps,amsgrad = False):
 		self.t += 1
-		g_t = self.df(x,self.t-1)
+		g_t = self.df(x,self.t)
+		# if amsgrad:
+		# 	self.b1 = self.b1 / self.t
 		self.m = self.b1 * self.m + (1-self.b1)*g_t
 		self.v = self.b2 * self.v + (1-self.b2)*g_t*g_t
 
-		m_hat = self.m / (1 - self.b1**self.t)
 
 		# if amsgrad:
 		# 	self.max_v = max(self.v,self.max_v)
@@ -47,9 +48,11 @@ class linear_func:
 		# 	denom = np.sqrt(self.v) / (np.sqrt(1 - self.b2 **self.t) + eps)
 		if amsgrad:
 			self.max_v = max(self.v,self.max_v)
-			v_hat = self.max_v / (1 - self.b2**self.t)
-			return x - lr*m_hat/ (np.sqrt(v_hat) + eps)
+			# v_hat = self.max_v / (1 - self.b2**self.t)
+			alpha = lr/ (np.sqrt(self.t))
+			return x - alpha*self.m/ (np.sqrt(self.max_v) + eps)
 
+		m_hat = self.m / (1 - self.b1**self.t)
 		v_hat = self.v / (1 - self.b2**self.t)
 		return x - lr*m_hat/ (np.sqrt(v_hat) + eps)
 

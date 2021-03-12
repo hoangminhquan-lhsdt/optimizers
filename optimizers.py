@@ -95,3 +95,24 @@ class Adam:
 		v_hat = self.v / (1 - self.b2**self.t)
 		v = self.lr*m_hat / (np.sqrt(v_hat) + self.eps)
 		return (x - v[0], y - v[1])
+
+class AMSGrad(Adam):
+	def __init__(self, F, lr = 0.001, b1 = 0.9, b2 = 0.999, eps = 1e-8):
+		super().__init__(F,lr,b1,b2,eps)
+		self.v_max = np.zeros(2)
+		self.name = 'AMSGrad'
+	def step(self,x,y):
+		self.t += 1
+		g_t = self.F.df(x,y)
+
+		# self.b1 = self.b1 / self.t #b1 decay [OPTIONAL]
+		
+		self.m = self.b1 * self.m + (1-self.b1)*g_t
+		self.v = self.b1 * self.v + (1-self.b2)*g_t*g_t
+
+		self.v_max = np.array((max(self.v[0],self.v_max[0]),max(self.v[1],self.v_max[1])))
+
+		# alpha = lr/ np.sqrt(self.t) # learning rate decay [OPTIONAL]
+		step_size = self.lr * self.m / (np.sqrt(self.v_max) + self.eps)
+
+		return (x - step_size[0], y - step_size[1])

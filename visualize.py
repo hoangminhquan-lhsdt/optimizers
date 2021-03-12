@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 # put desired optimizer name here
-from optimizers import Momentum as Opt
+from optimizers import AMSGrad as Opt
 # put desired test function name here
 from test_functions import Rosenbrock as Func
 
 
-df = pd.read_csv('lr.csv')
+df = pd.read_csv('lr_amsgrad.csv')
 df = df.set_index('Unnamed: 0')
 print(df)
 
@@ -44,8 +44,8 @@ for i in range(1, len(func.minima)):
 	ax.plot(func.minima[i][0], func.minima[i][1], 'ro')
 
 # Optimizing
-# lr = df.loc[Opt(func, 0).name, func.name]
-lr = 0.005
+lr = df.loc[Opt(func, 0).name, func.name]
+# lr = 0.1
 opt = Opt(func, lr=lr)
 p = []
 point, = ax.plot([], [], 'yo', label=opt.name + f'(lr={lr:.3f})')
@@ -71,10 +71,12 @@ def animate(i):
 	df = func.df(p[i-1][0], p[i-1][1])
 	grad_text.set_text(f'grad: ({df[0]:.3f}, {df[1]:.3f})')
 	return point, step_text, value_text
+
 plt.legend(loc='lower right')
 anim = animation.FuncAnimation(fig, animate, init_func=init, frames=N, blit=True)
 print(f'Writing to gifs/'+func.name+'/'+opt.name+'.gif')
 anim.save('gifs/'+func.name+'/'+opt.name+'.gif', writer='imagemagick', fps=60)
 
+# ax.plot(p[-1][0],p[-1][1],'yo')
 
 # plt.show()

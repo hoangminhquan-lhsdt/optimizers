@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.stats import uniform
 
 class Rosenbrock:
 	def __init__(self, a=1, b=5):
@@ -16,27 +17,27 @@ class linear_func:
 		self.a = a
 		self.b = b
 		self.k = k
-		self.b1 = 0
-		self.b2 = 1/(1 + self.a**2)
+		self.b1 = 0.9
+		self.b2 = 0.999
 		self.t = 0
 		self.m = 0
 		self.v = 0
 		self.max_v = 0
 	def f(self,x,t):
-		if t % self.k == 1:
+		if round(uniform.rvs(0,1),2) == 0.01:
 			return self.a*x
 		return -self.b*x
 	def fs(self,x,t):
 		return [self.f(xs,ts) for xs,ts in zip(x,t)]
 	def df(self,x,t):
-		if t % self.k == 1:
+		if round(uniform.rvs(0,1),2) == 0.01:
 			return self.a
 		return -self.b
 	def Adam(self,x,lr,eps,amsgrad = False):
 		self.t += 1
 		g_t = self.df(x,self.t)
-		# if amsgrad:
-		# 	self.b1 = self.b1 / self.t
+		if amsgrad:
+			self.b1 = self.b1 / self.t
 		self.m = self.b1 * self.m + (1-self.b1)*g_t
 		self.v = self.b2 * self.v + (1-self.b2)*g_t*g_t
 
@@ -49,8 +50,8 @@ class linear_func:
 		if amsgrad:
 			self.max_v = max(self.v,self.max_v)
 			# v_hat = self.max_v / (1 - self.b2**self.t)
-			alpha = lr/ (np.sqrt(self.t))
-			return x - alpha*self.m/ (np.sqrt(self.max_v) + eps)
+			# alpha = lr/ (np.sqrt(self.t))
+			return x - lr*self.m/ (np.sqrt(self.max_v) + eps)
 
 		m_hat = self.m / (1 - self.b1**self.t)
 		v_hat = self.v / (1 - self.b2**self.t)

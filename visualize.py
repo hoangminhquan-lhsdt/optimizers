@@ -8,7 +8,7 @@ from test_functions import linear_func as Func
 # X = np.arange(-2.5,2.1,0.1)
 # Y = np.arange(-2,3.1,0.1)
 # X, Y = np.meshgrid(X, Y)
-func = Func(4,1,3)
+func = Func(1010,10,101)
 # Z = func.f(X, Y)
 # Y = func.f(X,[_ for _ in range(100)])
 
@@ -26,10 +26,10 @@ ax = plt.axes()
 # 	print(x[0],x[1],func.f(x[0],x[1]))
 
 x = 0
-maxIter = 200
+maxIter = 1000000
 x_t = []
 for t in range(maxIter):
-	x = func.Adam(x,0.2,1e-8,amsgrad = True)
+	x = func.Adam(x,0.001,1e-8,amsgrad = False)
 	# print(x)
 	if x > 1:
 		x_t.append(1)
@@ -38,7 +38,7 @@ for t in range(maxIter):
 	else: 
 		x_t.append(x)
 	# print(func.f(x,t))
-	print(x)
+	# print(x)
 
 # ax.plot(range(maxIter),func.fs(x_t,range(maxIter)),'yo')
 ax.plot(range(maxIter),x_t,'y')

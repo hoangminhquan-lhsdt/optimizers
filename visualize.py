@@ -29,7 +29,7 @@ x = 0
 maxIter = 1000000
 x_t = []
 for t in range(maxIter):
-	x = func.Adam(x,0.001,1e-8,amsgrad = False)
+	x = func.Adam(x,0.001,1e-8,amsgrad = True)
 	# print(x)
 	if x > 1:
 		x_t.append(1)
@@ -42,6 +42,7 @@ for t in range(maxIter):
 
 # ax.plot(range(maxIter),func.fs(x_t,range(maxIter)),'yo')
 ax.plot(range(maxIter),x_t,'y')
+# np.save("amsgrad.npy",x_t)
 # ax.plot(0,x_t[0],'yo')
 # plt.legend()
 plt.show()

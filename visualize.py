@@ -87,6 +87,7 @@ anim = animation.FuncAnimation(fig, animate, init_func=init, frames=N, blit=True
 print(f'Writing to gifs/'+func.name+'/'+opt.name+'.gif')
 anim.save('gifs/'+func.name+'/'+opt.name+'.gif', writer='imagemagick', fps=60)
 
-# ax.plot(p[-1][0],p[-1][1],'yo')
+# ax.plot(p[:][0],p[:][1],'yo')
+
 
 # plt.show()

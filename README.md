@@ -18,9 +18,9 @@ This repository serves as the source for visualizations and evaluations used in 
 - [X] Stochastic Gradient Descent with Momentum ([Ning Qian, 1999](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.57.5612&rep=rep1&type=pdf))
 - [X] AdaGrad ([John Duchi et al, 2011](https://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf))
 - [X] AdaDelta ([Matthew D. Zeiler, 2012](https://arxiv.org/pdf/1212.5701.pdf))
-- [ ] RMSProp ([Geoffrey Hinton et al, 2012](https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf))
+- [X] RMSProp ([Geoffrey Hinton et al, 2012](https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf))
 - [X] Adam ([Diederik P. Kingma, Jimmy Lei Ba, 2015](https://arxiv.org/pdf/1412.6980.pdf))
-- [ ] NAdam ([Timothy Dozat, 2016](https://openreview.net/pdf/OM0jvwB8jIp57ZJjtNEZ.pdf))
+- [X] Nadam ([Timothy Dozat, 2016](https://openreview.net/pdf/OM0jvwB8jIp57ZJjtNEZ.pdf))
 - [X] AMSGrad ([Manzil Zaheer et al, 2018](https://openreview.net/pdf?id=ryQu7f-RZ))
 
 ## Implementations

@@ -84,6 +84,31 @@ class AdaDelta:
 		return (x + delta[0], y + delta[1])
 
 
+class RMSprop:
+	'''Implementation of RMSprop from "Neural Networks for Machine Learning" Lecture 6b.
+	Arguments:
+	----------
+	lr    : float, optional
+		learning rate
+	gamma : float, optional
+		momentum
+	eps   : float, optional
+		epsilon
+	'''
+	def __init__(self, F, lr=0.001, gamma=0.9, eps=1e-7):
+		self.name = 'Adam'
+		self.F = F
+		self.lr = lr
+		self.gamma = gamma
+		self.eps = eps
+		self.E_g2 = np.zeros(2) # mean of squared gradient
+	def step(self, x, y):
+		g = self.F.df(x, y)
+		self.E_g2 = gamma*self.E_g2 + (1 - gamma)*(g**2)
+		delta = self.lr * g / np.sqrt(self.E_g2 + self.eps)
+		return (x - delta[0], y - delta[1])
+
+
 class Adam:
 	'''Implementation of Adam from "Adam: A Method for Stochastic Optimization".
 

@@ -32,7 +32,7 @@ def step(self, x, y):
 	self.v = self.momentum*self.v + self.lr*g_t
 	return (x - self.v[0], y - self.v[1])
 ```
-![SGD with Momentum](gifs/Rosenbrock/SGD%20with%20Momentum.gif)
+![SGD with Momentum](gifs/Rosenbrock/Momentum.gif)
 
 ### 2. AdaGrad
 ```python

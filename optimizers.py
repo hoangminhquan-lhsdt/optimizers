@@ -112,10 +112,14 @@ class Adam:
 	def step(self, x, y):
 		self.t += 1
 		g_t = self.F.df(x, y)
+		print(g_t)
+
 		self.m = self.b1*self.m + (1-self.b1)*g_t
 		self.v = self.b2*self.v + (1-self.b2)*g_t*g_t
+
 		m_hat = self.m / (1 - self.b1**self.t)
 		v_hat = self.v / (1 - self.b2**self.t)
+
 		v = self.lr*m_hat / (np.sqrt(v_hat) + self.eps)
 		return (x - v[0], y - v[1])
 
@@ -138,4 +142,22 @@ class AMSGrad(Adam):
 		# alpha = lr/ np.sqrt(self.t) # learning rate decay [OPTIONAL]
 		step_size = self.lr * self.m / (np.sqrt(self.v_max) + self.eps)
 
+		return (x - step_size[0], y - step_size[1])
+class NAdam(Adam):
+	def __init__(self, F, lr = 0.001, b1 = 0.975, b2 = 0.999, eps = 1e-8):
+		super().__init__(F,lr,b1,b2,eps)
+		self.name = "NAdam"
+	def step(self,x,y):
+		self.t += 1
+		g_t = self.F.df(x,y)
+
+		self.m = self.b1 * self.m + (1-self.b1) * g_t
+		self.v = self.b2 * self.v + (1-self.b2) * g_t * g_t
+
+		m_hat = self.m / (1 - self.b1 ** (self.t + 1))
+		v_hat = self.b2 * self.v / (1 - self.b2 ** self.t)
+
+		nes_m = (self.b1 * self.m) + ((1 - self.b1) * g_t / (1 - self.b1 ** self.t))
+		step_size = self.lr * nes_m / (np.sqrt(v_hat) + self.eps)
+		# print(step_size)
 		return (x - step_size[0], y - step_size[1])

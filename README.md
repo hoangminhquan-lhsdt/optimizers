@@ -21,7 +21,7 @@ This repository serves as the source for visualizations and evaluations used in 
 - [ ] RMSProp ([Geoffrey Hinton et al, 2012](https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf))
 - [X] Adam ([Diederik P. Kingma, Jimmy Lei Ba, 2015](https://arxiv.org/pdf/1412.6980.pdf))
 - [ ] NAdam ([Timothy Dozat, 2016](https://openreview.net/pdf/OM0jvwB8jIp57ZJjtNEZ.pdf))
-- [ ] AMSGrad ([Manzil Zaheer et al, 2018](https://openreview.net/pdf?id=ryQu7f-RZ))
+- [X] AMSGrad ([Manzil Zaheer et al, 2018](https://openreview.net/pdf?id=ryQu7f-RZ))
 
 ## Implementations
 View the full source code for each algorithm in [optimizers.py](https://github.com/hoangminhquan-lhsdt/optimizers/blob/main/optimizers.py)

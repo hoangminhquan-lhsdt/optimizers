@@ -181,7 +181,7 @@ class NAdam(Adam):
 		m_hat = self.m / (1 - self.b1 ** (self.t + 1))
 		v_hat = self.b2 * self.v / (1 - self.b2 ** self.t)
 
-		nes_m = (self.b1 * self.m) + ((1 - self.b1) * g_t / (1 - self.b1 ** self.t))
+		nes_m = (self.b1 * m_hat) + ((1 - self.b1) * g_t / (1 - self.b1 ** self.t))
 		step_size = self.lr * nes_m / (np.sqrt(v_hat) + self.eps)
 
 		return (x - step_size[0], y - step_size[1])
@@ -201,7 +201,7 @@ class NAMSGrad(Adam):
 		m_hat = self.m / (1 - self.b1 ** (self.t + 1))
 		v_hat = self.b2 * self.v / (1 - self.b2 ** self.t)
 
-		nes_m = (self.b1 * self.m) + ((1 - self.b1) * g_t / (1 - self.b1 ** self.t))
+		nes_m = (self.b1 * m_hat) + ((1 - self.b1) * g_t / (1 - self.b1 ** self.t))
 		self.max_v =  np.array((max(self.v[0],self.max_v[0]),max(self.v[1],self.max_v[1])))
 
 		step_size = self.lr * nes_m / (np.sqrt(self.max_v) + self.eps)

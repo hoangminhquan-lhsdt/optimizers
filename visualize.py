@@ -4,13 +4,15 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 # put desired optimizer name here
-from optimizers import NAMSGrad as Opt
+from optimizers import NAdam as Opt
 # put desired test function name here
 from test_functions import Rosenbrock as Func
 
 
 df = pd.read_csv('lr.csv')
+step = pd.read_csv('step.csv')
 df = df.set_index('Unnamed: 0')
+step = step.set_index('Unnamed: 0')
 print(df)
 
 
@@ -44,8 +46,8 @@ for i in range(1, len(func.minima)):
 	ax.plot(func.minima[i][0], func.minima[i][1], 'ro')
 
 # Optimizing
-# lr = df.loc[Opt(func, 0).name, func.name]
-lr = 0.05
+lr = df.loc[Opt(func, 0).name, func.name]
+# lr = 0.05
 opt = Opt(func, lr=lr, eps=1e-8)
 p = []
 point, = ax.plot([], [], 'yo', label=opt.name + f'(lr={lr:.3f})')
@@ -53,8 +55,8 @@ step_text = ax.text(0.02, 0.95, '', c='white', transform=ax.transAxes)
 value_text = ax.text(0.02, 0.91, '', c='white', transform=ax.transAxes)
 grad_text = ax.text(0.02, 0.87, '', c='white', transform=ax.transAxes)
 p.append(opt.step(x0, y0))
-N = 300
-for i in range(1, N):
+N = step.loc[Opt(func,0).name, func.name]
+for i in range(1, 171):
 	p.append(opt.step(p[i-1][0], p[i-1][1]))
 
 def init():

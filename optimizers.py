@@ -137,7 +137,6 @@ class Adam:
 	def step(self, x, y):
 		self.t += 1
 		g_t = self.F.df(x, y)
-		print(g_t)
 
 		self.m = self.b1*self.m + (1-self.b1)*g_t
 		self.v = self.b2*self.v + (1-self.b2)*g_t*g_t
@@ -184,5 +183,27 @@ class NAdam(Adam):
 
 		nes_m = (self.b1 * self.m) + ((1 - self.b1) * g_t / (1 - self.b1 ** self.t))
 		step_size = self.lr * nes_m / (np.sqrt(v_hat) + self.eps)
-		# print(step_size)
+
+		return (x - step_size[0], y - step_size[1])
+
+class NAMSGrad(Adam):
+	def __init__(self, F, lr = 0.001, b1 = 0.975, b2 = 0.999, eps = 1e-8):
+		super().__init__(F,lr,b1,b2,eps)
+		self.max_v = np.zeros(2)
+		self.name = 'NAMSGrad'
+	def step(self,x,y):
+		self.t += 1
+		g_t = self.F.df(x,y)
+
+		self.m = self.b1 * self.m + (1 - self.b1) * g_t
+		self.v = self.b2 * self.v + (1 - self.b2) * g_t * g_t
+
+		m_hat = self.m / (1 - self.b1 ** (self.t + 1))
+		v_hat = self.b2 * self.v / (1 - self.b2 ** self.t)
+
+		nes_m = (self.b1 * self.m) + ((1 - self.b1) * g_t / (1 - self.b1 ** self.t))
+		self.max_v =  np.array((max(self.v[0],self.max_v[0]),max(self.v[1],self.max_v[1])))
+
+		step_size = self.lr * nes_m / (np.sqrt(self.max_v) + self.eps)
+
 		return (x - step_size[0], y - step_size[1])

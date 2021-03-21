@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 # put desired optimizer name here
-from optimizers import NAdam as Opt
+from optimizers import NAMSGrad as Opt
 # put desired test function name here
 from test_functions import Rosenbrock as Func
 

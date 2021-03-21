@@ -1,0 +1,8 @@
+,Booth,Himmelblau,Rosenbrock
+SGD,35,22,859
+Momentum,96,111,138
+AdaGrad,280,93,1538
+Adam,82,92,91
+AMSGrad,55,75,69
+NAdam,205,149,169
+NAMSGrad,134,42,219

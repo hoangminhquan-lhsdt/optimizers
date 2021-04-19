@@ -263,17 +263,21 @@ def my_momentum(params: List[Tensor],
             theta = theta - lr*v_t
     """
     for i, param in enumerate(params):
-        grad = grads[i]       # get gradient
+        grad = grads[i]
+        m = momentum_list[i]
 
-        v = momentum_list[i]  # get momentum for param
-        if v is None:
-            v = torch.clone(grad).detach()  # if momentum is not initialized (first step), get value of gradient
-            momentum_list[i] = v            # save momentum to list
-        else:  # v_t = m*v_t-1 + lr*grad
-            v.mul_(momentum)        # m*v_t-1
-            v.add_(grad.mul_(lr))   # + lr*grad
+        if m is None:
+            """ In the first step,
+                    momentum term = lr*grad
+                since previous momentum accumulation do not exist
+            """
+            m = torch.clone(grad).detach()
+            momentum_list[i] = m
+            m.mul_(lr)
+        else:
+            m.mul_(momentum).add_(grad, alpha=lr)  # muy*m_t-1 + grad
 
-        param.add_(v, alpha=-1)
+        param.add_(m, alpha=-1)
 
 
 def my_nesterov(params: List[Tensor],
@@ -281,18 +285,27 @@ def my_nesterov(params: List[Tensor],
                 momentum_list: List[Tensor],
                 lr: float,
                 momentum: float):
+    r'''Implementation of NAG based on Algorithm 7 
+        in "Incorporating Nesterov into Adam"
+    '''
     for i, param in enumerate(params):
         grad = grads[i]
+        m = momentum_list[i]
 
-        v = momentum_list[i]  # get momentum for param
-        if v is None:
-            v = torch.clone(grad).detach()  # if momentum is not initialized (first step), get value of gradient
-            momentum_list[i] = v            # save momentum to list
+        if m is None:
+            """ In the first step,
+                    momentum term = lr*grad
+                since previous momentum accumulation do not exist
+            """
+            m = torch.clone(grad).detach()
+            momentum_list[i] = m
+            m_bar = m.mul(lr)
         else:
-            v.mul_(momentum)
-            v.add_(grad.mul_(lr), alpha=momentum)
+            # momentum scheduler not used, thus `muy` is the same at every step
+            m.mul_(momentum).add_(grad)                     # muy*m_t-1 + grad
+            m_bar = grad.add(m, alpha=momentum).mul(lr)     # grad + muy*m_t
 
-        param.add_(v, alpha=-1)
+        param.add_(m_bar, alpha=-1)
 
 
 def my_adagrad(params: List[Tensor],
@@ -364,6 +377,32 @@ def my_adam(params: List[Tensor],
 
         M_hat = M.div(1 - beta1**step)
         V_hat = V.div(1 - beta2**step)
+
+        update = M_hat.div_(V_hat.sqrt_().add_(eps))
+        param.add_(update, alpha=-lr)
+
+
+def my_amsgrad(params: List[Tensor],
+               grads: List[Tensor],
+               state_Ms: List[Tensor],
+               state_Vs: List[Tensor],
+               state_max_Vs: List[Tensor],
+               state_steps: List[int],
+               lr: float,
+               beta1: float,
+               beta2: float,
+               eps: float):
+    for i, param in enumerate(params):
+        grad = grads[i]
+        M = state_Ms[i]
+        V = state_Vs[i]
+        step = state_steps[i]
+
+        M.mul_(beta1).add_(grad, alpha=1-beta1)
+        V.mul_(beta2).add_(grad.square().mul(1-beta2))
+
+        M_hat = M.div(1 - beta1**step)
+        V_hat = torch.maximum(state_max_Vs[i], V, out=state_max_Vs[i]).div(1 - beta2**step)
 
         update = M_hat.div_(V_hat.sqrt_().add_(eps))
         param.add_(update, alpha=-lr)

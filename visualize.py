@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 # put desired optimizer name here
-from optimizers import NAdam as Opt
+from optimizers import Momentum as Opt
 # put desired test function name here
 from test_functions import Rosenbrock as Func
 
@@ -48,7 +48,7 @@ for i in range(1, len(func.minima)):
 # Optimizing
 lr = df.loc[Opt(func, 0).name, func.name]
 # lr = 0.05
-opt = Opt(func, lr=lr, eps=1e-8)
+opt = Opt(func, lr=lr)
 p = []
 point, = ax.plot([], [], 'yo', label=opt.name + f'(lr={lr:.3f})')
 step_text = ax.text(0.02, 0.95, '', c='white', transform=ax.transAxes)
@@ -75,11 +75,11 @@ def animate(i):
 	return point, step_text, value_text
 
 plt.legend(loc='lower right')
-# anim = animation.FuncAnimation(fig, animate, init_func=init, frames=N, blit=True)
+anim = animation.FuncAnimation(fig, animate, init_func=init, frames=N, blit=True)
 # print(f'Writing to gifs/'+func.name+'/'+opt.name+'.gif')
 # anim.save('gifs/'+func.name+'/'+opt.name+'.gif', writer='imagemagick', fps=60)
 
-ax.plot(p[-1][0],p[-1][1],'yo')
+# ax.plot(p[-1][0],p[-1][1],'yo')
 
 
 plt.show()

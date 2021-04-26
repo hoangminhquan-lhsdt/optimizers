@@ -244,7 +244,7 @@ def rmsprop(params: List[Tensor],
 # MY IMPLEMENTATIONS
 def my_sgd(params: List[Tensor],
            grads: List[Tensor],
-           lr: float):
+           lr: float) -> None:
     for i, param in enumerate(params):
         grad = grads[i]
         param.add_(grad, alpha=-lr)  # param - lr*grad
@@ -254,7 +254,7 @@ def my_momentum(params: List[Tensor],
                 grads: List[Tensor],
                 momentum_list: List[Tensor],
                 lr: float,
-                momentum: float):
+                momentum: float) -> None:
     r"""Implemented based on the original formula
             v_t = m*v_t-1 + lr*grad
             theta = theta - v_t
@@ -284,7 +284,7 @@ def my_nesterov(params: List[Tensor],
                 grads: List[Tensor],
                 momentum_list: List[Tensor],
                 lr: float,
-                momentum: float):
+                momentum: float) -> None:
     r'''Implementation of NAG based on Algorithm 7 
         in "Incorporating Nesterov into Adam"
     '''
@@ -312,7 +312,7 @@ def my_adagrad(params: List[Tensor],
                grads: List[Tensor],
                state_sums: List[Tensor],
                lr: float,
-               eps: float):
+               eps: float) -> None:
     for i, param in enumerate(params):
         grad = grads[i]
         sums = state_sums[i]
@@ -324,21 +324,22 @@ def my_adagrad(params: List[Tensor],
 
 def my_adadelta(params: List[Tensor],
                 grads: List[Tensor],
-                state_Eg: List[Tensor],
-                state_Edelta: List[Tensor],
+                state_Eg2: List[Tensor],
+                state_Edelta2: List[Tensor],
                 rho: float,
-                eps: float):
+                eps: float) -> None:
     for i, param in enumerate(params):
         grad = grads[i]
-        E_g = state_Eg[i]
-        E_delta = state_Edelta[i]
+        E_g2 = state_Eg2[i]
+        E_delta2 = state_Edelta2[i]
 
-        E_g.mul_(rho).add_(grad.square().mul(1-rho))         # E_g = rho*E_g + (1-rho)*grad**2
-        RMS_g = E_g.add(eps).sqrt()                          # RMS_g = sqrt(E_g + eps)
-        RMS_delta = E_delta.add(eps).sqrt()                  # RMS_delta = sqrt(E_delta + eps)
-        delta = RMS_delta.div(RMS_g).mul(grad).mul(-1)       # delta = -(RMS_delta / RMS_g) * grad
-        E_delta.mul_(rho).add_(delta.square(), alpha=1-rho)  
+        E_g2.mul_(rho).add_(grad.square(), alpha=1-rho)
+        RMS_g = E_g2.add(eps).sqrt()
+        RMS_delta = E_delta2.add(eps).sqrt()
+        delta = -grad.mul(RMS_delta.div(RMS_g))
         param.add_(delta)
+        E_delta2.mul_(rho).add_(delta.square(), alpha=1-rho)
+
 
 
 def my_rmsprop(params: List[Tensor],
@@ -346,14 +347,14 @@ def my_rmsprop(params: List[Tensor],
                state_Eg2: List[Tensor],
                lr: float,
                gamma: float,
-               eps: float):
+               eps: float) -> None:
     for i, param in enumerate(params):
         grad = grads[i]
         Eg2 = state_Eg2[i]
 
-        g2 = grad.square()                                 # grad**2
-        Eg2.mul_(gamma).add_(g2.mul(1-gamma))              # gamma*E_g2 + (1-gamma)*(grad**2)
-        delta = grad.mul(lr).div(Eg2.sqrt_().add_(eps))    # lr * grad / sqrt(E_g2 + eps)
+        g2 = grad.square()                               # grad**2
+        Eg2.mul_(gamma).add_(g2.mul(1-gamma))            # gamma*E_g2 + (1-gamma)*(grad**2)
+        delta = grad.mul(lr).div(Eg2.sqrt().add(eps))    # lr * grad / sqrt(E_g2 + eps)
         param.add_(delta, alpha=-1)
 
 
@@ -365,7 +366,7 @@ def my_adam(params: List[Tensor],
             lr: float,
             beta1: float,
             beta2: float,
-            eps: float):
+            eps: float) -> None:
     for i, param in enumerate(params):
         grad = grads[i]
         M = state_Ms[i]
@@ -378,7 +379,7 @@ def my_adam(params: List[Tensor],
         M_hat = M.div(1 - beta1**step)
         V_hat = V.div(1 - beta2**step)
 
-        update = M_hat.div_(V_hat.sqrt_().add_(eps))
+        update = M_hat.div(V_hat.sqrt().add(eps))
         param.add_(update, alpha=-lr)
 
 
@@ -391,7 +392,7 @@ def my_amsgrad(params: List[Tensor],
                lr: float,
                beta1: float,
                beta2: float,
-               eps: float):
+               eps: float) -> None:
     for i, param in enumerate(params):
         grad = grads[i]
         M = state_Ms[i]
@@ -404,5 +405,57 @@ def my_amsgrad(params: List[Tensor],
         M_hat = M.div(1 - beta1**step)
         V_hat = torch.maximum(state_max_Vs[i], V, out=state_max_Vs[i]).div(1 - beta2**step)
 
-        update = M_hat.div_(V_hat.sqrt_().add_(eps))
+        update = M_hat.div(V_hat.sqrt().add(eps))
+        param.add_(update, alpha=-lr)
+
+
+def my_adamw(params: List[Tensor],
+             grads: List[Tensor],
+             state_Ms: List[Tensor],
+             state_Vs: List[Tensor],
+             state_steps: List[int],
+             lr: float,
+             beta1: float,
+             beta2: float,
+             eps: float,
+             weight_decay: float) -> None:
+    for i, param in enumerate(params):
+        regularization = param.mul(weight_decay)
+        grad = grads[i].add(regularization)
+        M = state_Ms[i]
+        V = state_Vs[i]
+        step = state_steps[i]
+
+        M.mul_(beta1).add_(grad, alpha=1-beta1)
+        V.mul_(beta2).add_(grad.square().mul(1-beta2))
+
+        M_hat = M.div(1 - beta1**step)
+        V_hat = V.div(1 - beta2**step)
+
+        update = M_hat.div(V_hat.sqrt().add(eps))
+        param.add_(update.add_(regularization), alpha=-lr)
+
+
+def my_nadam(params: List[Tensor],
+             grads: List[Tensor],
+             state_Ms: List[Tensor],
+             state_Vs: List[Tensor],
+             state_steps: List[int],
+             lr: float,
+             beta1: float,
+             beta2: float,
+             eps: float) -> None:
+    for i, param in enumerate(params):
+        grad = grads[i]
+        M = state_Ms[i]
+        V = state_Vs[i]
+        step = state_steps[i]
+
+        M.mul_(beta1).add_(grad, alpha=1-beta1)
+        V.mul_(beta2).add_(grad.square().mul(1-beta2))
+
+        M_hat = M.div(1 - beta1**step)
+        V_hat = V.div(1 - beta2**step)
+
+        update = M_hat.div(V_hat.sqrt().add(eps))
         param.add_(update, alpha=-lr)

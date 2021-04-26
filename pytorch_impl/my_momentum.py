@@ -1,6 +1,6 @@
 import torch
-import _functional as F
-from optimizer import Optimizer
+from ._functional import my_momentum
+from .optimizer import Optimizer
 
 class my_Momentum(Optimizer):
 	r"""Implementation of Stochastic Gradient Descent with Momentum
@@ -46,15 +46,15 @@ class my_Momentum(Optimizer):
 					else:
 						momentum_list.append(state['momentum'])
 
-			F.my_momentum(params_with_grad,
+			my_momentum(params_with_grad,
 						  grads,
 						  momentum_list,
 						  group['lr'],
 						  group['momentum'])
 
-		#update momentum in state
-		for p, momentum in zip(params_with_grad, momentum_list):
-			state = self.state[p]
-			state['momentum'] = momentum
+			#update momentum in state
+			for p, momentum in zip(params_with_grad, momentum_list):
+				state = self.state[p]
+				state['momentum'] = momentum
 
 		return loss

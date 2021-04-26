@@ -1,6 +1,6 @@
 import torch
-import _functional as F
-from optimizer import Optimizer
+from ._functional import my_rmsprop
+from .optimizer import Optimizer
 
 class my_RMSprop(Optimizer):
 	r"""Implementation of RMSprop
@@ -51,7 +51,7 @@ class my_RMSprop(Optimizer):
 					state = self.state[p]
 					state_Eg2.append(state['E_g2'])
 			
-			F.my_rmsprop(params_with_grad,
+			my_rmsprop(params_with_grad,
 						 grads,
 						 state_Eg2,
 						 group['lr'],

@@ -1,6 +1,6 @@
 import torch
-import _functional as F
-from optimizer import Optimizer
+from ._functional import my_adagrad
+from .optimizer import Optimizer
 
 class my_Adagrad(Optimizer):
 	r"""Implementation of AdaGrad
@@ -48,7 +48,7 @@ class my_Adagrad(Optimizer):
 					state = self.state[p]
 					state_sums.append(state['sum'])
 
-			F.my_adagrad(params_with_grad,
+			my_adagrad(params_with_grad,
 						 grads,
 						 state_sums,
 						 group['lr'],

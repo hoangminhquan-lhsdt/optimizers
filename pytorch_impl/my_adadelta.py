@@ -1,6 +1,6 @@
 import torch
-import _functional as F
-from optimizer import Optimizer
+from ._functional import my_adadelta
+from .optimizer import Optimizer
 
 class my_Adadelta(Optimizer):
 	r"""Implementation of Adadelta
@@ -21,8 +21,8 @@ class my_Adadelta(Optimizer):
 		for group in self.param_groups:
 			for p in group['params']:
 				state = self.state[p]
-				state['E_g'] = torch.zeros_like(p, memory_format=torch.preserve_format)
-				state['E_delta'] = torch.zeros_like(p, memory_format=torch.preserve_format)
+				state['E_g2'] = torch.zeros_like(p, memory_format=torch.preserve_format)
+				state['E_delta2'] = torch.zeros_like(p, memory_format=torch.preserve_format)
 
 	@torch.no_grad()
 	def step(self, closure=None):
@@ -40,21 +40,22 @@ class my_Adadelta(Optimizer):
 		for group in self.param_groups:
 			params_with_grad = []
 			grads = []
-			state_Eg = []
-			state_Edelta = []
+			state_Eg2 = []
+			state_Edelta2 = []
 
 			for p in group['params']:
 				if p.grad is not None:
 					params_with_grad.append(p)
 					grads.append(p.grad)
 					state = self.state[p]
-					state_Eg.append(state['E_g'])
-					state_Edelta.append(state['E_delta'])
-			
-			F.my_adadelta(params_with_grad,
+
+					state_Eg2.append(state['E_g2'])
+					state_Edelta2.append(state['E_delta2'])
+
+			my_adadelta(params_with_grad,
 						 grads,
-						 state_Eg,
-						 state_Edelta,
+						 state_Eg2,
+						 state_Edelta2,
 						 group['rho'],
 						 group['eps'])
 

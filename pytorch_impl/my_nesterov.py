@@ -1,6 +1,6 @@
 import torch
-import _functional as F
-from optimizer import Optimizer
+from ._functional import my_nesterov
+from .optimizer import Optimizer
 
 class my_Nesterov(Optimizer):
 	r"""Implementation of Nesterov Accelerated Descent
@@ -46,15 +46,15 @@ class my_Nesterov(Optimizer):
 					else:
 						momentum_list.append(state['momentum'])
 
-			F.my_nesterov(params_with_grad,
+			my_nesterov(params_with_grad,
 						  grads,
 						  momentum_list,
 						  group['lr'],
 						  group['momentum'])
 
-		#update momentum in state
-		for p, momentum in zip(params_with_grad, momentum_list):
-			state = self.state[p]
-			state['momentum'] = momentum
+			#update momentum in state
+			for p, momentum in zip(params_with_grad, momentum_list):
+				state = self.state[p]
+				state['momentum'] = momentum
 
 		return loss

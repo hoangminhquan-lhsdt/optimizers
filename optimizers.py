@@ -96,7 +96,7 @@ class RMSprop:
 		epsilon
 	'''
 	def __init__(self, F, lr=0.001, gamma=0.9, eps=1e-7):
-		self.name = 'Adam'
+		self.name = 'RMSprop'
 		self.F = F
 		self.lr = lr
 		self.gamma = gamma
@@ -104,8 +104,8 @@ class RMSprop:
 		self.E_g2 = np.zeros(2) # mean of squared gradient
 	def step(self, x, y):
 		g = self.F.df(x, y)
-		self.E_g2 = gamma*self.E_g2 + (1 - gamma)*(g**2)
-		delta = self.lr * g / np.sqrt(self.E_g2 + self.eps)
+		self.E_g2 = self.gamma*self.E_g2 + (1 - self.gamma)*(g**2)
+		delta = self.lr * g / (np.sqrt(self.E_g2) + self.eps)
 		return (x - delta[0], y - delta[1])
 
 
@@ -137,7 +137,6 @@ class Adam:
 	def step(self, x, y):
 		self.t += 1
 		g_t = self.F.df(x, y)
-		print(g_t)
 
 		self.m = self.b1*self.m + (1-self.b1)*g_t
 		self.v = self.b2*self.v + (1-self.b2)*g_t*g_t
@@ -147,6 +146,7 @@ class Adam:
 
 		v = self.lr*m_hat / (np.sqrt(v_hat) + self.eps)
 		return (x - v[0], y - v[1])
+
 
 class AMSGrad(Adam):
 	def __init__(self, F, lr = 0.001, b1 = 0.9, b2 = 0.999, eps = 1e-8):
@@ -168,10 +168,12 @@ class AMSGrad(Adam):
 		step_size = self.lr * self.m / (np.sqrt(self.v_max) + self.eps)
 
 		return (x - step_size[0], y - step_size[1])
-class NAdam(Adam):
+
+
+class Nadam(Adam):
 	def __init__(self, F, lr = 0.001, b1 = 0.975, b2 = 0.999, eps = 1e-8):
 		super().__init__(F,lr,b1,b2,eps)
-		self.name = "NAdam"
+		self.name = "Nadam"
 	def step(self,x,y):
 		self.t += 1
 		g_t = self.F.df(x,y)

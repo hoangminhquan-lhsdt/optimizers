@@ -1,6 +1,6 @@
 import torch
-import _functional as F
-from optimizer import Optimizer
+from ._functional import my_adam
+from .optimizer import Optimizer
 
 class my_Adam(Optimizer):
 	r"""Implementation of Adam
@@ -62,7 +62,7 @@ class my_Adam(Optimizer):
 					state['step'] += 1
 					state_steps.append(state['step'])
 
-			F.my_adam(params_with_grad,
+			my_adam(params_with_grad,
 					  grads,
 					  state_Ms,
 					  state_Vs,

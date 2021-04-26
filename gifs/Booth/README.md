@@ -10,10 +10,13 @@
 ![AdaDelta](AdaDelta.gif)
 
 ### 4. RMSProp
+![RMSprop](RMSprop.gif)
 
 ### 5. Adam
 ![Adam](Adam.gif)
 
-### 6. NAdam
+### 6. Nadam
+![Nadam](Nadam.gif)
 
 ### 7. AMSGrad
+![AMSGrad](AMSGrad.gif)

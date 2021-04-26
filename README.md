@@ -7,7 +7,7 @@ This repository serves as the source for visualizations and evaluations used in 
   - [1. Stochastic Gradient Descent with Momentum](#1-stochastic-gradient-descent-with-momentum)
   - [2. AdaGrad](#2-adagrad)
   - [3. AdaDelta](#3-adadelta)
-  - [4. RMSProp](#4-rmsprop)
+  - [4. RMSprop](#4-rmsprop)
   - [5. Adam](#5-adam)
   - [6. NAdam](#6-nadam)
   - [7. AMSGrad](#7-amsgrad)
@@ -18,7 +18,7 @@ This repository serves as the source for visualizations and evaluations used in 
 - [X] Stochastic Gradient Descent with Momentum ([Ning Qian, 1999](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.57.5612&rep=rep1&type=pdf))
 - [X] AdaGrad ([John Duchi et al, 2011](https://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf))
 - [X] AdaDelta ([Matthew D. Zeiler, 2012](https://arxiv.org/pdf/1212.5701.pdf))
-- [X] RMSProp ([Geoffrey Hinton et al, 2012](https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf))
+- [X] RMSprop ([Geoffrey Hinton et al, 2012](https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf))
 - [X] Adam ([Diederik P. Kingma, Jimmy Lei Ba, 2015](https://arxiv.org/pdf/1412.6980.pdf))
 - [X] Nadam ([Timothy Dozat, 2016](https://openreview.net/pdf/OM0jvwB8jIp57ZJjtNEZ.pdf))
 - [X] AMSGrad ([Manzil Zaheer et al, 2018](https://openreview.net/pdf?id=ryQu7f-RZ))
@@ -57,7 +57,17 @@ def step(self, x, y):
 ```
 ![AdaDelta](gifs/Rosenbrock/AdaDelta.gif)
 
-### 4. RMSProp
+### 4. RMSprop
+```python
+def step(self, x, y):
+	g = self.F.df(x, y)
+	print(g, self.E_g2)
+	self.E_g2 = self.gamma*self.E_g2 + (1 - self.gamma)*(g**2)
+	delta = self.lr * g / (np.sqrt(self.E_g2) + self.eps)
+	return (x - delta[0], y - delta[1])
+```
+![RMSprop](gifs/Rosenbrock/RMSprop.gif)
+
 
 ### 5. Adam
 ```python
@@ -72,9 +82,45 @@ def step(self, x, y):
 ```
 ![Adam](gifs/Rosenbrock/Adam.gif)
 
-### 6. NAdam
+### 6. Nadam
+```python
+def step(self,x,y):
+	self.t += 1
+	g_t = self.F.df(x,y)
+
+	self.m = self.b1 * self.m + (1-self.b1) * g_t
+	self.v = self.b2 * self.v + (1-self.b2) * g_t * g_t
+
+	m_hat = self.m / (1 - self.b1 ** (self.t + 1))
+	v_hat = self.b2 * self.v / (1 - self.b2 ** self.t)
+
+	nes_m = (self.b1 * self.m) + ((1 - self.b1) * g_t / (1 - self.b1 ** self.t))
+	step_size = self.lr * nes_m / (np.sqrt(v_hat) + self.eps)
+	# print(step_size)
+	return (x - step_size[0], y - step_size[1])
+```
+![Nadam](gifs/Rosenbrock/Nadam.gif)
 
 ### 7. AMSGrad
+```python
+def step(self,x,y):
+	self.t += 1
+	g_t = self.F.df(x,y)
+
+	# self.b1 = self.b1 / self.t #b1 decay [OPTIONAL]
+	
+	self.m = self.b1 * self.m + (1-self.b1)*g_t
+	self.v = self.b1 * self.v + (1-self.b2)*g_t*g_t
+
+	self.v_max = np.array((max(self.v[0],self.v_max[0]),max(self.v[1],self.v_max[1])))
+
+	# alpha = lr/ np.sqrt(self.t) # learning rate decay [OPTIONAL]
+	step_size = self.lr * self.m / (np.sqrt(self.v_max) + self.eps)
+
+	return (x - step_size[0], y - step_size[1])
+```
+![AMSGrad](gifs/Rosenbrock/AMSGrad.gif)
+
 
 ## Limitations
 All algorithms are currently implemented in ℝ<sup>3</sup> space mainly for visualization purpose. ℝ<sup>N</sup> space implementation may be updated in the future.

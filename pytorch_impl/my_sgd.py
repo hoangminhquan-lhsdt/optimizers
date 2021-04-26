@@ -1,6 +1,6 @@
 import torch
-import _functional as F
-from optimizer import Optimizer
+from ._functional import my_sgd
+from .optimizer import Optimizer
 
 
 class my_SGD(Optimizer):
@@ -38,7 +38,7 @@ class my_SGD(Optimizer):
 
 					state = self.state[p]
 
-			F.my_sgd(params_with_grad,
+			my_sgd(params_with_grad,
 					 grads,
 					 group['lr'])
 

@@ -1,6 +1,6 @@
 import torch
 from ._functional import my_nadam
-from .optimizer import Optimizer
+from torch.optim import Optimizer
 
 class my_Nadam(Optimizer):
 	r"""Implementation of Nadam

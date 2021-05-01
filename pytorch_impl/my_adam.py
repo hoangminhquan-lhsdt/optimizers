@@ -1,6 +1,6 @@
 import torch
 from ._functional import my_adam
-from .optimizer import Optimizer
+from torch.optim import Optimizer
 
 class my_Adam(Optimizer):
 	r"""Implementation of Adam

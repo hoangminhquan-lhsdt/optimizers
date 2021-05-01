@@ -1,6 +1,6 @@
 import torch
 from ._functional import my_adagrad
-from .optimizer import Optimizer
+from torch.optim import Optimizer
 
 class my_Adagrad(Optimizer):
 	r"""Implementation of AdaGrad

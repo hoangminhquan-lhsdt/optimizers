@@ -1,6 +1,6 @@
 import torch
 from ._functional import my_rmsprop
-from .optimizer import Optimizer
+from torch.optim import Optimizer
 
 class my_RMSprop(Optimizer):
 	r"""Implementation of RMSprop

@@ -1,6 +1,6 @@
 import torch
 from ._functional import my_nesterov
-from .optimizer import Optimizer
+from torch.optim import Optimizer
 
 class my_Nesterov(Optimizer):
 	r"""Implementation of Nesterov Accelerated Descent

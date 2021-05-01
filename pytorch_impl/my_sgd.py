@@ -1,6 +1,6 @@
 import torch
 from ._functional import my_sgd
-from .optimizer import Optimizer
+from torch.optim import Optimizer
 
 
 class my_SGD(Optimizer):

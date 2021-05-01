@@ -1,6 +1,6 @@
 import torch
 from ._functional import my_adadelta
-from .optimizer import Optimizer
+from torch.optim import Optimizer
 
 class my_Adadelta(Optimizer):
 	r"""Implementation of Adadelta

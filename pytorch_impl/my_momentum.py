@@ -1,6 +1,6 @@
 import torch
 from ._functional import my_momentum
-from .optimizer import Optimizer
+from torch.optim import Optimizer
 
 class my_Momentum(Optimizer):
 	r"""Implementation of Stochastic Gradient Descent with Momentum

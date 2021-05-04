@@ -16,14 +16,8 @@ This repository serves as the source for visualizations and evaluations used in 
 - [Authors](#authors)
 
 ## Weekly Plan
-<font size=4>**Week of 26/04/21**</font>
-| Assignment | Chapter | By |
-|-|:-:|-:|
-| When Momentum/RMSprop/Adam works best | C2 | Lan Như |
-| Replicate MLP results | C4 | Lan Như |
-| Replicate SGD/SGD Momentum/Nesterov | C4 | Minh Quân |
-| Replicate Convnet results | C4 | Minh Quân |
-<br>
+https://docs.google.com/spreadsheets/d/1nzCk1bDLOWbMFBg6z3pWSK3CfT5G9WQMWmNeuJiTfqU/edit?usp=sharing
+
 ## Tasks list
 - [X] Stochastic Gradient Descent with Momentum ([Ning Qian, 1999](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.57.5612&rep=rep1&type=pdf))
 - [X] AdaGrad ([John Duchi et al, 2011](https://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf))

@@ -1,0 +1,122 @@
+\documentclass[a4paper,13pt]{extreport}
+\usepackage{graphicx}
+%\usepackage{indentfirst}
+\usepackage{mathptmx}
+\usepackage{amsmath,amsfonts,amssymb,fancyhdr}
+\usepackage{amsthm,amsxtra,latexsym, amscd}
+\usepackage[utf8]{vietnam}
+%\usepackage[unicode,colorlinks=true]{hyperref} 
+%\usepackage[utf8]{inputenc}
+\usepackage[left=3.50cm, right=2.00cm, top=3.00cm, bottom=3.50cm]{geometry}
+\usepackage{tocloft}
+\usepackage{type1cm}
+%\usepackage{vector}
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{caption/subcaption}
+\usepackage[section]{placeins}
+%\usepackage{subfigure}
+\usepackage{pbox}
+%\usepackage[unicode,colorlinks=true]{hyperref}
+\usepackage{framed}
+
+\usepackage[hyphens]{url}
+%\usepackage[hidelinks]{hyperref}
+\usepackage[ unicode, plainpages = false, pdfpagelabels, 
+                 pdfpagelayout = OneColumn, % display single page, advancing flips the page - Sasa Tomic
+                 bookmarks,
+                 bookmarksopen = true,
+                 bookmarksnumbered = true,
+                 breaklinks = true,
+                 linktocpage,
+                 pagebackref,
+                 colorlinks = true,
+                 linkcolor = blue,
+                 urlcolor  = blue,
+                 citecolor = red,
+                 anchorcolor = green,
+                 hyperindex = true,
+                 hyperfigures
+                 ]{hyperref} 
+
+
+%\usepackage{algorithm2e}
+\usepackage[chapter]{algorithm}
+\usepackage{algpseudocode}
+\usepackage{setspace}
+\makeatletter
+\newcommand{\newalgname}[1]{%
+  \renewcommand{\ALG@name}{#1}%
+}
+\usepackage{longtable}
+\usepackage[acronym]{glossaries}
+\usepackage{multicol}
+\setlength{\columnsep}{25pt}
+\usepackage{nomencl}
+\makenomenclature
+
+\usepackage{pdfpages}
+
+\usepackage{tabularx}
+\captionsetup{compatibility=false}
+\renewcommand\cftchappresnum{\chaptername\space}
+\setlength{\cftchapnumwidth}{2.5cm}
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\large\bfseries\centering}{\chaptertitlename\ \thechapter}{20pt}{\huge}
+\linespread{1.3}
+
+%\baselineskip 19.5 pt
+                 
+\begin{document}
+
+\includepdf[pages=1]{docs/BiaChinh}
+\includepdf{docs/BiaPhu}
+%\includepdf[pages=1-2]{docs/NhanXet}
+
+\pagenumbering{roman}
+\include{Acknowledgement/acknowledgement}
+
+%\newpage
+%\thispagestyle{empty}
+%\mbox{}
+
+%\newpage
+%\addcontentsline{toc}{chapter}{ĐỀ CƯƠNG CHI TIẾT}
+%\includepdf[pages=1-2,pagecommand=\thispagestyle{plain}]{docs/DeCuongChiTiet}
+
+%\include{Abstract/abstract}
+
+\newpage
+\renewcommand{\contentsname}{\centerline{MỤC LỤC}}
+\addcontentsline{toc}{chapter}{MỤC LỤC}
+\tableofcontents
+
+\newpage
+\renewcommand\listfigurename{\centerline{DANH MỤC HÌNH ẢNH}}
+\addcontentsline{toc}{chapter}{DANH MỤC HÌNH ẢNH}
+\listoffigures
+
+\newpage
+\renewcommand\listtablename{\centerline{DANH MỤC BẢNG}}
+\addcontentsline{toc}{chapter}{DANH MỤC BẢNG}
+\listoftables
+
+\newpage
+\pagenumbering{arabic}
+
+\include{Chapter1/chapter1}
+\include{Chapter2/chapter2}
+\include{Chapter3/chapter3}
+\include{Chapter4/chapter4}
+\include{Conclusions/conclusions}
+\include{Appendix/appendix}
+
+\renewcommand{\bibname}{
+	\addcontentsline{toc}{chapter}{TÀI LIỆU THAM KHẢO}
+	TÀI LIỆU THAM KHẢO
+	}
+\bibliographystyle{Classes/IEEEtranS}
+\bibliography{References/refs}
+
+\end{document}

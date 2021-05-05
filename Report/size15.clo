@@ -1,0 +1,210 @@
+\ProvidesFile{size15.clo}
+              [2006/04/26 v1.4h
+      Non-Standard LaTeX file (size option)]
+\renewcommand\normalsize{%
+   \@setfontsize\normalsize{15pt}{18.125}%
+   \abovedisplayskip 15\p@ \@plus3.40\p@ \@minus7.20\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 8.125\p@ \@plus3.725\p@ \@minus3\p@
+   \belowdisplayskip \abovedisplayskip
+   \let\@listi\@listI}
+\DeclareFontShape{OT1}{cmr}{m}{n}{
+        <-6>    cmr5
+        <6-7>   cmr6
+        <7-8>   cmr7
+        <8-9>   cmr8
+        <9-10>  cmr9
+        <10-12> cmr10
+        <12-17> cmr12
+        <17->   cmr17
+      }{}
+\normalsize
+\newcommand\small{%
+   \@setfontsize\small{13.75pt}{17}%
+   \abovedisplayskip 13\p@ \@plus3.75\p@ \@minus6.2\p@
+   \abovedisplayshortskip \z@ \@plus3\p@6
+   \belowdisplayshortskip 7.40\p@ \@plus4\p@ \@minus3\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 10\p@ \@plus3\p@ \@minus5\p@
+               \parsep 5\p@ \@plus2\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\newcommand\footnotesize{%
+   \@setfontsize\footnotesize{12pt}\@xiipt
+   \abovedisplayskip 11\p@ \@plus2\p@ \@minus5\p@
+   \abovedisplayshortskip \z@ \@plus3\p@
+   \belowdisplayshortskip 6.2\p@ \@plus3\p@ \@minus3\p@
+   \def\@listi{\leftmargin\leftmargini
+               \topsep 6.2\p@ \@plus2\p@ \@minus2\p@
+               \parsep 3.4\p@ \@plus2\p@ \@minus\p@
+               \itemsep \parsep}%
+   \belowdisplayskip \abovedisplayskip
+}
+\newcommand\scriptsize{\@setfontsize\scriptsize\@xpt{10}}
+\newcommand\tiny{\@setfontsize\tiny\@7.5pt\@8.75pt}
+\newcommand\large{\@setfontsize\large{17.5pt}{22.5}}
+\newcommand\Large{\@setfontsize\Large{21.25pt}{27.5}}
+\newcommand\LARGE{\@setfontsize\LARGE{25pt}{31.25}}
+\newcommand\huge{\@setfontsize\huge{31.25pt}{37.5}}
+\let\Huge=\huge
+\if@twocolumn
+  \setlength\parindent{1em}
+\else
+  \setlength\parindent{1.5em}
+\fi
+\setlength\smallskipamount{3\p@ \@plus 1\p@ \@minus 1\p@}
+\setlength\medskipamount{6\p@ \@plus 2\p@ \@minus 2\p@}
+\setlength\bigskipamount{12\p@ \@plus 4\p@ \@minus 4\p@}
+\setlength\headheight{15\p@}
+\setlength\headsep   {26\p@}
+\setlength\topskip   {15\p@}
+\setlength\footskip{31\p@}
+\if@compatibility \setlength\maxdepth{4\p@} \else
+\setlength\maxdepth{.5\topskip} \fi
+\if@compatibility
+  \if@twocolumn
+    \setlength\textwidth{410\p@}
+  \else
+    \setlength\textwidth{390\p@}
+  \fi
+\else
+  \setlength\@tempdima{\paperwidth}
+  \addtolength\@tempdima{-2in}
+  \setlength\@tempdimb{390\p@}
+  \if@twocolumn
+    \ifdim\@tempdima>2\@tempdimb\relax
+      \setlength\textwidth{2\@tempdimb}
+    \else
+      \setlength\textwidth{\@tempdima}
+    \fi
+  \else
+    \ifdim\@tempdima>\@tempdimb\relax
+      \setlength\textwidth{\@tempdimb}
+    \else
+      \setlength\textwidth{\@tempdima}
+    \fi
+  \fi
+\fi
+\if@compatibility\else
+  \@settopoint\textwidth
+\fi
+\if@compatibility
+  \setlength\textheight{28.8\baselineskip}
+\else
+  \setlength\@tempdima{\paperheight}
+  \addtolength\@tempdima{-2in}
+  \addtolength\@tempdima{-1.5in}
+  \divide\@tempdima\baselineskip
+  \@tempcnta=\@tempdima
+  \setlength\textheight{\@tempcnta\baselineskip}
+\fi
+\addtolength\textheight{\topskip}
+\if@twocolumn
+ \setlength\marginparsep {12\p@}
+\else
+  \setlength\marginparsep{12\p@}
+\fi
+\setlength\marginparpush{8\p@}
+\if@compatibility
+  \if@twoside
+     \setlength\oddsidemargin   {\pagewidth}
+     \setlength\evensidemargin  {-\textwidth}
+     \setlength\marginparwidth {85\p@}
+  \else
+     \setlength\oddsidemargin   {39.5\p@}
+     \setlength\evensidemargin  {39.5\p@}
+     \setlength\marginparwidth  {68\p@}
+  \fi
+  \if@twocolumn
+     \setlength\oddsidemargin  {30\p@}
+     \setlength\evensidemargin {30\p@}
+     \setlength\marginparwidth {48\p@}
+  \fi
+\else
+  \if@twoside
+    \setlength\@tempdima        {\paperwidth}
+    \addtolength\@tempdima      {-\textwidth}
+    \setlength\oddsidemargin    {.4\@tempdima}
+    \addtolength\oddsidemargin  {-1in}
+    \setlength\marginparwidth   {.6\@tempdima}
+    \addtolength\marginparwidth {-\marginparsep}
+    \addtolength\marginparwidth {-0.4in}
+  \else
+    \setlength\@tempdima        {\paperwidth}
+    \addtolength\@tempdima      {-\textwidth}
+    \setlength\oddsidemargin    {.5\@tempdima}
+    \addtolength\oddsidemargin  {-1in}
+    \setlength\marginparwidth   {.5\@tempdima}
+    \addtolength\marginparwidth {-\marginparsep}
+    \addtolength\marginparwidth {-0.4in}
+    \addtolength\marginparwidth {-.4in}
+  \fi
+  \ifdim \marginparwidth >2in
+     \setlength\marginparwidth{2in}
+  \fi
+  \@settopoint\oddsidemargin
+  \@settopoint\marginparwidth
+  \setlength\evensidemargin  {\paperwidth}
+  \addtolength\evensidemargin{-2in}
+  \addtolength\evensidemargin{-\textwidth}
+  \addtolength\evensidemargin{-\oddsidemargin}
+  \@settopoint\evensidemargin
+\fi
+\if@compatibility
+  \setlength\topmargin{28pt}
+\else
+  \setlength\topmargin{\paperheight}
+  \addtolength\topmargin{-2in}
+  \addtolength\topmargin{-\headheight}
+  \addtolength\topmargin{-\headsep}
+  \addtolength\topmargin{-\textheight}
+  \addtolength\topmargin{-\footskip}     % this might be wrong!
+  \addtolength\topmargin{-.5\topmargin}
+  \@settopoint\topmargin
+\fi
+\setlength\footnotesep{10.5\p@}
+\setlength{\skip\footins}{13.5\p@ \@plus 4\p@ \@minus 2\p@}
+\setlength\floatsep    {15\p@ \@plus 2.5\p@ \@minus 5\p@}
+\setlength\textfloatsep{22\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\intextsep   {15\p@ \@plus 4\p@ \@minus 4\p@}
+\setlength\dblfloatsep    {14.2\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\dbltextfloatsep{22\p@ \@plus 2\p@ \@minus 4\p@}
+\setlength\@fptop{0\p@ \@plus 1fil}
+\setlength\@fpsep{11\p@ \@plus 2fil}
+\setlength\@fpbot{0\p@ \@plus 1fil}
+\setlength\@dblfptop{0\p@ \@plus 1fil}
+\setlength\@dblfpsep{11\p@ \@plus 2fil}
+\setlength\@dblfpbot{0\p@ \@plus 1fil}
+\setlength\partopsep{4.25\p@ \@plus 2.25\p@ \@minus 2.25\p@}
+\def\@listi{\leftmargin\leftmargini
+            \parsep 6.25\p@  \@plus2.75\p@ \@minus\p@
+            \topsep 12.5\p@ \@plus5\p@   \@minus7.5\p@
+            \itemsep6.25\p@  \@plus3.125\p@ \@minus\p@}
+\let\@listI\@listi
+\@listi
+\def\@listii {\leftmargin\leftmarginii
+              \labelwidth\leftmarginii
+              \advance\labelwidth-\labelsep
+              \topsep    6.23\p@   \@plus3.125\p@ \@minus\p@
+              \parsep    3\p@ \@plus\p@    \@minus\p@
+              \itemsep   \parsep}
+\def\@listiii{\leftmargin\leftmarginiii
+              \labelwidth\leftmarginiii
+              \advance\labelwidth-\labelsep
+              \topsep    3.125\p@\@plus\p@\@minus\p@
+              \parsep    \z@
+              \partopsep \p@ \@plus\z@ \@minus\p@
+              \itemsep   \topsep}
+\def\@listiv {\leftmargin\leftmarginiv
+              \labelwidth\leftmarginiv
+              \advance\labelwidth-\labelsep}
+\def\@listv  {\leftmargin\leftmarginv
+              \labelwidth\leftmarginv
+              \advance\labelwidth-\labelsep}
+\def\@listvi {\leftmargin\leftmarginvi
+              \labelwidth\leftmarginvi
+              \advance\labelwidth-\labelsep}
+\endinput
+%% Khó nuốt thật!
+%% End of file `size15.clo'.

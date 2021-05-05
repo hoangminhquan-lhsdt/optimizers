@@ -302,8 +302,8 @@ def my_nesterov(params: List[Tensor],
             m_bar = m.mul(lr)
         else:
             # momentum scheduler not used, thus `muy` is the same at every step
-            m.mul_(momentum).add_(grad)                     # muy*m_t-1 + grad
-            m_bar = grad.add(m, alpha=momentum).mul(lr)     # grad + muy*m_t
+            m.mul_(momentum).add_(grad)                      # muy*m_t-1 + grad
+            m_bar = grad.add(m, alpha=momentum).mul_(lr)     # grad + muy*m_t
 
         param.add_(m_bar, alpha=-1)
 
@@ -318,7 +318,7 @@ def my_adagrad(params: List[Tensor],
         sums = state_sums[i]
 
         sums.add_(torch.mul(grad, grad))                    # G += grad**2
-        v = grad.mul(lr).div_(torch.sqrt(sums.add_(eps)))   # lr * grad / sqrt(G + eps)
+        v = grad.mul(lr).div_(sums.add_(eps).sqrt_())       # lr * grad / sqrt(G + eps)
         param.add_(v, alpha=-1)
 
 

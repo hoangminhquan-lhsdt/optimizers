@@ -1,7 +1,17 @@
 \chapter{Giới thiệu}
 \label{Chapter1}
 
-Placeholder
+Việc sử dụng mạng nơ-ron nhiều tầng ẩn trong các ứng dụng trí tuệ nhân tạo ngày càng chiếm một vị trí quan trọng khi mà các bài toán khó của học máy truyền thống trong việc xử lý ảnh và video, xử lý ngôn ngữ tự nhiên như: dịch máy tự động, nhận diện mặt người, phát hiện đồ vật,... đã phần nào được giải quyết và ngày càng được cải tiến.
+
+Mạng nơ-ron nhiều tầng ẩn là một mạng nơ-ron nhân tạo gồm ba loại tầng chính: tầng nhập, các tầng ẩn, và tầng xuất. Việc có nhiều tầng ẩn cũng là một trong những lý do giúp cho mạng nơ-ron nhiều tầng ẩn có thể giải quyết các bài toán khó mà các thuật toán học máy truyền thống không giải quyết được. @Untitled lý giải rằng với nhiều tầng ẩn, mạng nơ-ron có thể "học" được từ đặc trưng đơn giản (low-level features) thành các đặc trưng phức tạp hơn (high-level features). Nhờ có các đặc trưng trung gian trên mà mạng nơ-ron nhiều tầng ẩn có thể tổng quát hoá tốt trên các bài toán phức tạp trong lĩnh vực trí tuệ nhân tạo.
+
+Một mạng nơ-ron nhiều tầng ẩn được xem là tổng quát hoá tốt trên một bài toán khi sự sai khác giữa giá trị dự đoán của mạng nơ-ron và giá trị nhãn của dữ liệu ngoài tập huấn luyện là đủ nhỏ (trong bài toán huấn luyện có giám sát). Để đạt được kết quả đó, mạng nơ-ron nhiều tầng ẩn cần đi tìm một bộ trọng số phù hợp cho từng bài toán cụ thể. Việc đi tìm bộ trọng số này được thực hiện thông qua quá trình tối ưu hoá mạng nơ-ron nhiều tầng ẩn. Vì thế việc tối ưu hoá mạng nơ-ron là cần thiết.
+
+Bài toán tối ưu hoá mạng nơ-ron nhiều tầng ẩn nhận dữ liệu nhập là hàm chi phí nhận bộ trọng số của mạng nơ-ron nhiều tầng ẩn làm tham số. Hàm chi phí nói ở đây là hàm cho biết sự sai lệch giữa kết quả dự đoán của mạng nơ-ron so với giá trị đúng. Giá trị sai lệch này còn được gọi là độ lỗi. Sau quá trình tối ưu ta mong muốn có được một bộ trọng số của mạng nơ-ron nhiều tầng ẩn cho độ lỗi trong cả hai tập dữ liệu huấn luyện và tập dữ liệu kiểm tra là đủ nhỏ.
+
+Việc tối ưu hoá mạng nơ-ron có thể hiểu là quá trình đi tìm cực tiểu  của hàm chi phí bằng cách thay đổi giá trị của bộ trọng số. Từ đó, ta cũng có thể hiểu quá trình tối ưu hoá mạng nơ-ron là quá trình di chuyển trong mặt phẳng lỗi để tìm được cực tiểu mang giá trị độ lỗi đủ nhỏ. Tuy nhiên, việc di chuyển trong mặt phẳng lỗi gặp nhiều khó khăn. @Untitled cho thấy rằng sự hỗn loạn của mặt phẳng lỗi ngày càng tăng khi số tầng ẩn trọng mạng nơ-ron ngày càng tăng. Sự hỗn loạn này được cấu thành từ nhiều cực tiểu địa phương, các điểm yên ngựa, vùng bằng phẳng, và vùng rãnh hẹp.
+
+Các điểm cực tiểu địa phương từng được xem như là nguyên nhân chính gây ra sự khó khăn trong việc tối ưu hoá mạng nơ-ron có nhiều tầng ẩn, các bài báo như @Untitled đã chỉ ra rằng cực tiểu địa phương không phải là nguyên nhân chính dẫn đến sự hội tụ chậm trong quá trình huấn luyện mà là các điểm yên ngựa được bao bọc bởi vùng bằng phẳng. Vì thế, việc tránh các điểm này và tìm được cách thoát ra khỏi điểm yên ngựa là quan trọng của các thuật toán tối ưu.
 
 
 %Tóm tắt luận văn được trình bày nhiều nhất trong 24 trang in trên hai mặt giấy, cỡ chữ Times New Roman 11 của hệ soạn thảo Winword hoặc phần mềm soạn thảo Latex đối với các chuyên ngành thuộc ngành Toán.

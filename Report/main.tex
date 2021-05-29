@@ -17,8 +17,13 @@
 \usepackage[
 	sorting=nty,
 	backend=bibtex,
-	defernumbers=true]{biblatex}
+	defernumbers=true,
+  style=authoryear]{biblatex}
 \usepackage[unicode]{hyperref} % Bookmark tiếng Việt
+\renewcommand*{\nameyeardelim}{\addcomma\space}
+\renewcommand*{\finalnamedelim}{%
+  \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
+  \addspace\&\space}
 \addbibresource{References/references.bib}
 
 \makeatletter
@@ -105,7 +110,7 @@
 % ========================================================================================= %
 \newcommand{\tenSV}{Nguyễn~Ngọc~Lan~Như~-~Hoàng~Minh~Quân} % Dấu ~ là khoảng trắng không được tách (các chữ nối với nhau bằng dấu ~ sẽ nằm cùng 1 dòng
 \newcommand{\mssv}{1234567}
-\newcommand{\tenKL}{Huấn~luyện mạng~nơ-ron~nhiều~tầng~ẩn~bằng thuật~toán~Adam} % Chú ý dấu ~ trong tên khóa luận
+\newcommand{\tenKL}{Huấn~luyện mạng~nơ-ron~nhiều~tầng~ẩn bằng~thuật~toán~Adam} % Chú ý dấu ~ trong tên khóa luận
 \newcommand{\tenGVHD}{Trần Trung Kiên}
 \newcommand{\tenBM}{Khoa học máy tính}
 
@@ -141,8 +146,8 @@
 \addcontentsline{toc}{chapter}{Danh mục bảng}
 \listoftables
 
-%\addcontentsline{toc}{chapter}{Tóm tắt}
-%\include{Appendix/tomtat}
+\addcontentsline{toc}{chapter}{Tóm tắt}
+\include{Appendix/tomtat}
 
 \clearpage
 
@@ -167,12 +172,12 @@
 \addcontentsline{toc}{chapter}{Tài liệu tham khảo}
 \printbibheading[title={Tài liệu tham khảo}]
 
-\printbibliography[heading=subbibliography, title={Tiếng Việt}, keyword=Viet, resetnumbers=true]
+% \printbibliography[heading=subbibliography, title={Tiếng Việt}, keyword=Viet, resetnumbers=true]
 
-\DeclareNameAlias{sortname}{last-first}
-\DeclareNameAlias{default}{last-first}
+% \DeclareNameAlias{sortname}{last-first}
+% \DeclareNameAlias{default}{last-first}
 
-\printbibliography[heading=subbibliography, title={Tiếng Anh}, notkeyword=Viet, resetnumbers=4] 
+\printbibliography[heading=subbibliography, title={Tiếng Anh}] 
 % ===================================================================== %
 % CHÚ Ý: phải gán lại resetnumbers=số tài liệu tham khảo tiếng Việt + 1 %
 % ===================================================================== %

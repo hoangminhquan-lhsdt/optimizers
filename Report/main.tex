@@ -16,14 +16,8 @@
 % Tài liệu tham khảo
 \usepackage[
 	sorting=nty,
-	backend=bibtex,
-	defernumbers=true,
-  style=authoryear]{biblatex}
+	backend=bibtex]{biblatex}
 \usepackage[unicode]{hyperref} % Bookmark tiếng Việt
-\renewcommand*{\nameyeardelim}{\addcomma\space}
-\renewcommand*{\finalnamedelim}{%
-  \ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}%
-  \addspace\&\space}
 \addbibresource{References/references.bib}
 
 \makeatletter
@@ -172,12 +166,12 @@
 \addcontentsline{toc}{chapter}{Tài liệu tham khảo}
 \printbibheading[title={Tài liệu tham khảo}]
 
-% \printbibliography[heading=subbibliography, title={Tiếng Việt}, keyword=Viet, resetnumbers=true]
+\printbibliography[heading=subbibliography, title={Tiếng Việt}, keyword=Viet, resetnumbers=true]
 
 % \DeclareNameAlias{sortname}{last-first}
 % \DeclareNameAlias{default}{last-first}
 
-\printbibliography[heading=subbibliography, title={Tiếng Anh}] 
+\printbibliography[heading=subbibliography, title={Tiếng Anh}, resetnumbers=1] 
 % ===================================================================== %
 % CHÚ Ý: phải gán lại resetnumbers=số tài liệu tham khảo tiếng Việt + 1 %
 % ===================================================================== %

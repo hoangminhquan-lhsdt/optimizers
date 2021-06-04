@@ -36,29 +36,32 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 \lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},   
+    backgroundcolor=\color{backcolour},
     commentstyle=\color{codegreen},
     keywordstyle=\color{magenta},
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
     basicstyle=\footnotesize,
-    breakatwhitespace=false,         
-    breaklines=true,                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
     showstringspaces=false,
-    showtabs=false,                  
+    showtabs=false,
     tabsize=2
 }
 \lstset{style=mystyle}
 
 % Chèn và định dạng mã giả
+\usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{algorithm}
-\usepackage[noend]{algpseudocode}
+% \usepackage[noend]{algpseudocode}
+\usepackage{algpseudocode}
+\floatname{algorithm}{Thuật toán}
 \makeatletter
 \def\BState{\State\hskip-\ALG@thistlm}
 \makeatother
@@ -93,7 +96,7 @@
   left=30mm,
   right=20mm,
   includefoot]{geometry}
-  
+
 % Trang bìa
 \usepackage{tikz}
 \usetikzlibrary{calc}
@@ -171,7 +174,7 @@
 % \DeclareNameAlias{sortname}{last-first}
 % \DeclareNameAlias{default}{last-first}
 
-\printbibliography[heading=subbibliography, title={Tiếng Anh}, resetnumbers=1] 
+\printbibliography[heading=subbibliography, title={Tiếng Anh}, resetnumbers=1]
 % ===================================================================== %
 % CHÚ Ý: phải gán lại resetnumbers=số tài liệu tham khảo tiếng Việt + 1 %
 % ===================================================================== %
@@ -180,4 +183,4 @@
 %s\include{Appendix/appendix1}
 %\include{Appendix/appendix2}
 
-\end{document} 
+\end{document}

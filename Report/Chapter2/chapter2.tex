@@ -23,7 +23,7 @@ Trong môi trường máy tính, mỗi ``nơ-ron'' nhân tạo là một hàm s�
 \begin{figure}[htp]
 \centering
 \includegraphics[width=120 mm]{images/perceptron-node.png}
-\caption{Minh họa cách hoạt động của một ``nơ-ron''. (Nguồn: \url{https://wiki.pathmind.com/neural-network})}
+\caption{Minh họa cách hoạt động của một nơ-ron. (Nguồn: \url{https://wiki.pathmind.com/neural-network})}
 \label{fig:perceptron-node}
 \end{figure}
 
@@ -51,7 +51,7 @@ Ngoài trích xuất được thêm thông tin, các tầng ẩn còn có khả 
 
 \section{Quá trình huấn huyện mạng nơ-ron nhiều tầng ẩn}
 
-Xét một bài toán học có giám sát (supervised learning), chúng ta có tập dữ liệu huấn luyện $X$ và tập giá trị đúng (ground truth) $Y$. Mô hình mạng nơ-ron là một hàm $\mathcal{F}: (\theta, x) \rightarrow \hat{y}$ với $x$ là một điểm dữ liệu và $\hat{y}$ là giá trị mà mạng nơ-ron dự đoán ra dựa theo bộ trọng số $\theta$. Như vậy, với tập dữ liệu huấn luyện $X$ và tập giá trị đúng $Y$, chúng ta sẽ tính được độ lỗi của mô hình trên toàn tập dữ liệu huấn luyện với một hàm chi phí $\mathcal{L}(\theta)$ với $\theta$ là các tham số của mô hình mạng nơ-ron:
+Xét một bài toán học có giám sát (supervised learning), chúng ta có tập dữ liệu huấn luyện $X$ và tập giá trị đúng (ground truth) $Y$. Mô hình mạng nơ-ron là một hàm $\mathcal{F}: (\theta, x) \rightarrow \hat{y}$ với $x$ là một điểm dữ liệu và $\hat{y}$ là giá trị mà mạng nơ-ron dự đoán ra dựa theo bộ trọng số $\theta$. Như vậy, với tập dữ liệu huấn luyện $X$ và tập giá trị đúng $Y$, chúng ta sẽ tính được độ lỗi của mô hình trên toàn tập dữ liệu huấn luyện với một hàm chi phí $\mathcal{L}(\theta)$ với $\theta$ là bộ trọng số của mô hình mạng nơ-ron:
 
 \begin{equation}
 \label{eqn:E-y}

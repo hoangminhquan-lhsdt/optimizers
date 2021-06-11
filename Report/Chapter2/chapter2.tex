@@ -64,13 +64,13 @@ Xét một bài toán học có giám sát (supervised learning), chúng ta có 
 
 Trong đó, $\theta$ là bộ trọng số của mô hình, $x_i = \{x_1, x_2,...x_N\}$ là tập các tín hiệu đầu vào và $N$ là kích thước tập dữ liệu huấn luyện, hàm $\mathcal{L}(\mathcal{F}_\theta( x_i), y_i)$ là hàm đánh giá độ lỗi của mạng nơ-ron với bộ trọng số $\theta$ và điểm dữ liệu $x_i$. Trung bình của các độ lỗi này là hàm chi phí $E(\theta)$ mà ta cần tối ưu. Với hàm chi phí $E(\theta)$ và không gian cao chiều được tạo bởi bộ trọng số, ta được một bề mặt phẳng lỗi $M$ chiều với $M$ là số trọng số của mạng nơ-ron.
 
-Vì vậy, ta có thể đưa quá trình huấn luyện mạng nơ-ron thành quá trình đi tìm vị trí mà tại đó hàm chi phí $E(\theta)$ đạt giá trị cực tiểu. Giá trị cực tiểu này phải có độ lỗi rất nhỏ trên tập huấn luyện, đồng thời phải có độ lỗi đủ nhỏ trên dữ liệu ngoài tập huấn luyện để đảm bảo tính tổng quát hóa của mô hình. Tuy nhiên, việc đi tìm giá trị cực tiểu này gặp nhiều khó khăn do bộ trọng số của mô hình mạng nơ-ron nhiều tầng ẩn có số chiều rất lớn, cách giải phương trình thông thường không thể áp dụng tốt trong trường hợp này. Hơn nữa, mỗi trọng số có mức độ ảnh hưởng khác nhau lên độ lỗi làm xuất hiện các điểm cực tiểu địa phương và điểm yên ngựa, các vùng bằng phẳng hay các vùng rãnh hẹp phức tạp.
+Vì vậy, ta có thể đưa quá trình huấn luyện mạng nơ-ron thành quá trình đi tìm vị trí mà tại đó hàm chi phí $E(\theta)$ đạt giá trị cực tiểu. Giá trị này phải có độ lỗi rất nhỏ trên tập huấn luyện, đồng thời phải có độ lỗi đủ nhỏ trên dữ liệu ngoài tập huấn luyện để đảm bảo tính tổng quát hóa của mô hình. Tuy nhiên, việc đi tìm giá trị cực tiểu này gặp nhiều khó khăn do bộ trọng số của mô hình mạng nơ-ron nhiều tầng ẩn có số chiều rất lớn, cách giải phương trình thông thường không thể áp dụng tốt trong trường hợp này. Hơn nữa, mỗi trọng số có mức độ ảnh hưởng khác nhau lên độ lỗi làm xuất hiện các điểm cực tiểu địa phương và điểm yên ngựa, các vùng bằng phẳng hay các vùng rãnh hẹp phức tạp.
 
 ``Critical point'' (điểm tới hạn) là điểm mà tại đó hàm số không khả vi hoặc có đạo hàm bằng 0. Theo đó, cực tiểu địa phương của một hàm $f(x)$ là một điểm cực trị a trong một khoảng xác định có giá trị $f(a)$ không lớn hơn bất kỳ giá trị $f(x)$ với mọi $x$ trong khoảng đó (Hình \ref{fig:minimas}a). Công trình của D. Erhan và cộng sự\cite{erhan2009thedifficulty} đã chứng minh rằng mạng nơ-ron nhiều tầng ẩn rất dễ hội tụ tại các điểm cực tiểu có độ lỗi khá cao nếu khởi tạo ngẫu nhiên. Các điểm này từng được coi là vấn đề chính trong việc hạn chế độ chính xác của mô hình và gây trở ngại trong việc ứng dụng các mô hình mạng nơ-ron nhiều tầng ẩn vào thực tế. Tuy nhiên một số nghiên cứu gần đây cho rằng điểm cực tiểu địa phương không phải là khó khăn chính cản trở quá trình huấn luyện của mạng nơ-ron nhiều tầng ẩn mà chính các điểm yên ngựa mới là trở ngại cho các thuật toán tối ưu\cite{dauphin2014identifying}.
 
 \begin{figure}[htp]
 \centering
-\includegraphics[width=120 mm]{images/minimas.png}
+\includegraphics[width=140 mm]{images/minimas.png}
 \caption{Minh hoạ điểm cực tiểu (a), cực đại (b) và điểm yên ngựa (c) trong không gian ba chiều.}
 \label{fig:minimas}
 \end{figure}
@@ -83,7 +83,7 @@ Có hai khó khăn chính cần phải giải quyết khi gặp điểm yên ng�
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=75 mm]{images/gd.png}
+\includegraphics[width=120 mm]{images/gd.png}
 \caption{Minh họa quá trình tìm đến điểm cực tiểu của thuật toán Gradient Descent với đường màu xannh dương biểu diễn giá trị của hàm chi phí, đường đứt đoạn màu đỏ thể hiện phương và độ lớn của gradient.}
 \label{fig:gd}
 \end{figure}
@@ -96,25 +96,25 @@ Có hai khó khăn chính cần phải giải quyết khi gặp điểm yên ng�
 		f(x + \Delta x) \approx f(x) + f'(x)\Delta x + \frac{1}{2!}f''(x)(\Delta x)^2 +...+ \frac{1}{k!}f^{(k)} (\Delta x)^{(k)}
 	\end{equation}
 	Từ đó, để có thể cực tiểu hóa hàm chi phí $\mathcal{L}$, Gradient Descent sẽ di chuyển theo hướng $\Delta x$ sao cho $\mathcal{L}(x + \Delta x) < \mathcal{L}(x)$ và bằng:
-	\begin{equation} \label{eqn:l_x-delta}
+	\begin{equation} \label{eqn:Lx-delta1}
 	\mathcal{L}(x + \Delta x) \approx \mathcal{L}(x) + \Delta x\nabla_x \mathcal{L}
 	\end{equation}
 	với $\nabla_x\mathcal{L}$ là gradient của hàm chi phí $\mathcal{L}$ tại $x$.
 
 	\item Gradient là véc-tơ có hướng là hướng có mức độ tăng lớn nhất và độ lớn là mức độ thay đổi lớn nhất tại một điểm trong không gian. Giả sử một không gian $\mathbb{R}^n$ được định nghĩa bởi một hàm $f(x_1,x_2,x_3,...,x_n)$ thì véc-tơ gradient tại một điểm trong không gian $\mathbb{R}^n$ sẽ là một véc-tơ cột mà thành phần của nó là đạo hàm theo từng biến của hàm $f(x_1,x_2,x_3,...,x_n)$, cụ thể là:
-	\begin{equation} \label{eqn:grad_f}
+	\begin{equation} \label{eqn:gradf}
 	\nabla f = (\frac{\delta f}{\delta x_1}, \frac{\delta f}{\delta x_2}, \frac{\delta f}{\delta x_3},...,\frac{\delta f}{x_n})
 	\end{equation}
 \end{itemize}
 
 Vì gradient chỉ hướng có mức độ tăng lớn nhất nên hướng $\Delta x$ cho giá trị của $\mathcal{L} (x + \Delta x)$ giảm nhiều nhất theo hướng $-\nabla_x\mathcal{L}$. Tuy nhiên, $\Delta x$ phải có giá trị đủ nhỏ để xấp xỉ Taylor vẫn đảm bảo rằng hướng $\Delta x$ sẽ cho giá trị $\mathcal{L}(x + \Delta x) < \mathcal{L}(x)$. Từ đó, ta áp dụng một hằng số dương $\eta$ đảm bảo độ dài của một bước đi $\Delta x$ đủ nhỏ, được gọi là tỷ lệ học (learning rate). Vậy ta có thể viết được công thức cập nhật của Gradient Descent tại mỗi bước nhảy $x_t$ như sau:
 
-\begin{equation} \label{eqn:L_x-delta}
+\begin{equation} \label{eqn:Lx-delta2}
 \mathcal{L}(x_t + \Delta x) \approx \mathcal{L}(x_t) - \eta{(\nabla_{x_t} \mathcal{L})^T\nabla _{x_t}\mathcal{L}}
 \end{equation}
 Lại có: $(\nabla _{x_t}\mathcal{L})^T\nabla _{x_t} \mathcal{L} > 0 \Rightarrow \mathcal{L}(x_t + \Delta x) < \mathcal{L}(x_t)$.
 
-Với hằng số $\eta$ cố định công thức \ref{eqn:l_x-delta} sẽ luôn tiến hành cập nhật một lượng $\Delta x = \eta (\nabla _{x_t}\mathcal{L})^T\nabla _{x_t}\mathcal{L} = \eta ||\nabla _{x_t}\mathcal{L}||_2$ thay đổi tương ứng tỷ lệ với $||\nabla _{x_t} \mathcal{L}||_2$. Nếu $||\nabla _{x_t} \mathcal{L}||_2$ lớn, có nghĩa là độ dốc lớn, ta có thể bước một bước dài để tiến nhanh tới giá trị cực tiểu. Ngược lại, nếu $||\nabla_{x_t} \mathcal{L}||_2$ nhỏ, độ dốc nhỏ, ta phải bước những bước nhỏ để tránh bị vượt qua khỏi vùng cực tiểu.
+Với hằng số $\eta$ cố định công thức \ref{eqn:Lx-delta1} sẽ luôn ftiến hành cập nhật một lượng $\Delta x = \eta (\nabla _{x_t}\mathcal{L})^T\nabla _{x_t}\mathcal{L} = \eta ||\nabla _{x_t}\mathcal{L}||_2$ thay đổi tương ứng tỷ lệ với $||\nabla _{x_t} \mathcal{L}||_2$. Nếu $||\nabla _{x_t} \mathcal{L}||_2$ lớn, có nghĩa là độ dốc lớn, ta có thể bước một bước dài để tiến nhanh tới giá trị cực tiểu. Ngược lại, nếu $||\nabla_{x_t} \mathcal{L}||_2$ nhỏ, độ dốc nhỏ, ta phải bước những bước nhỏ để tránh bị vượt qua khỏi vùng cực tiểu.
 
 Bên cạnh đó, nếu tỷ lệ học quá nhỏ, ta luôn bước những bước rất nhỏ hướng về phía cực tiểu nên sẽ mất rất nhiều thời gian để thuật toán có thể hội tụ. Tuy nhiên, nếu chọn một tỷ lệ học quá lớn thì xấp xỉ Taylor không đảm bảo được rằng giá trị $\mathcal{L}(x + \Delta x)$ sẽ giảm và thuật toán có khả năng không thể hội tụ. Đó là lý do tại sao lựa chọn một tỷ lệ học phù hợp là cần thiết.
 
@@ -122,9 +122,10 @@ Bên cạnh đó, nếu tỷ lệ học quá nhỏ, ta luôn bước những bư
 
 Thuật toán ``Batch Gradient Descent'' (BGD) là một phiên bản của thuật toán Gradient Descent sử dụng gradient của toàn bộ dữ liệu huấn luyện để thực hiện một bước cập nhật. Vì độ lỗi được tính tại các điểm dữ liệu riêng lẻ, nên trung bình các độ lỗi này sẽ là độ lỗi của cả tập dữ liệu (Công thức \ref{eqn:E-Fx}).
 
-Từ công thức \ref{eqn:L_x-delta} và (9), ta có thể viết được công thức cập nhật của $\theta$ tại mỗi bước:
+Từ công thức \ref{eqn:E-Fx} và \ref{eqn:Lx-delta2}, ta có thể viết được công thức cập nhật của $\theta$ tại mỗi bước:
 
 \begin{equation}
+\label{eqn:theta-batch-update}
 \theta_{t+1} = \theta_ t - \eta \nabla_{\theta} \mathbf{\it{E}(\theta)}
 \end{equation}
 với $\nabla_\theta \mathbf{\it{E}(\theta)}$ là gradient của hàm chi phí được tính trên toàn tập dữ liệu.
@@ -157,13 +158,13 @@ Một trong những trở ngại của BGD khi ứng dụng vào việc huấn l
 
 Có thể thấy BGD mất rất nhiều thời gian để duyệt qua hết toàn bộ tập dữ liệu, nhưng chỉ cải thiện được một lượng rất nhỏ. Để khắc phục nhược điểm này, ``Minibatch Gradient Descent'' (MGD) chỉ thực hiện tính gradient của hàm chi phí trên một tập con của tập dữ liệu (thường gọi là một ``minibatch'') để thực hiện một bước cập nhật.
 
-Từ công thức (6) và (7) của BGD, chúng ta sẽ có công thức tính độ lỗi của MGD với một tập con:
+Từ công thức \ref{eqn:Lx-delta2} và \ref{eqn:theta-batch-update} của BGD, chúng ta sẽ có công thức tính độ lỗi của MGD với một tập con:
 
 \begin{equation}
 \label{eqn:E-minibatch}
 \mathbf{\it{E}(\theta)} = \frac{1}{k}\cdot \sum_{i=1}^{k}\mathcal{L}(\mathcal{F}_\theta( x_i), y_i)
 \end{equation}
-với $k$ là kích thước của một tập con ($k<<N$). Từ độ lỗi tính được, việc cập nhật trọng số cho mạng nơ-ron nhiều tầng ẩn được thực hiện tương tự như BGD bằng công thức (7).
+với $k$ là kích thước của một tập con ($k<<N$). Từ độ lỗi tính được, việc cập nhật trọng số cho mạng nơ-ron nhiều tầng ẩn được thực hiện tương tự như BGD bằng công thức \ref{eqn:theta-batch-update}.
 
 Như vậy, có thể thấy được rằng một bước cập nhật với MGD sẽ nhanh hơn rất nhiều so với BGD do việc tính toán chỉ thực hiện trên $k$ điểm dữ liệu và cập nhật theo gradient của tập con đó. Ngoài ra, trong mỗi lần duyệt qua toàn bộ tập dữ liệu (gọi là một ``epoch''), MGD thực hiện được $N/k$ lần cập nhật trọng số cho mô hình, thay vì chỉ một lân như BGD. Điều đó cũng đồng nghĩa rằng với cùng một số lượng epoch huấn luyện, MGD sẽ đi được rất nhiều bước so với BGD.
 
@@ -171,12 +172,19 @@ Một trường hợp đặc biệt của MGD là khi $k=1$, được gọi là 
 
 Trong đa số các bài báo khoa học, các tác giả sử dụng khái niệm ``Gradient Descent'' (GD) để chỉ BGD, và ``Stochastic Gradient Descent'' để nói tới MGD. Để tạo sự thống nhất cũng như thuận tiện trong việc liên hệ giữa nội dung khoa luận với nội dung của các bài báo khoa học, từ thời điểm này, chúng tôi cũng sẽ sử dụng cách gọi tên tương tự cho các thuật toán này.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=140 mm]{images/gd-sgd.png}
+\caption{So sánh đường đi của Gradient Descent (trái) và Stochastic Gradient Descent (phải).}
+\label{fig:gd-sgd}
+\end{figure}
+
 Việc chỉ sử dụng một tập con của dữ liệu huấn luyện để tính gradient cũng đồng nghĩa với việc hướng của gradient này sẽ chỉ xấp xỉ gradient tính được trên cả tập dữ liệu (có thể gọi là ``true gradient''), và sẽ có những sự dao động. Tuy nhiên, nhiều nghiên cứu đã chỉ ra rằng các véc-tơ gradient của các tập con sẽ dao động xung quanh hướng của véc-tơ gradient tính được theo GD với độ chênh lệch không quá lớn\cite{bottou2010large}\cite{bottou2018optimization}. Việc lựa chọn kích thước tập con $k$ là sự đánh đổi giữa mức độ dao động với tốc độ tính toán cũng như số bước cập hật được thực hiện trong mỗi epoch. Khi $k$ tiến tới gần $N$, hướng gradient của tập con sẽ xấp xỉ hướng của true gradient tốt hơn, nhưng lại mất nhiều thời gian tính toán hơn. Ngược lại, khi $k$ tiến gần về 1, tuy thời gian tính toán được rút ngắn nhưng hướng gradient của tập con càng chênh lệch nhiều so với hướng của true gradient, gây ra sự nhiễu loạn.
 
 Tổng quan thuật toán SGD được trình bày trong thuật toán \ref{alg:SGD}.
 
 \begin{algorithm}
-	\caption{Batch Gradient Descent (BGD)} \label{alg:SGD}
+	\caption{Stochastic Gradient Descent (BGD)} \label{alg:SGD}
 	\begin{algorithmic}[1]
 		\renewcommand{\algorithmicrequire}{\textbf{Đầu vào:}}
 		\renewcommand{\algorithmicensure}{\textbf{Đầu ra:}}

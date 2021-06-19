@@ -1,6 +1,48 @@
 \appendix
 
-\chapter{Ngữ pháp tiếng Việt}
+\chapter{Các siêu tham số của các thí nghiệm}
 \label{Appendix1}
 
-Đây là phụ lục.
+\begin{table}[htp]
+	\begin{tabular}{{|m{0.2\textwidth}|l|l|l|}}
+		\hline
+		Tên thuật toán & Tỉ lệ học & Momentum/$Beta_1$ & Alpha/$Beta_2$ \\
+		\hline
+		SGD               & -         & 0.1     & -        \\
+		\hline
+		Momentum          & -         & 0.00728 & -        \\
+		\hline
+		Adagrad           & 0.001     & 0.01    & -        \\
+		\hline
+		RMSprop           & 0.0004338 & -       & -        \\
+		\hline
+		Adam              & 0.001     & 0.00033 & 0.999965 \\
+		\hline
+	\end{tabular}
+\caption{\label{tab:mlp-hparam}Các siêu tham số được sử dụng trong thí nghiệm Multi-layer Neural Network.}
+\end{table}
+
+\begin{table}[htp]
+	\begin{tabular}{{|m{0.153\textwidth}|l|l|l|l|l|l|}}
+		\hline
+		Tên thuật toán & \multicolumn{2}{c|}{Tỉ lệ học}
+			& \multicolumn{2}{c|}{Momentum/$Beta_1$}
+				& \multicolumn{2}{c|}{Alpha/$Beta_2$} \\
+		\hline
+		- & Tái tạo & Tốt nhất & Tái tạo & Tốt nhất & Tái tạo & Tốt nhất \\
+		\hline
+		SGD               & -         & 0.1     & -    & -      & -        & -        \\
+		\hline
+		Momentum          & -         & 0.00728 & -    & 0.9127 & -        & -        \\
+		\hline
+		Nesterov momentum & 0.001     & -       & 0.99 & -      & -        & -        \\
+		\hline
+		Adagrad           & 0.001     & 0.01    & -    & -      & -        & -        \\
+		\hline
+		RMSprop           & 0.0004338 & -       & -    & -      & -        & 0.9144   \\
+		\hline
+		Adam              & 0.001     & 0.00033 & 0.9  & 0.5    & 0.999965 & 0.999935 \\
+		\hline
+	\end{tabular}
+\caption{\label{tab:cnn-hparam}Các siêu tham số được sử dụng trong thí nghiệm Convolutional Neural Network. (Các thuật toán tỉ lệ học thích ứng sử dụng hệ số $\epsilon = 1e-8$)}
+\end{table}

@@ -5,34 +5,35 @@
 
 \section{Thuật toán Gradient Descent với Momentum}
 
-Các thuật toán sử dụng gradient như GD và SGD gặp phải hai khó khăn chính khi chỉ có thông tin của véc-tơ gradient mà thiếu đi thông tin về độ cong của bề mặt lỗi. Đầu tiên, vì hướng của gradient là hướng có độ dốc lớn nhất nên không phải lúc nào cũng là hướng tốt nhất và có thể gây dao động mạnh trong khi độ lỗi giảm không nhiều. Thứ hai, ``độ nhạy cảm'' của mỗi trọng số là khác nhau trong bề mặt lỗi, vì vậy áp dụng một tỷ lệ học chung cho tất cả các trọng số sẽ khiến cho hướng cập nhật bỏ qua các trọng số có ``độ nhạy cảm'' nhỏ.
+Các thuật toán sử dụng gradient như GD và SGD gặp phải hai khó khăn chính khi thiếu đi thông tin về độ cong của bề mặt lỗi. Đầu tiên, vì hướng của gradient là hướng có độ dốc lớn nhất nên không phải lúc nào cũng là hướng tốt nhất và có thể gây dao động mạnh trong khi độ lỗi giảm không nhiều. Thứ hai, ``độ nhạy cảm'' của mỗi trọng số là khác nhau trong bề mặt lỗi, vì vậy áp dụng một tỷ lệ học chung cho tất cả các trọng số sẽ khiến cho hướng cập nhật bỏ qua các trọng số có ``độ nhạy cảm'' nhỏ.
 
-``GD/SGD với Momentum'' (hay ``Momentum'') đều được dùng để chỉ một phương pháp cải tiến sử dụng quán tính để điều chỉnh hướng gradient theo hướng tốt nhất về cực tiểu, từ đó tăng tốc độ di chuyển trên bề mặt lỗi. Quán tính được thêm vào công thức thông qua hệ số quán tính $\beta$ được chọn trước khi trình huấn luyện và công thức cập nhật $\theta$ tại mỗi bước được cải tiển như công thức \ref{eqn:theta-momentum}. Dưới góc nhìn vật lý, Momentum trong công thức \ref{eqn:vt} là phần vận tốc còn lại sau khi tiêu hao trong quá trình vật di chuyển về vị trí cân bằng, quyết định mức độ dao động và tốc độ di chuyển của vật. Với một hệ số momentum càng cao, lượng vận tốc tiêu hao càng ít, vận tốc càng lớn thì lượng dao động của vật càng nhiều khiến cho vật mất nhiều thời gian để trở về vị trí cân bằng. Ngược lại, nếu hệ số momentum quá thấp, lượng vận tốc tiêu hao quá lớn dẫn đến vật không thể đến vị trí cân bằng. Tương tự như vậy, trong huấn luyện mạng nơ-ron, một hệ số momentum quá cao sẽ khiến cho hướng di chuyển bị dao động nhiều quanh điểm cực tiểu nhưng không thể hội tụ, và ngược lại, thời gian huấn luyện sẽ tăng lên đáng kể.
+``GD/SGD với Momentum'' (hay ``Momentum'') là một phương pháp cải tiến sử dụng quán tính để điều chỉnh hướng gradient theo hướng tốt nhất về cực tiểu, từ đó tăng tốc độ di chuyển trên bề mặt lỗi. Quán tính được thêm vào công thức thông qua hệ số quán tính $\beta$. Tại mỗi bước $t$, véc-tơ quán tính $m_t$ được xác định bởi công thức \ref{eqn:mt}:
 
 \begin{equation}
-	\label{eqn:vt}
-	v_t = \beta v_{t-1} + \alpha \nabla E(\theta_t)
+	\label{eqn:mt}
+	m_t = \beta m_{t-1} + \eta\nabla_\theta E(\theta_t)
 \end{equation}
+với $m_{t-1}$ là véc-tơ quán tính trước đó, $\eta$ là tỉ lệ học và $\nabla_\theta E(\theta_t)$ là gradient của hàm chi phí tại $\theta_t$.
+
+Từ công thức \ref{eqn:mt} ta có công thức cập nhật $\theta$ tại mỗi bước được cải tiến như sau:
 
 \begin{equation}
 	\label{eqn:theta-momentum}
 	\theta_t = \theta_{t-1} - v_t
 \end{equation}
 
-Có thể nói hệ số momentum điều chỉnh mức độ ``ghi nhớ'' của thuật toán. Hệ số momentum càng lớn thì giá trị quán tính cũ được ghi nhớ càng lâu và ngược lại. Điều đó liên quan đến đường trung bình động hàm mũ (Exponential Moving Averages) hay EMA. Đường trung bình động hàm mũ cho phép ta sử dụng trung bình động để xử lý nhiễu trong dữ liệu mà ta quan sát được và xấp xỉ nó gần hơn với dữ liệu thực. Ta thực hiện lấy trung bình trên $\frac{1}{1-\beta}$ bước nhảy gần nhất và thực hiện cập nhật trọng số. Ta khai triển công thức \ref{eqn:vt} như sau:
+Nhờ vào sự cải tiến đơn giản này mà thuật toán Momentum có thể giảm bớt sự di chuyển tại những hướng mà dấu của gradient không ổn định, đồng thời tăng cường sự di chuyển tại hướng mà dấu của gradient ổn định. Mức độ điều chỉnh sự di chuyển phụ thuộc vào hệ số quán tính $\beta$. Một hệ số $\beta$ quá lớn cũng như quá nhỏ đều kéo dài thời gian huấn luyện của mô hình. Nếu $\beta$ được chọn quá lớn thì mức độ thay đổi quá lớn dẫn đến thuật toán bị dao động quanh điểm cực tiểu; nếu $\beta$ chọn quá nhỏ, thuật toán Momentum sẽ suy biến về GD và khó khăn sẽ không được khắc phục.
+
+Có thể nói hệ số quán tính cho phép thuật toán ưu tiên các giá trị quán tính gần hơn các giá trị quán tính cũ nhờ vào đường trung bình động hàm mũ (Exponential Moving Averages) hay EMA. Đường trung bình động hàm mũ cho phép ta sử dụng trung bình động để xử lý nhiễu trong dữ liệu mà ta quan sát được và xấp xỉ nó gần hơn với dữ liệu thực. Ta thực hiện lấy trung bình trên $\frac{1}{1-\beta}$ bước nhảy gần nhất và cập nhật trọng số. Ta khai triển công thức \ref{eqn:mt} như sau:
 
 \begin{equation}
-	\label{eqn:v3}
+	\label{eqn:m3}
 	\begin{aligned}
-		v_1 &= \beta v_0 + \alpha\nabla E(\theta_1) \\
-		v_2 &= \beta v_1 + \alpha \nabla E(\theta_2) = \beta (v_0 + \alpha\nabla E(\theta_1)) + \alpha\nabla E(\theta_2) \\
-		&= \beta v_0 + \beta\alpha\nabla E(\theta_1) + \alpha\nabla E(\theta_2) \\
-		v_3 &= \beta v_2 + \alpha\nabla E(\theta_3) = \beta (\beta v_0 + \beta\alpha\nabla E(\theta_1) + \alpha\nabla E(\theta_2)) + \alpha\nabla E(\theta_3) \\
-		&= \beta^2 v_0 + \beta^2\alpha \nabla E(\theta_1) + \beta \alpha \nabla E(\theta_2) +\alpha \nabla E(\theta_3)
+		m_1 &= \beta m_0 + \eta\nabla_\theta E(\theta_1) \\ m_2 &= \beta m_1 + \eta \nabla_\theta E(\theta_2) = \beta (m_0 + \eta\nabla_\theta E(\theta_1)) + \eta\nabla_\theta E(\theta_2) \\ &= \beta m_0 + \beta\eta\nabla_\theta E(\theta_1) + \eta\nabla_\theta E(\theta_2) \\ m_3 &= \beta m_2 + \eta\nabla_\theta E(\theta_3) = \beta (\beta m_0 + \beta\eta\nabla_\theta E(\theta_1) + \eta\nabla_\theta E(\theta_2)) + \eta\nabla_\theta E(\theta_3) \\ &= \beta^2 m_0 + \beta^2\eta \nabla_\theta E(\theta_1) + \beta \eta \nabla_\theta E(\theta_2) +\eta \nabla_\theta E(\theta_3)
 	\end{aligned}
 \end{equation}
 
-Từ công thức \ref{eqn:v3} ta nhận thấy rằng tại bước nhảy thứ $t$, giá trị của momentum phụ thuộc vào tất cả các giá trị momentum trước đó từ $1..(t-1)$. Mỗi giá trị trong dãy đều được nhân với hệ số $\beta^t$. Vì $\beta$ là hệ số quán tính nằm trong khoảng $(0,1)$ nên $\beta^t$ sẽ càng nhỏ khi $t$ càng lớn dẫn đến các giá trị càng lâu trước đó sẽ có hệ số càng nhỏ và dần không đóng góp gì nhiều trong quá trình huấn luyện. Hay nói cách khác, các giá trị này dần được quên đi và thuật toán Momentum quan tâm nhiều đến các giá trị gần với hiện tại.
+Từ công thức \ref{eqn:m3} ta nhận thấy rằng tại bước nhảy thứ $t$, giá trị của momentum phụ thuộc vào các giá trị momentum trước đó từ $1..(t-1)$. Mỗi giá trị trong dãy đều được nhân với hệ số $\beta ^t$. Vì $\beta$ là hệ số quán tính nằm trong khoảng $(0,1)$ nên $\beta^t$ sẽ càng nhỏ khi $t$ càng lớn dẫn đến các giá trị càng lâu trước đó sẽ có hệ số càng nhỏ và dần không đóng góp gì nhiều trong quá trình huấn luyện. Hay nói cách khác, các giá trị này dần được quên đi và thuật toán Momentum quan tâm nhiều đến các giá trị gần với hiện tại.
 
 Trong thực tế huấn luyện, ta thường sử dụng cách xấp xỉ true gradient bằng các gradient của tập con để tăng tốc quá trình cập nhật trọng số. Trong quá trình xấp xỉ, việc tạo minibatch bằng cách gom nhóm ngẫu nhiên các điểm dữ liệu đã thêm một lượng nhiễu vào trong quá trình tối ưu. So sánh độ lớn của nhiễu với độ lớn của momentum ta có thể chia quá trình thành hai giai đoạn: giai đoạn ``transient'' và giai đoạn ``fine-tuning''. Trong giai đoạn transient, momentum vẫn còn hiệu quả trong điều chỉnh hướng của gradient và giúp gradient tiến nhanh về vị trí có cực tiểu vì độ lớn của momentum lớn hơn độ lớn của nhiễu. Quá trình huấn luyện càng lâu, độ lớn của momentum ngày càng giảm và bị lấn át bởi độ nhiễu, khi đó ta bước qua giai đoạn fine-tuning. Trong các mạng nơ-ron nhiều tầng ẩn, giai đoạn fine-tuning chiếm một phần ít hơn và cũng ít quan trọng hơn giai đoạn transient nên việc đảm bảo giai đoạn transient được diễn ra đủ lâu là một sự cần thiết \cite{sutskever2013onti}.
 
@@ -45,9 +46,29 @@ Sự chuyển đổi giữa hai quá trình được kể trên được quyết
 	\label{fig:valley-momentum}
 \end{figure}
 
-Đặc biệt trong trường hợp rãnh hẹp, momentum giúp GD/SGD tăng tốc độ hội tụ đáng kể. Ta có thể thấy trong Hình \ref{fig:valley-momentum}, tại một điểm $A$ bất kỳ, ta có thể phân tích thành hai véc-tơ thành phần của từng trọng số. Vì rãnh hẹp nên sẽ có một hướng có độ dốc cao hơn hướng còn lại, trong trường hợp này là $w_1$, nên độ dài véc-tơ tương ứng tại hướng đó sẽ có độ dài lớn hơn độ dài véc-tơ tại hướng còn lại. Thuật toán GD/SGD sẽ ưu tiên hướng có độ dốc cao hơn và bỏ qua hướng $w_2$ có độ dốc thấp, gây ra hiện tượng dao động cho độ lỗi giảm ít với thời gian huấn luyện lâu. Một giải pháp thường được sử dụng để khắc phục hiện tượng này là giảm tỉ lệ học của thuật toán GD/SGD. Tuy nhiên, để khắc phục hiện tượng dao động, ta cần một tỉ lệ học rất nhỏ, với tỉ lệ học này thuật toán GD/SGD sẽ không thể ``khám phá'' những hướng có độ dốc nhỏ một cách hiệu quả do tốc độ giá trị gradient biến đổi tại những hướng này là rất chậm và dễ dàng bị lấn át bởi hướng có độ dốc cao. Trong trường hợp hướng đi về cực tiểu là một trong các hướng có độ dốc thấp, thuật toán GD/SGD sẽ thực hiện những bước cập nhật rất nhỏ, cho cảm giác huấn luyện bị chững lại và tạo cảm giác gặp phải cực tiểu địa phương.
+Hình \ref{fig:valley-momentum} mô tả một rãnh hẹp trong không gian hai chiều có trục tung là $w_2$ và trục hoành là $w_1$. Các rãnh hẹp này thường được hình thành do sự khác biệt giữa các giá trị trọng số do độ quan trọng của giá trị đầu ra của mỗi nơ-ron khác nhau là khác nhau. Các liên kết đến nơ-ron lưu trữ đặc trưng quan trọng ảnh hướng đến dự đoán của mạng nơ-ron thường được gán giá trị trọng số lớn hơn các nơ-ron mang ít thông tin. Giả sử ta gán $w_1 = 10$ và $w_2 = 1$ thì tín hiệu của nơ-ron được liên kết bằng $w_1$ sẽ ảnh hưởng lên độ lỗi gấp 10 lần tín hiệu của nơ-ron được liên kết bằng $w_2$ dẫn đến độ cong ở hướng $w_1$ cao hơn hướng $w_2$ và tạo thành một rãnh hẹp.
 
-Momentum giải quyết vấn đề này bằng cách cộng dồn các véc-tơ quán tính. Khi cộng dồn, các véc-tơ tại hướng có độ dốc lớn $w_1$ sẽ bị triệt tiêu và véc-tơ tại hướng có độ dốc nhỏ $w_2$ được tăng cường. Từ đó, momentum giúp điều chỉnh hướng của gradient và tăng tốc độ hội tụ của thuật toán.
+Trong địa hình rãnh hẹp, ta mong muốn bước một bước nhỏ theo hướng có độ cong cao và một bước dài theo hướng có độ cong thấp, bằng phẳng hơn. Tuy nhiên, công thức bước cập nhật của thuật toán GD (công thức \ref{eqn:theta-batch-update}) cho ta điều ngược lại. Kết quả là thời gian huấn luyện kéo dài nhưng độ lỗi giảm không đáng kể do thuật toán bị dao động tại hướng có độ dốc cao và chỉ đi những bước nhỏ tại hướng tối ưu có độ dốc thấp (hình \ref{fig:valley-momentum}). Một giải pháp thường được sử dụng để khắc phục hiện tượng này là giảm tỉ lệ học của thuật toán GD/SGD. Tuy nhiên, với một tỉ lệ học nhỏ, thuật toán GD/SGD không thể "khám phá" những hướng có độ dốc nhỏ một cách hiệu quả do độ lớn bước cập nhật tại những hướng này là rất nhỏ và dễ dàng bị lấn át bởi hướng có độ dốc cao. Trong trường hợp hướng đi về cực tiểu là một trong các hướng có độ dốc thấp, thuật toán GD/SGD sẽ cho độ lỗi giảm rất chậm tạo cảm giác huấn luyện bị chững lại như gặp phải cực tiểu địa phương.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=85 mm]{images/gdm.png}
+	\caption{Mô tả đường đi của thuật toán GD khi có thêm lượng quán tính trong rãnh hẹp.}
+	\label{fig:gd-m}
+\end{figure}
+
+Momentum giúp giải quyết vấn đề này bằng cách sử dụng gradient tại điểm hiện tại và các giá trị gradient gần trong quá khứ. Trong rãnh hẹp được mô tả như trong hình \ref{fig:valley-momentum}, ta lấy một điểm $A$ bất kỳ. Tại đó, ta luôn có thể phân tích thành hai véc-tơ đạo hảm riêng tương ứng với từng hướng $w_1$ và $w_2$. Vì hướng $w_1$ có độ cong cao hơn hướng $w_2$ nên véc-tơ đạo hàm riêng tại hướng $w_1$ sẽ dài hơn hướng $w_2$. Ta có thể dễ dàng nhận thấy chiều véc-tơ đạo hàm riêng theo hướng $w_1$ thay đổi liên tục tại từng bước cập nhật trong khi véc-tơ đạo hàm riêng theo hướng $w_2$ ổn định qua nhiều bước liên tiếp. Sự thay đổi chiều liên tục đồng nghĩa với việc dấu của giá trị đạo hàm riêng cũng thay đổi liên tục. Do đó, khi thuật toán Momentum tíến hành cộng dồn các giá trị gradient thì các véc-tơ đạo hàm riêng thành phần tại hướng có độ dốc cao như $w_1$ sẽ bị triệt tiêu và ngược lại các véc-tơ thành phần tại các hướng như $w_2$ sẽ được tăng cường. Vì vậy, thuật toán cho phép hạn chế sự di chuyển tại hướng có dấu của gradient không ổn định và tăng cường sự di chuyển tại hướng mà dấu của gradient ổn định. Từ đó mà lượng ``quán tính'' được thêm vào trong các bước cập nhật giúp điều chỉnh hướng cập nhật và tăng tốc quá trình di chuyển trong vùng rãnh hẹp.
+
+Đường đi của hai thuật toán GD và SGD khi có thêm momentum chứng thực cho lý thuyết trên. Hình \ref{fig:gd-m} cho ta đường đi của thuật toán GD có thêm momentum trong rãnh hẹp. Qua đó ta thấy được rằng đường đi ít dao động, và các bước nhảy tiến nhanh về phía cực tiểu hơn khi sử dụng thuật toán GD thuần tuý (Hình \ref{fig:gd-sgd}a). Điều tương tự cũng xảy ra với thuật toán SGD. Hình \ref{fig:sgd-m} mô tả đường đi của thuật toán SGD khi có thêm lượng momentum trong vùng rãnh hẹp. Ta có thể dễ dàng nhận ra hai giai đoạn của huấn luyện được đề cập ở phần lý thuyết. Trong giai đoạn transient, thuật toán di chuyển nhanh và không xảy ra hiện tượng dao động nhiều ở vùng rãnh hẹp. Đồng thời độ lỗi cũng giảm đáng kể sau một lần cập nhật và độ nhiễu đến từ việc gom nhóm ngẫu nhiên dữ liệu cũng được hạn chế hơn so với hình \ref{fig:gd-sgd}b. Tuy nhiên, càng về sau, khi bước qua giai đoạn finetuning, thì đường đi ngày càng nhiều dao động là minh chứng cho phần momentum bị độ nhiễu lấn át và thuật toán suy biến về SGD thuần tuý.
+
+\begin{figure}[htp]
+	\centering
+	\includegraphics[width=85 mm]{images/sgdm.png}
+	\caption{Mô tả đường đi của thuật toán SGD khi có thêm lượng quán tính trong rãnh hẹp.}
+	\label{fig:sgd-m}
+\end{figure}
+
+Tuy nhiên, trong các vùng mà cách biệt độ lớn giữa các giá trị trọng số là rất lớn, thuật toán Momentum vẫn còn gặp những hạn chế do không có khả năng điều chỉnh tỉ lệ học thích ứng theo từng hướng. Thêm nữa, Richard S. Sutton cho rằng mặc dù thuật toán Momentum tăng tốc quá trình huấn luyện, nhưng lượng tăng tốc này vẫn còn khá nhỏ \cite{sutton1986two}. Đồng thời, bài báo cũng cho rằng để thực hiện một bước nhảy tối ưu, ta cần điều chỉnh tỷ lệ học nhỏ tại những hướng có độ cong cao và sử dụng một tỷ lệ học lớn hơn tại những hướng có độ cong thấp hơn. Đây cũng chính là ý tưởng của các phương pháp tỉ lệ học thích ứng.
 
 \section{Thuật toán Gradient Descent với tỉ lệ học thích ứng}
 
@@ -158,50 +179,101 @@ Công thức \ref{eqn:adagrad-base} chỉ sử dụng đường chéo trong ma t
 
 \section{Thuật toán Adam}
 
-Momentum tăng cường hướng tối ưu bằng quán tính còn RMSprop hạn chế di chuyển về hướng dao động thông qua điều chỉnh tỉ lệ học cho từng trọng số tương ứng. Lấy ý tưởng từ hai thuật toán trên, Diederik P. Kingma và Jimmy Lei Ba đề xuất thuật toán Adam vừa sử dụng quán tính để tăng tốc và giảm dao động vừa điều chỉnh tỉ lệ học tương ứng với từng trọng số\cite{kingma2014adam}.
+Kết hợp quán tính để tăng tốc và giảm dao động của thuật toán Momentum và thích ứng tỉ lệ học cho từng trọng số của thuật toán RMSprop, ta được thuật toán Adam. Thuật toán Adam \cite{kingma2014adam} được Diederik P. Kingma và Jimmy Lei Ba công bố lần đầu tại hội nghi ICLR 2015 và được sử dụng phổ biến trong huấn luyện các mạng nơ-ron nhiều tầng ẩn.
 
-\begin{equation} \label{eqn:adam-mv}
-	\begin{aligned}
-		m_t &= \beta_1 \cdot m_t + (1 - \beta_1) \cdot g_t \\
-	v_t &= \beta_2 \cdot v_t + (1 - \beta_2) \cdot g_t^2
-	\end{aligned}
+Tương tự như thuật toán Momentum, Adam tiến hành cập nhật dựa trên trung bình chạy có trọng số của gradient để xấp xỉ trung bình của gradient hàm lỗi. Adam lưu giá trị trung bình này vào biến $m_t$ và được điều chỉnh bằng hệ số $\beta_1$. Từ đó, ta có công thức cập nhật $m_t$:
+
+\begin{equation} \label{eqn:adam-m}
+	m_t = \beta_1 \cdot m_t + (1 - \beta_1) \cdot g_t
 \end{equation}
 
-Thuật toán Adam cũng thực hiện xấp xỉ ma trận Hessian như các thuật toán Adagrad, RMSprop và kết hợp một lượng quán tính, tương tự với thuật toán Momentum. Tuy nhiên, khác với Momentum, Adam không tích luỹ quán tính phụ thuộc vào độ lớn của bước cập nhật mà thực hiện xấp xỉ dựa vào các giá trị ``moment'' của gradient. Moment bậc $k$ của một biến ngẫu nhiên $X$ là giá trị kỳ vọng $\mathbf{E}[X^k]$ với $k \in N$. Từ đó, ta có moment bậc nhất, hay trung bình, và moment bậc hai, hay phương sai, của gradient $g_t$ lần lượt là $\mathbf{E}[g_t]$, $\mathbf{E}[g_t^2]$. Hai giá trị này lần lượt được thuật toán Adam xấp xỉ bằng cách tích luỹ trung bình chạy của gradient thông qua véc-tơ $m_t$ và trung bình chạy của bình phương gradient với véc-tơ $v_t$ với hệ số decay $\beta_1$, $\beta_2 \in [0,1)$ (công thức \ref{eqn:adam-mv}). Trong thực tế huấn luyện ta thường khởi tạo các véc-tơ $m_t$, $v_t$ bằng giá trị 0 nên các giá trị xấp xỉ thường ``bias'' về giá trị khởi tạo trong các bước cập nhật đầu, đặc biệt khi $\beta_1$ và $\beta_2 \approx 1$.
+Tại mỗi bước $t$, biến $m_t$ phụ thuộc phần lớn vào giá trị của $m$ ở thời điểm từ bước cập nhật $1..t-1$. Tuy nhiên, mỗi giá trị của $m_t$ được gán với một giá trị trọng số giảm dần từ hiện tại đến quá khứ. Ngoài ra, một phần nhỏ giá trị của gradient cũng được sử dụng cập nhật biến $m_t$ nhằm cung cấp thông tin về hướng có độ giảm lớn nhất. Nhờ vậy mà Adam có thể tăng tốc trên những hướng mà dấu của gradient ổn định và hạn chế dao động tại hướng mà dấu của gradient không ổn định. Sự bất ổn định có thể đến từ việc áp dụng các biện pháp hạn chế sự overfit của mô hình, hay còn gọi là ``regularization''; việc xấp xỉ gradient trên toàn bộ tập huấn luyện dựa vào gradient của một minibatch; hoặc nó có thể do di chuyển trong địa hình rãnh hẹp với tỉ lệ học chưa đủ nhỏ.
 
-Ta có thể tính véc-tơ $v_t$ tại mỗi bước cập nhật $t$ dựa vào công thức \ref{eqn:variance-step}:
+Tuy nhiên, nếu chỉ sử dụng lượng tăng tốc đến từ biến $m_t$ thì Adam sẽ không thể vượt qua các vùng rãnh hẹp mà sự khác biệt về độ lớn của các giá trị trọng số là rất lớn và độ cong theo từng hướng là rất khác nhau. Tại các vùng này, lượng tích luỹ $m_t$ quá nhỏ để hạn chế sự di chuyển tại hướng có độ cong lớn và tăng cường sự di chuyển trên hướng có độ cong nhỏ đủ lớn để tăng tốc quá trình huấn luyện. Để giải quyết vấn đề này, ta phải thêm thông tin về độ cong của bề mặt lỗi bằng cách xấp xỉ thông qua việc sử dụng trung bình chạy của bình phương gradient. Thuật toán Adam sử dụng biến $v_t$ để lưu trữ giá trị trung bình chạy này cùng với hệ số $\beta_2$ để điều chỉnh tỉ lệ suy biến. Tương tự với $m_t$, $v_t$ cũng phụ thuộc vào các giá trị $v$ ở thời điểm trước đó và mức độ phụ thuộc giảm dần từ hiện tại tới quá khứ. Từ đó, ta có công thức cập nhật:
 
-\begin{equation}
-	\label{eqn:variance-step}
-	v_t = (1-\beta_2) \sum_{i=1}^t \beta_2^{t-i} g_i^2
+\begin{equation} \label{eqn:adam-v}
+	v_t = \beta_2 \cdot v_t + (1 - \beta_2) \cdot g_t^2
 \end{equation}
 
-Cũng như các thuật toán sử dụng gradient của minibatch khác, thuật toán Adam sử dụng gradient có độ sai khác so với gradient thật. Để xấp xỉ moment bậc hai của gradient gần với moment bậc hai $\mathbf{E}[g_t^2]$ của gradient thật nhất có thể, ta thực hiện bước ``bias-correction'' giúp thuật toán thực hiện xấp xỉ tốt hơn tại các bước cập nhật đầu tiên.
+Sau đó, thuật toán Adam thực hiện thích ứng tỉ lệ học cho từng trọng số thông qua việc chia tỉ lệ học chung $\eta$ cho căn bậc hai của tích luỹ bình phương đạo hàm riêng tương ứng. Từng trọng số của mạng nơ-ron nhiều tầng ẩn được cập nhật thông qua công thức sau:
 
-\begin{equation}
-	\label{eqn:bias-correction}
-	\mathbf{E}[v_t] = \mathbf{E}[(1-\beta_2)\sum_{i=1}^t\beta_2^{t-i}g_i^2] = \mathbf{E}[g_t^2]\cdot(1-\beta_2)\sum_{i=1}^t\beta_2^{t-i}+\zeta
+\begin{equation} \label{eqn:adam-step}
+	\theta_t = \theta_{t-1} - \eta\cdot\frac{m_t}{\sqrt{v_t} + \epsilon}
 \end{equation}
 
-Trong công thức \ref{eqn:bias-correction}, độ lỗi $\zeta$ đến từ nhiễu khi chọn tập con một cách ngẫu nhiên và có thể khắc phục bằng cách chọn siêu tham số $\beta_2$ sao cho giá trị $g_t^2$ ở các bước cập nhật quá xa trong quá khứ có độ ưu tiên nhỏ hơn giá trị $g_t^2$ ở bước cập nhật gần nhất. Thông thường, giá trị $\beta_2$ được chọn rất gần với 1 và được gán mặc định là $\beta_2 = 0.999$. Công thức \ref{eqn:bias-correction} sẽ không mất đi tính tổng quát nếu ta thay thế tổng $\sum_{i=1}^t\beta_2^{t-1} = \beta^t \sum_{i=1}^t(\beta_2^{-1})^i$. Áp dụng công thức $\sum_{i=1}^t r^i = \frac{r(1 - r^t)}{1-r}$ ta được một biểu thức mới $\beta_2^t (1-\beta_2)\frac{\beta_2^{-1}(1 - \beta_2^{-1.t})}{1 - \beta_2^{-1}}$ với $r = \beta_2^{-1}$. Rút gọn biểu thức trên ta có $(1-\beta_2)\frac{\beta_2^{t}(1 - \beta_2^{-t})}{\beta_2(1 - \beta_2^{-1})} = (1-\beta_2)\frac{(\beta_2^{t} - 1)}{(\beta_2 - 1)} = 1 - \beta_2^t$ và xấp xỉ của $\mathbf{E}[v_t]$ sẽ bằng với $\mathbf{E}[g_t^2]\cdot (1-\beta_2^t) + \zeta$. Vậy để thực hiện bias-correction, ta lấy véc-tơ $v_t$ chia cho giá trị $(1 - \beta_2^t)$ để khắc phục hiện tượng giá trị xấp xỉ bias về giá trị khởi tạo. Tương tự như vậy ta cũng thực hiện bước bias-correction với véc-tơ $m_t$ bằng cách lấy $m_t$ chia cho $(1-\beta_1^t)$. Sau bước bias-correction ta được $\hat m_t$, $\hat v_t$ như công thức \ref{eqn:adam-mvhat}.
+Kết quả là những trọng số có độ lớn đạo hàm riêng lớn trong những bước gần đây (ứng với hướng mà bề mặt lỗi có độ cong cao) thì sẽ có tỉ lệ học nhỏ; trong khi những trọng số trong lịch sử cập nhật gần nhất có độ lớn đạo hàm riêng nhỏ (ứng với hướng mà bề mặt lỗi có độ cong thấp) lại có tỉ lệ học lớn. Tuy nhiên, vì ta chỉ thực hiện cập nhật riêng lẻ cho từng trọng số nên cách làm này chỉ hoạt động tốt khi các hướng có độ cong/thấp của bề mặt lỗi song song với trục trọng số.
 
-\begin{equation}
-	\label{eqn:adam-mvhat}
+Đến đây, chúng ta có được thuật toán Adam được trình bày trong thuật toán \ref{alg:adam-incomplete}.
+
+\begin{algorithm}
+	\caption{Adam (chưa hoàn chỉnh)} \label{alg:adam-incomplete}
+	\begin{algorithmic}[1]
+		\renewcommand{\algorithmicrequire}{\textbf{Đầu vào:}}
+		\renewcommand{\algorithmicensure}{\textbf{Đầu ra:}}
+		\algnewcommand\algorithmicoperation{\textbf{Thao tác:}}
+		\algnewcommand\Operation{\item[\algorithmicoperation]}
+
+		\Require Tập dữ liệu huấn luyện $x_i (i = 1, 2, ..., N)$, kích thước tập con $k$, tỉ lệ học $\eta$, tỉ lệ suy biến $\beta_1$ và $\beta_2$, hệ số $\epsilon$, bộ trọng số $\theta$ của mô hình $\mathcal{F}$
+		\Ensure Bộ trọng số $\theta$ của $\mathcal{F}$ với độ lỗi đạt cực tiểu
+
+		\Operation
+		\State Khởi tạo $m_0=0$
+		\State Khởi tạo $v_0=0$
+		\State Khởi tạo $t=0$
+		\While{$\theta$ chưa hội tụ}
+			\State Xáo trộn tập dữ liệu.
+			\For{mỗi tập con kích thước $k$}
+				\State Cập nhật bước thực hiện: $t=t+1$
+				\State Tính độ lỗi trung bình: $\mathbf{\it{E}(\theta)} = \frac{1}{k}\cdot \displaystyle\sum_{i=1}^{k}\mathcal{L}(\hat{y_i}, y_i)$
+				\State Tính gradient của độ lỗi: $g_t =\nabla_{\theta} \mathbf{\it{E}(\theta)}$
+				\State Cập nhật $m$: $m_t = \beta_1\cdot m_{t-1} + (1-\beta_1)\cdot g_t$
+				\State Cập nhật $v$: $v_t = \beta_2\cdot v_{t-1} + (1-\beta_2)\cdot g^{2}_{t}$
+				\State Thực hiện cập nhật trọng số: $\theta = \theta - \eta\cdot m_t/(\sqrt{v_t} + \epsilon)$
+			\EndFor
+		\EndWhile
+		\State return $\theta$
+	\end{algorithmic}
+\end{algorithm}
+
+Thông thường, các biến $m_t$ và $v_t$ sẽ được khởi tạo bằng các véc-tơ 0. Nhìn lại công thức \ref{eqn:adam-m} và \ref{eqn:adam-v}, chúng ta có thể thấy rằng với giá trị mặc định $\beta_1=0.9$ và $\beta_2=0.999$, lượng giá trị được cộng dồn vào $m_t$ và $v_t$ ở những bước đầu tiên sẽ rất nhỏ. Điều này dẫn đến hiện tượng các ước lượng bằng trung bình chạy bị ``chệch'' (bias) về 0. Hiện tượng này khiến các ước lượng này nhỏ hơn giá trị ban đầu dẫn đến các khó khăn không được khắc phục hiệu quả. Để khắc phục hệ quả này, chúng ta cần một bước ``phóng đại'' giá trị của $m_t$ và $v_t$ lên, nhờ đó khôi phục độ lớn cho các ước lượng này và không còn bị chệch về 0 nữa. Đó chính là bước bias-correction. Chúng ta thực hiện bước bias-correction này như sau:
+
+\begin{equation} \label{eqn:adam-mvhat}
 	\begin{aligned}
 		\hat m_t &= \frac{m_t}{1-\beta_1^t} \\
 		\hat v_t &= \frac{v_t}{1-\beta_2^t}
 	\end{aligned}
 \end{equation}
 
-Đối với các thuật toán sử dụng trung bình chạy thì việc thực hiện bước bias-correction là cần thiết cho xấp xỉ tại những bước đầu tiên tốt hơn. Vì trong các bước đầu tiên, tương đương với $t$ nhỏ, trung bình chạy không đủ giá trị để cho ra một xấp xỉ chính xác mà thường bias về giá trị khởi tạo. Giai đoạn này được gọi là giai đoạn ``warm-up''. Việc thực hiện bias-correction sẽ rút ngắn thời gian warm-up và giúp thuật toán hội tụ nhanh hơn. Hơn nữa, khi xử lý các tập dữ liệu thưa, việc lựa chọn hệ số $\beta_2$ gần với 1 là điều cần thiết vì khi đó giá trị của gradient là rất nhỏ tại nhiều bước cập nhật liên tiếp nên các giá trị trong quá khứ vẫn còn nhiều thông tin cần được tích luỹ. Tuy nhiên, việc lựa chọn giá trị $\beta_2$ khiến cho xấp xỉ tại những bước đầu của trung bình chạy rất tệ và thiếu bước bias-correction sẽ cho các bước nhảy đầu rất lớn gây nguy cơ phân kỳ. Đây là một trong những điểm quan trọng giúp Adam hiệu quả hơn các thuật toán RMSprop hay Adagrad.
+Tại những bước cập nhật đầu, giá trị $t$ nhỏ, ta có thể thấy sau khi điều chỉnh ta được một ước lượng $\hat m_t$ lớn hơn ban đầu gấp $1 - \beta_1^t$ lần. Vì hệ số $\beta_1$ và $\beta_2$ là các giá trị nằm trong [0;1) nên khi số lượng bước cập nhật $t$ càng lớn thì $\beta_1^t$, $\beta_2^t$ sẽ càng nhỏ và tiến dần về 0. Từ đó, công thức \ref{eqn:adam-mvhat} sẽ cho ước lượng $m_t$ ban đầu bằng với ước lượng $\hat m_t$ lúc sau và tương tự với ước lượng $v_t$ và $\hat v_t$.
 
-\begin{equation}
-	\label{eqn:adam-step}
-	\theta_t = \theta_{t-1} - \alpha \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon}
-\end{equation}
+Cuối cùng, chúng ta có thuật toán Adam đầy đủ, được trình bày chi tiết trong thuật toán \ref{alg:adam-complete}.
 
-Công thức \ref{eqn:adam-step} cho ta bước cập nhật của thuật toán Adam với độ dài bước nhảy $\Delta t = \alpha \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon}$. Trong đó $\epsilon$ đảm bảo phân số $\frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon}$ có nghĩa $(\sqrt{\hat v_t} + \epsilon) \neq 0$ (không bị chia cho 0) nên sẽ không mất đi tính tổng quát khi viết $\Delta t = \alpha \frac{\hat m_t}{\sqrt{\hat v_t}}$ với $\hat v_t > 0$. Vì $\hat m_t$ và $\hat v_t$ đều là các trung bình chạy lần lượt được xác định bởi hệ số $\beta_1$ và $\beta_2$ nên $\hat m_t \leq (1-\beta_1)$ và $\hat v_t \leq (1-\beta_2)$. Từ đó, ta có giới hạn trên của $\Delta t = \alpha \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon} \leq \alpha \frac{1 - \beta_1}{\sqrt{1 - \beta_2}}$ với $(1 - \beta_1) > \sqrt{1-\beta_2}$. Trong thực tế huấn luyện, các giá trị $\beta_1$ và $\beta_2$ được chọn thường không thoả điều kiện trên, như giá trị mặc định cho ta $1 - \beta_1 = 1 - 0.9 = 0.1 =\sqrt{1-\beta_2} = \sqrt{1-0.99}$. Do đó, ta có giới hạn trên của $\Delta t = \alpha \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon} \leq \alpha \frac{1 - \beta_1}{\sqrt{1 - \beta_2}} \leq \alpha$ do $\frac{1 - \beta_1}{\sqrt{1 - \beta_2}} \leq 1$. Vì lý do đó mà tỉ lệ học $\alpha$ được xem như một khoảng tin cậy xung quanh điểm dữ liệu đang xét đảm bảo rằng xấp xỉ gradient vẫn còn đủ thông tin để xác định hướng cho điểm mới có độ lỗi nhỏ hơn điểm đang xét.
+\begin{algorithm}
+	\caption{Adam} \label{alg:adam-complete}
+	\begin{algorithmic}[1]
+		\renewcommand{\algorithmicrequire}{\textbf{Đầu vào:}}
+		\renewcommand{\algorithmicensure}{\textbf{Đầu ra:}}
+		\algnewcommand\algorithmicoperation{\textbf{Thao tác:}}
+		\algnewcommand\Operation{\item[\algorithmicoperation]}
 
-Tính chất này giúp Adam giảm thiểu số lượng siêu tham số phải tinh chỉnh trước khi huấn luyện mô hình. Trong đa số các bài toán máy học phức tạp, việc đi tìm một tỉ lệ học phù hợp là không dễ dàng do còn phụ thuộc vào nhiều yếu tố như: kiến trúc mạng, phân bố dữ liệu, cấu trúc dữ liệu,... Tuy nhiên, với đa số bài toán, ta có thể xác định vùng trên bề mặt lỗi mà xác suất chứa cực tiểu là lớn như khởi tạo giá trị trọng số bằng quá trình học không giám sát. Nhờ đó giá trị $\alpha$ có thể được xác định để đến được cực tiểu từ $\theta_0$ trong hữu hạn vòng lặp. Với cách tiếp cận này, thời gian tinh chỉnh cho tham số $\alpha$ sẽ được rút ngắn và một giá trị của $\alpha$ có thể hoạt động tốt trong nhiều bài toán khác nhau, giúp cho việc thiết kế và thử nghiệm mô hình dễ dàng hơn.
+		\Require Tập dữ liệu huấn luyện $x_i (i = 1, 2, ..., N)$, kích thước tập con $k$, tỉ lệ học $\eta$, tỉ lệ suy biến $\beta_1$ và $\beta_2$, hệ số $\epsilon$, bộ trọng số $\theta$ của mô hình $\mathcal{F}$
+		\Ensure Bộ trọng số $\theta$ của $\mathcal{F}$ với độ lỗi đạt cực tiểu
 
-Trong bài báo gốc của Adam\cite{kingma2014adam} , Diederik P. Kingma và Jimmy Lei Ba cho biết thuật toán Adam là một xấp xỉ của thuật toán ``Natural Gradient Descent'' (thuật toán Gradient Descent nhưng sử dụng ma trận thông tin Fisher để đo sự sai khác giữa hai phân phối xác suất của tại hai bước cập nhật) và $\mathbf{E}[v_t]$ là một xấp xỉ của ma trận thông tin Fisher. Tuy nhiên, có một vài điểm gây bất hợp lý vì ma trận Fisher được xấp xỉ bằng $E[v_t]^{-1}$ trong khi Adam lại sử dụng $E[v_t]^{-1/2}$. Việc lý giải tại sao lại sử dụng số mũ $\frac{-1}{2}$ thay cho -1 cũng chưa được giải thích rõ ràng. Mặc dù vậy, đã có một số thực nghiệm chứng minh rằng việc sử dụng số mũ là -1 gây ra bất ổn định và cho ra kết quả tệ hơn. Sebastian Ruder cho rằng việc sử dụng mũ $\frac{-1}{2}$ cho hiệu quả tốt hơn với thuật toán Adagrad\cite{ruder2016overview}; Staib và cộng sự cũng có một thí nghiệm chứng minh tính bất ổn định của thuật toán RMSProp khi sử dụng số mũ là -1 thay cho $\frac{-1}{2}$\cite{staib2019sscapingsp}. Trong cả hai trường hợp số mũ kể trên, các phương pháp tỉ lệ học thích ứng nói chung và Adam nói riêng không làm thay đổi hướng cập nhật của gradient chỉ có kích thước bước cập nhật được thay đổi bằng thông tin về độ cong mặt lỗi\cite{staib2019sscapingsp}.
+		\Operation
+		\State Khởi tạo $m_0=0$
+		\State Khởi tạo $v_0=0$
+		\State Khởi tạo $t=0$
+		\While{$\theta$ chưa hội tụ}
+			\State Xáo trộn tập dữ liệu.
+			\For{mỗi tập con kích thước $k$}
+				\State Cập nhật bước thực hiện: $t=t+1$
+				\State Tính độ lỗi trung bình: $\mathbf{\it{E}(\theta)} = \frac{1}{k}\cdot \displaystyle\sum_{i=1}^{k}\mathcal{L}(\hat{y_i}, y_i)$
+				\State Tính gradient của độ lỗi: $g_t =\nabla_{\theta} \mathbf{\it{E}(\theta)}$
+				\State Cập nhật $m$: $m_t = \beta_1\cdot m_{t-1} + (1-\beta_1)\cdot g_t$
+				\State Cập nhật $v$: $v_t = \beta_2\cdot v_{t-1} + (1-\beta_2)\cdot g^{2}_{t}$
+				\State Thực hiện cập nhật trọng số: $\theta = \theta - \eta\cdot m_t/(\sqrt{v_t} + \epsilon)$
+			\EndFor
+		\EndWhile
+		\State return $\theta$
+	\end{algorithmic}
+\end{algorithm}

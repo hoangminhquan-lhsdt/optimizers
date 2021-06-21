@@ -6,7 +6,7 @@
 \begin{table}[htp]
 		\begin{tabularx}{\textwidth}{{|l|l|l|l|X|}}
 			\hline
-			\textbf{Thuật toán} & \textbf{Tỉ lệ học} & \textbf{Momentum/$Beta_1$} & \textbf{Alpha/$Beta_2$} & \textbf{$\epsilon$} \\
+			\textbf{Thuật toán} & \textbf{Tỉ lệ học} & \textbf{Momentum/$\beta_1$} & \textbf{Alpha/$\beta_2$} & \textbf{$\epsilon$} \\
 			\hline
 			SGD               & 0.01   & -    & -     & -    \\
 			\hline
@@ -25,15 +25,15 @@
 \begin{table}[htp]
 	\begin{adjustbox}{width=1\textwidth}
 	\small
-	\begin{tabularx}{\textwidth}{{|m{23mm}|l|l|l|l|X|}}
+	\begin{tabularx}{\textwidth}{{|l|l|l|l|l|X|}}
 		\hline
-		\textbf{Thuật toán} & \textbf{Mục đích} & \textbf{Tỉ lệ học} & \textbf{Momentum/$Beta_1$} & \textbf{Alpha/$Beta_2$} & \textbf{$\epsilon$} \\
+		\textbf{Thuật toán} & \textbf{Mục đích} & \textbf{Tỉ lệ học} & \textbf{Momentum/$\beta_1$} & \textbf{Alpha/$\beta_2$} & \textbf{$\epsilon$} \\
 		\hline
 		SGD  & Tốt nhất & 0.1 & - & - & - \\
 		\hline
 		Momentum & Tốt nhất & 0.00728 & 0.9127 & - & - \\
 		\hline
-		Nesterov momentum & Tái tạo & 0.001 & 0.99 & - & - \\
+		Nesterov & Tái tạo & 0.001 & 0.99 & - & - \\
 		\hline
 		\multirow{2}{*}{Adagrad} & Tái tạo & 0.001 & - & - & - \\
 		\cline{2-6}
@@ -53,15 +53,32 @@
 \begin{table}[htp]
 	\begin{tabularx}{\textwidth}{{|l|l|l|l|X|}}
 		\hline
-		\textbf{Thuật toán} & \textbf{Tỉ lệ học} & \textbf{Momentum/$Beta_1$} & \textbf{Alpha/$Beta_2$} & \textbf{$\epsilon$} \\
+		\textbf{Thuật toán} & \textbf{Tỉ lệ học} & \textbf{Momentum/$\beta_1$} & \textbf{Alpha/$\beta_2$} & \textbf{$\epsilon$} \\
 		\hline
-		SGD               & 1   & -   & -     & -    \\
+		Momentum          & 1e-5 & 0.9  & -        & -    \\
 		\hline
-		Momentum          & 0.666182  & 0.939152  & -     & -    \\
+		Adagrad           & 1e-5 & -         & -        & 1e-8 \\
 		\hline
-		Adagrad           & 0.003749  & -    & 0.9944574     & 1e-8 \\
+		RMSprop           & 1e-6 & -         & 0.9     & 1e-8 \\
 		\hline
-		RMSprop           & 0.0001 & -    & 0.91  & 1e-8 \\
+		Adam              & 1e-6 & 0.9 & 0.999 & 1e-8 \\
+		\hline
+	\end{tabularx}
+\caption{\label{tab:vgg16-hparam}Các siêu tham số được sử dụng trong thí nghiệm VGG16.}
+\end{table}
+
+\begin{table}[htp]
+	\begin{tabularx}{\textwidth}{{|l|l|l|l|X|}}
+		\hline
+		\textbf{Thuật toán} & \textbf{Tỉ lệ học} & \textbf{Momentum/$\beta_1$} & \textbf{Alpha/$\beta_2$} & \textbf{$\epsilon$} \\
+		\hline
+		SGD               & 1        & -         & -        & -    \\
+		\hline
+		Momentum          & 0.666182 & 0.939152  & -        & -    \\
+		\hline
+		Adagrad           & 0.018393 & -         & -        & 1e-8 \\
+		\hline
+		RMSprop           & 0.003749 & -         & 0.91     & 1e-8 \\
 		\hline
 		Adam              & 0.001468 & 0.9277077 & 0.998469 & 1e-8 \\
 		\hline

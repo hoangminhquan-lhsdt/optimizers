@@ -63,13 +63,13 @@ Mặc dù SGD và Momentum thực hiện cập nhật một lượng khác nhau 
 		\label{eqn:quad-approx}
 		f(x) \approx \rho(x) = f(x_0) + f'(x_0) \cdot (x - x_0) + \frac{1}{2} \cdot f''(x_0) \cdot (x - x_0)^2
 	\end{equation}
-	\begin{figure}[htp]
+	\begin{figure}[H]
 		\centering
-		\includegraphics[width=150 mm]{images/quad-approx.png}
+		\includegraphics[width=120 mm]{images/quad-approx.png}
 		\caption{Xấp xỉ bậc hai (đường đứt khúc màu xanh nhạt) của hàm lỗi (đường màu xanh đậm) và bước cập nhật tiếp theo của phương pháp Newton.}
 		\label{fig:newton-step}
 	\end{figure}
-	Vì đây là một xấp xỉ bậc hai nên chúng ta có thể tìm cực trị của xấp xỉ này bằng cách giải phương trình $\rho '(x) = 0$. Khi đó nghiệm của $\rho'(x)$ sẽ là bước cập nhật tiếp theo của phương pháp Newton(hình \ref{fig:newton-step}):
+	Vì đây là một xấp xỉ bậc hai nên chúng ta có thể tìm cực trị của xấp xỉ này bằng cách giải phương trình $\rho '(x) = 0$. Khi đó nghiệm của $\rho'(x)$ sẽ là bước cập nhật tiếp theo của phương pháp Newton (hình~\ref{fig:newton-step}) được tính bằng công thức \ref{eqn:newton-update}:
 	\begin{equation} \label{eqn:newton-update}
 		\begin{aligned}
 			\rho'(x_{t+1}) &= 0 \\
@@ -108,7 +108,7 @@ Ngoài ra, phương pháp Newton phụ thuộc khá lớn vào việc xấp xỉ
 
 \begin{figure}
 	\centering
-	\includegraphics[width=150 mm]{images/hessian-osc.png}
+	\includegraphics[width=120 mm]{images/hessian-osc.png}
 	\caption{Cực tiểu của xấp xỉ bậc hai cung cấp một bước cập nhật không tối ưu.}
 	\label{fig:newton-bad-step}
 \end{figure}
@@ -183,7 +183,7 @@ Cũng như các thuật toán sử dụng gradient của minibatch khác, thuậ
 	\mathbf{E}[v_t] = \mathbf{E}[(1-\beta_2)\sum_{i=1}^t\beta_2^{t-i}g_i^2] = \mathbf{E}[g_t^2]\cdot(1-\beta_2)\sum_{i=1}^t\beta_2^{t-i}+\zeta
 \end{equation}
 
-Trong công thức \ref{eqn:biascorrection}, độ lỗi $\zeta$ đến từ nhiễu khi chọn tập con một cách ngẫu nhiên và có thể khắc phục bằng cách chọn siêu tham số $\beta_2$ sao cho giá trị $g_t^2$ ở các bước cập nhật quá xa trong quá khứ có độ ưu tiên nhỏ hơn giá trị $g_t^2$ ở bước cập nhật gần nhất. Thông thường, giá trị $\beta_2$ được chọn rất gần với 1 và được gán mặc định là $\beta_2 = 0.999$. Công thức \ref{eqn:biascorrection} sẽ không mất đi tính tổng quát nếu ta thay thế tổng $\sum_{i=1}^t\beta_2^{t-1} = \beta^t \sum_{i=1}^t(\beta_2^{-1})^i$. Áp dụng công thức $\sum_{i=1}^t r^i = \frac{r(1 - r^t)}{1-r}$ ta được một biểu thức mới $\beta_2^t (1-\beta_2)\frac{\beta_2^{-1}(1 - \beta_2^{-1.t})}{1 - \beta_2^{-1}}$ với $r = \beta_2^{-1}$. Rút gọn biểu thức trên ta có $(1-\beta_2)\frac{\beta_2^{t}(1 - \beta_2^{-t})}{\beta_2(1 - \beta_2^{-1})} = (1-\beta_2)\frac{(\beta_2^{t} - 1)}{(\beta_2 - 1)} = 1 - \beta_2^t$ và xấp xỉ của $\mathbf{E}[v_t]$ sẽ bằng với $\mathbf{E}[g_t^2]\cdot (1-\beta_2^t) + \zeta$. Vậy để thực hiện bias-correction, ta lấy véc-tơ $v_t$ chia cho giá trị $(1 - \beta_2^t)$ để khắc phục hiện tượng giá trị xấp xỉ bias về giá trị khởi tạo. Tương tự như vậy ta cũng thực hiện bước bias-correction với véc-tơ $m_t$ bằng cách lấy $m_t$ chia cho $(1-\beta_1^t)$. Sau bước bias-correction ta được $\hat m_t$, $\hat v_t$ như công thức \ref{eqn:adam-mvhat}.
+Trong công thức \ref{eqn:bias-correction}, độ lỗi $\zeta$ đến từ nhiễu khi chọn tập con một cách ngẫu nhiên và có thể khắc phục bằng cách chọn siêu tham số $\beta_2$ sao cho giá trị $g_t^2$ ở các bước cập nhật quá xa trong quá khứ có độ ưu tiên nhỏ hơn giá trị $g_t^2$ ở bước cập nhật gần nhất. Thông thường, giá trị $\beta_2$ được chọn rất gần với 1 và được gán mặc định là $\beta_2 = 0.999$. Công thức \ref{eqn:bias-correction} sẽ không mất đi tính tổng quát nếu ta thay thế tổng $\sum_{i=1}^t\beta_2^{t-1} = \beta^t \sum_{i=1}^t(\beta_2^{-1})^i$. Áp dụng công thức $\sum_{i=1}^t r^i = \frac{r(1 - r^t)}{1-r}$ ta được một biểu thức mới $\beta_2^t (1-\beta_2)\frac{\beta_2^{-1}(1 - \beta_2^{-1.t})}{1 - \beta_2^{-1}}$ với $r = \beta_2^{-1}$. Rút gọn biểu thức trên ta có $(1-\beta_2)\frac{\beta_2^{t}(1 - \beta_2^{-t})}{\beta_2(1 - \beta_2^{-1})} = (1-\beta_2)\frac{(\beta_2^{t} - 1)}{(\beta_2 - 1)} = 1 - \beta_2^t$ và xấp xỉ của $\mathbf{E}[v_t]$ sẽ bằng với $\mathbf{E}[g_t^2]\cdot (1-\beta_2^t) + \zeta$. Vậy để thực hiện bias-correction, ta lấy véc-tơ $v_t$ chia cho giá trị $(1 - \beta_2^t)$ để khắc phục hiện tượng giá trị xấp xỉ bias về giá trị khởi tạo. Tương tự như vậy ta cũng thực hiện bước bias-correction với véc-tơ $m_t$ bằng cách lấy $m_t$ chia cho $(1-\beta_1^t)$. Sau bước bias-correction ta được $\hat m_t$, $\hat v_t$ như công thức \ref{eqn:adam-mvhat}.
 
 \begin{equation}
 	\label{eqn:adam-mvhat}

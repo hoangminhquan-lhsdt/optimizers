@@ -4,45 +4,67 @@
 \label{Appendix1}
 
 \begin{table}[htp]
-	\begin{tabular}{{|m{0.2\textwidth}|l|l|l|}}
-		\hline
-		Tên thuật toán & Tỉ lệ học & Momentum/$Beta_1$ & Alpha/$Beta_2$ \\
-		\hline
-		SGD               & -         & 0.1     & -        \\
-		\hline
-		Momentum          & -         & 0.00728 & -        \\
-		\hline
-		Adagrad           & 0.001     & 0.01    & -        \\
-		\hline
-		RMSprop           & 0.0004338 & -       & -        \\
-		\hline
-		Adam              & 0.001     & 0.00033 & 0.999965 \\
-		\hline
-	\end{tabular}
-\caption{\label{tab:mlp-hparam}Các siêu tham số được sử dụng trong thí nghiệm Multi-layer Neural Network.}
+		\begin{tabularx}{\textwidth}{{|l|l|l|l|X|}}
+			\hline
+			\textbf{Thuật toán} & \textbf{Tỉ lệ học} & \textbf{Momentum/$Beta_1$} & \textbf{Alpha/$Beta_2$} & \textbf{$\epsilon$} \\
+			\hline
+			SGD               & 0.01   & -    & -     & -    \\
+			\hline
+			Momentum          & 0.01   & 0.9  & -     & -    \\
+			\hline
+			Adagrad           & 0.045  & -    & -     & 1e-8 \\
+			\hline
+			RMSprop           & 0.0001 & -    & 0.91  & 1e-8 \\
+			\hline
+			Adam              & 0.0001 & 0.91 & 0.998 & 1e-8 \\
+			\hline
+		\end{tabularx}
+	\caption{\label{tab:mlp-hparam}Các siêu tham số được sử dụng trong thí nghiệm Multi-layer Neural Network.}
 \end{table}
 
 \begin{table}[htp]
-	\begin{tabular}{{|m{0.153\textwidth}|l|l|l|l|l|l|}}
+	\begin{adjustbox}{width=1\textwidth}
+	\small
+	\begin{tabularx}{\textwidth}{{|m{23mm}|l|l|l|l|X|}}
 		\hline
-		Tên thuật toán & \multicolumn{2}{c|}{Tỉ lệ học}
-			& \multicolumn{2}{c|}{Momentum/$Beta_1$}
-				& \multicolumn{2}{c|}{Alpha/$Beta_2$} \\
+		\textbf{Thuật toán} & \textbf{Mục đích} & \textbf{Tỉ lệ học} & \textbf{Momentum/$Beta_1$} & \textbf{Alpha/$Beta_2$} & \textbf{$\epsilon$} \\
 		\hline
-		- & Tái tạo & Tốt nhất & Tái tạo & Tốt nhất & Tái tạo & Tốt nhất \\
+		SGD  & Tốt nhất & 0.1 & - & - & - \\
 		\hline
-		SGD               & -         & 0.1     & -    & -      & -        & -        \\
+		Momentum & Tốt nhất & 0.00728 & 0.9127 & - & - \\
 		\hline
-		Momentum          & -         & 0.00728 & -    & 0.9127 & -        & -        \\
+		Nesterov momentum & Tái tạo & 0.001 & 0.99 & - & - \\
 		\hline
-		Nesterov momentum & 0.001     & -       & 0.99 & -      & -        & -        \\
+		\multirow{2}{*}{Adagrad} & Tái tạo & 0.001 & - & - & - \\
+		\cline{2-6}
+				  				& Tốt nhất & 0.01 & - & - & - \\
 		\hline
-		Adagrad           & 0.001     & 0.01    & -    & -      & -        & -        \\
+		RMSprop & Tốt nhất & 0.0004338 & - & 0.9144 & 1e-8 \\
 		\hline
-		RMSprop           & 0.0004338 & -       & -    & -      & -        & 0.9144   \\
+		\multirow{2}{*}{Adam} & Tái tạo & 0.001 & 0.9 & 0.999965 & 1e-9 \\
+		\cline{2-6}
+		                      & Tốt nhất & 0.00033 & 0.5 & 0.999935 & 1e-8 \\
 		\hline
-		Adam              & 0.001     & 0.00033 & 0.9  & 0.5    & 0.999965 & 0.999935 \\
+	\end{tabularx}
+	\end{adjustbox}
+	\caption{\label{tab:cnn-hparam}Các siêu tham số được sử dụng trong thí nghiệm Convolutional Neural Network.}
+\end{table}
+
+\begin{table}[htp]
+	\begin{tabularx}{\textwidth}{{|l|l|l|l|X|}}
 		\hline
-	\end{tabular}
-\caption{\label{tab:cnn-hparam}Các siêu tham số được sử dụng trong thí nghiệm Convolutional Neural Network. (Các thuật toán tỉ lệ học thích ứng sử dụng hệ số $\epsilon = 1e-8$)}
+		\textbf{Thuật toán} & \textbf{Tỉ lệ học} & \textbf{Momentum/$Beta_1$} & \textbf{Alpha/$Beta_2$} & \textbf{$\epsilon$} \\
+		\hline
+		SGD               & 1   & -   & -     & -    \\
+		\hline
+		Momentum          & 0.666182  & 0.939152  & -     & -    \\
+		\hline
+		Adagrad           & 0.003749  & -    & 0.9944574     & 1e-8 \\
+		\hline
+		RMSprop           & 0.0001 & -    & 0.91  & 1e-8 \\
+		\hline
+		Adam              & 0.001468 & 0.9277077 & 0.998469 & 1e-8 \\
+		\hline
+	\end{tabularx}
+\caption{\label{tab:ptb-hparam}Các siêu tham số được sử dụng trong thí nghiệm mô hình ngôn ngữ.}
 \end{table}

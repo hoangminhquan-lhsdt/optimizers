@@ -49,7 +49,7 @@ Quá trình truyền thẳng dữ liệu qua mạng no-ron nhiều tầng ẩn c
 
 Ngoài trích xuất được thêm thông tin, các tầng ẩn còn có khả năng kết hợp các đặc trưng đơn giản ở tầng trước đó thành các đặc trưng cấp cao hơn. Hình \ref{fig:dnn-features} cho thấy ở tầng ẩn đầu tiên, mô hình kết hợp các giá trị điểm ảnh thành các đường nét đơn giản. Sau đó ở tầng tiếp theo, các đường nét được kết hợp thành các hình dạng. Từ các hình dạng, mạng nơ-ron hình thành những vật thể hoàn chỉnh hơn và đưa ra dự đoán. Như vậy, chúng ta có thể thấy được rằng, với càng nhiều tầng ẩn, mô hình mạng nơ-ron sẽ càng rút trích thông tin tốt hơn, từ đó tăng cường khả năng xử lý các bài toán phức tạp.
 
-\section*{Quá trình huấn huyện mạng nơ-ron\\nhiều~tầng~ẩn}
+\section{Quá trình huấn huyện mạng nơ-ron\\nhiều~tầng~ẩn}
 
 Xét một bài toán học có giám sát (supervised learning), chúng ta có tập dữ liệu huấn luyện $X$ và tập giá trị đúng (ground truth) $Y$. Mô hình mạng nơ-ron là một hàm $\mathcal{F}: (\theta, x) \rightarrow \hat{y}$ với $x$ là một điểm dữ liệu và $\hat{y}$ là giá trị mà mạng nơ-ron dự đoán ra dựa theo bộ trọng số $\theta$. Như vậy, với tập dữ liệu huấn luyện $X$ và tập giá trị đúng $Y$, chúng ta sẽ tính được độ lỗi của mô hình trên toàn tập dữ liệu huấn luyện với một hàm chi phí $\mathcal{L}(\theta)$ với $\theta$ là bộ trọng số của mô hình mạng nơ-ron:
 

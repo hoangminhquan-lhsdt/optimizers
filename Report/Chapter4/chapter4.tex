@@ -1,7 +1,7 @@
 \chapter{Các kết quả thí nghiệm}
 \label{Chapter4}
 
-\textit{Trong chương này, chúng tôi trình bày các kết quả thí nghiệm nhằm đánh giá những nội dung đã trình bày ở Chương 3. Cho các thí nghiệm về nguyên lý, chúng tôi sử dụng dữ liệu được tạo ngẫu nhiên và hàm lỗi Mean Squared Error; với các thí nghiệm thực tế, chúng tôi sử dụng bộ dữ liệu MNIST và CIFAR10 và hàm lỗi Cross Entropy. Kết quả thí nghiệm cho thấy thuật toán mà chúng tôi cài đặt có thể xấp xỉ kết quả mà bài báo công bố, tuy nhiên chúng tôi nhận thấy rằng bộ siêu tham số được sử dụng để tái tạo kết quả có thể không cho kết quả tốt nhất cho tất cả thuật toán. Ngoài ra, các kết quả thí nghiệm cũng cho thấy các trường hợp mà các thuật toán khác gặp khó khăn, và cách mà Adam vượt qua các khó khăn đó. Cuối cùng, các thí nghiệm cho thấy tốc độ tối ưu hóa của các thuật toán trên các mô hình mạng nơ-ron thực tế với nhiều tầng ẩn gồm các cấu trúc khác nhau.}
+\textit{Trong chương này, chúng tôi trình bày các kết quả thí nghiệm nhằm đánh giá những nội dung đã trình bày ở Chương \ref{Chapter3}. Cho các thí nghiệm về nguyên lý, chúng tôi sử dụng dữ liệu được tạo ngẫu nhiên và hàm lỗi Mean Squared Error; với các thí nghiệm thực tế, chúng tôi sử dụng bộ dữ liệu MNIST và CIFAR10 và hàm lỗi Cross Entropy. Kết quả thí nghiệm cho thấy thuật toán mà chúng tôi cài đặt có thể xấp xỉ kết quả mà bài báo công bố, tuy nhiên chúng tôi nhận thấy rằng bộ siêu tham số được sử dụng để tái tạo kết quả có thể không cho kết quả tốt nhất cho tất cả thuật toán. Ngoài ra, các kết quả thí nghiệm cũng cho thấy các trường hợp mà các thuật toán khác gặp khó khăn, và cách mà Adam vượt qua các khó khăn đó. Cuối cùng, các thí nghiệm cho thấy tốc độ tối ưu hóa của các thuật toán trên các mô hình mạng nơ-ron thực tế với nhiều tầng ẩn gồm các cấu trúc khác nhau.}
 
 \section{Các thiết lập thí nghiệm}
 
@@ -14,17 +14,17 @@ Chúng tôi thực hiện hai loại thí nghiệm: thí nghiệm nguyên lý v�
 	\item Penn Tree Bank \cite{marcus1993ptb}: Đây là bộ dữ liệu do Marcus và cộng sự tổng hợp gồm 929 000 từ dùng để huấn luyện, 73 000 từ cho tập kiểm thử và 82 000 từ để kiểm tra. Tập dữ liệu gồm có 10 000 từ trong tập từ điển. Tập dữ liệu đã được qua xử lý được lấy từ trang web của Tomas Mikolov (\url{http://www.fit.vutbr.cz/~imikolov/rnnlm/simple-examples.tgz}).
 \end{itemize}
 
-Chúng tôi sử dụng ngôn ngữ lập trình Python và thư viện Numpy cho các thí nghiệm nguyên lý, thư viện Pytorch cho các thí nghiệm thực tế. Cả thư viện Numpy và Pytorch đều cung cấp khả năng tăng tốc thực thi bằng việc véc-tơ hóa tính toán trên nền C/C++. Thư viện Numpy tập trung vào các chức năng tính toán đại số trên CPU, phù hợp với các thí nghiệm đơn giản; trong khi thư viện Pytorch là một thư viện máy học có thể xây dựng các mạng nơ-ron nhiều tầng ẩn phức tạp cùng với khả năng thực thi song song trên GPU. Loại GPU mà chúng tôi sử dụng là NVIDIA RTX 2080, ngoài ra chúng tôi cũng sử dụng NVIDIA Tesla T4 và Cloud Tensor Processing Unit trên nền tảng Google Colaboratory.
+Chúng tôi sử dụng ngôn ngữ lập trình Python và thư viện Numpy cho các thí nghiệm nguyên lý, thư viện Pytorch cho các thí nghiệm thực tế. Cả thư viện Numpy và Pytorch đều cung cấp khả năng tăng tốc thực thi bằng việc véc-tơ hóa tính toán trên nền C/C++. Thư viện Numpy tập trung vào các chức năng tính toán đại số trên CPU, phù hợp với các thí nghiệm đơn giản; trong khi thư viện Pytorch là một thư viện máy học có thể xây dựng các mạng nơ-ron nhiều tầng ẩn phức tạp cùng với khả năng thực thi song song trên GPU. Loại GPU mà chúng tôi sử dụng là NVIDIA RTX 2080, ngoài ra chúng tôi cũng sử dụng NVIDIA Tesla T4 và TPU (Tensor Processing Unit) trên nền tảng Google Cloud.
 
 Trong tất cả các thí nghiệm, tất cả các thuật toán tối ưu đều có chung điểm xuất phát: bộ trọng số ban đầu đầu của mạng nơ-ron nhiều tầng ẩn sau khi khởi tạo ngẫu nhiên lần đầu sẽ được lưu lại; và với mỗi thuật toán tối ưu được thử nghiệm, bộ trọng số này sẽ được nạp lại vào mạng nơ-ron rồi từ đó mới bắt đầu tiến hành tối ưu và ghi nhận lại kết quả. Điều này giúp đảm bảo sự công bằng cho tất cả các thuật toán khi tiến hành thử nghiệm, tránh được trường hợp một thuật toán nào đó "may mắn" được bắt đầu ở một điểm thuận lợi hơn và nhờ vậy mà hội tụ nhanh hơn.
 
 \begin{center}
 	\begin{table}
-		\begin{tabular}{|l|c|c|c|}
+		\begin{tabularx}{\textwidth}{{|l|l|X|X|}}
 			\hline
-			Thuật toán & Tỉ lệ học & Momentum / $Beta_1$ & Alpha / $Beta_2$ \\
+			\textbf{Thuật toán} & \textbf{Tỉ lệ học} & \textbf{Momentum/$\beta_1$} & \textbf{Alpha/$\beta_2$} \\
 			\hline
-			SGD & [0.0001, 0.1] & - & - \\
+			SGD & [0.0001, 1] & - & - \\
 			\hline
 			Momentum & [0.0001, 0.1] & [0.1, 0.99] & - \\
 			\hline
@@ -34,7 +34,7 @@ Trong tất cả các thí nghiệm, tất cả các thuật toán tối ưu đ�
 			\hline
 			Adam & [0.0001, 0.1] & [0.1, 0.99] & [0.9, 0.999] \\
 			\hline
-		\end{tabular}
+		\end{tabularx}
 	\caption{\label{tab:hparam-search}Khoảng giá trị để dò tìm siêu tham số tốt nhất của các thuật toán tối ưu.}
 	\end{table}
 \end{center}
@@ -42,6 +42,7 @@ Trong tất cả các thí nghiệm, tất cả các thuật toán tối ưu đ�
 \section{Các kết quả thí nghiệm}
 
 \subsection{Kết quả của thuật toán cài đặt so với bài báo}
+\label{exp:replicate}
 
 Trong phần này, chúng tôi trình bày kết quả của các thuật toán tối ưu mà chúng tôi cài đặt. Cụ thể, chúng tôi so sánh kết quả của các thuật toán do chúng tôi cài đặt lại trên nền thư viện Pytorch với kết quả được công bố trong bài báo trong thí nghiệm Multi-layer Neural Network trên tập dữ liệu MNIST và thí nghiệm Convolutional Neural Network trên tập dữ liệu CIFAR10. Việc tái tạo các kết quả được công bố gặp nhiều khó khăn do bản chất ngẫu nhiên của SGD và dropout, cộng với việc tác giả không công bố các siêu tham số cho các thí nghiệm cũng như các cài đặt liên quan khác. Bài báo cũng không đề cập các khoảng tìm kiếm cho quá trình tìm siêu tham số tối ưu nhất của mỗi thuật toán, vì vậy chúng tôi đã tham khảo các công trình nghiên cứu khác sử dụng các tối ưu này, và tổng hợp các giá trị nhỏ nhất và lớn nhất cho từng siêu tham số của mỗi thuật toán để làm khoảng tìm kiếm (bảng \ref{tab:hparam-search}). Bài báo thực hiện thí nghiệm với thuật toán Nesterov \cite{nesterov1983amf}, Adagrad, RMSprop, AdaDelta \cite{zeiler2012adadelta} và Adam; tuy nhiên chúng tôi nhận thấy rằng Nesterov và AdaDelta không liên quan trực tiếp đến thuật toán Adam mà khóa luận tập trung tìm hiểu, vì vậy chúng tôi sẽ tập trung thực hiện thí nghiệm trên các thuật toán SGD, Momentum, Adagrad, RMSprop, và Adam.
 
@@ -79,9 +80,9 @@ Ngoài việc tìm bộ siêu tham số cho kết quả tốt nhất, chúng tô
 Ngoài lí do tác giả không công bố siêu tham số, cũng như tính chất ngẫu nhiên của SGD, một nguyên nhân khả thi khác cho sự khác biệt giữa kết quả mà chúng tôi ghi nhận được so với kết quả mà bài báo công bố là bản chất cài đặt của thư viện. Mỗi thư viện có cách xử lý tính toán riêng dẫn đến kết quả có phần lệch nhau. Vì tác giả cũng không nói rõ thư viện được sử dụng trong bài báo, nên thư viện Pytorch mà chúng tôi sử dụng có thể sẽ ra kết quả khác so với bài báo.
 
 \begin{table}
-	\begin{tabular}{|l|m{0.18\textwidth}|m{0.18\textwidth}|m{0.18\textwidth}|}
+	\begin{tabularx}{\textwidth}{|l|>{\raggedright\arraybackslash}m{0.18\textwidth}|>{\raggedright\arraybackslash}m{0.18\textwidth}|>{\raggedright\arraybackslash}m{0.24\textwidth}|}
 		\hline
-		Tên thuật toán & Thời gian thực hiện (giây) & Độ lỗi thấp nhất & Độ lỗi thấp nhất (có làm trắng ảnh) \\
+		\textbf{Thuật toán} & \textbf{Thời gian thực hiện (giây)} & \textbf{Độ lỗi thấp~nhất} & \textbf{Độ lỗi thấp nhất (có làm trắng ảnh)} \\
 		\hline
 		SGD         & \textbf{6.02 $\pm $0.07} & 0.0001 & 0.0001 \\
 		SGD+dropout & \textbf{6.04 $\pm $0.07} & 0.2875 & 0.2139 \\
@@ -98,7 +99,7 @@ Ngoài lí do tác giả không công bố siêu tham số, cũng như tính ch�
 		Adam         & 6.19$\pm$0.07 & 0.0014          & \textbf{0.000054} \\
 		Adam+dropout & 6.23$\pm$0.07 & \textbf{0.2403} & \textbf{0.1824} \\
 		\hline
-	\end{tabular}
+	\end{tabularx}
 \caption{\label{tab:cnn-results}Kết quả và thời gian thực hiện một epoch của các thuật toán.}
 \end{table}
 
@@ -118,6 +119,7 @@ Về mặt thời gian tính toán, bảng \ref{tab:cnn-results} cho thấy vớ
 Nhìn chung, chúng tôi có thể tái tạo các kết quả thí nghiệm mà bài báo công bố. Tuy nhiên, các kết quả tốt nhất của chúng tôi có độ lỗi thấp hơn đáng kể so với bài báo, đặc biệt là trong thí nghiệm Convolutional Neural Network. Vì chúng tôi không biết chính xác quá trình cài đặt và các siêu tham số đã được sử dụng trong bài báo gốc nên chúng tôi không thể khẳng định nguyên nhân của sự chênh lệch này. Chúng tôi cũng mở rộng thí nghiệm Convolutional Neural Network để tìm hiểu ảnh hưởng của việc làm tách biệt các đặc trưng của dữ liệu thông qua thao tác làm trắng ảnh lên quá trình huấn luyện.
 
 \subsection{Phân tích độ lớn bước cập nhật của các trọng số trong rãnh hẹp}
+\label{exp:step-size}
 
 Trong thí nghiệm này, chúng tôi kiểm chứng các khó khăn của dạng địa hình rãnh hẹp và cách mà các thuật toán khác nhau di chuyển trong đó. Vùng rãnh hẹp là vùng mà độ cong giữa các chiều có sự chênh lệch rất lớn. Cụ thể hơn, một số hướng sẽ có độ cong rất lớn trong khi các hướng khác lại rất bằng phẳng. Vì vậy, để có thể di chuyển hiệu quả trong địa hình này, chúng ta cần giảm kích thước bước cập nhật trên các chiều có độ cong lớn để tránh hiện tượng dao động, đồng thời cập nhật những bước dài hơn trên các chiều bằng phẳng có giá trị gradient nhỏ.
 
@@ -133,8 +135,9 @@ Chúng tôi sử dụng một hàm lỗi giả lập có 2 tham số với sự 
 Hình \ref{fig:aligned-step-size} cho thấy cách mỗi thuật toán di chuyển trong rãnh hẹp. GD rõ ràng là thuật toán gặp nhiều khó khăn nhất khi liên tục bị dao động giữa 2 bên vách. Độ lớn bước cập nhật trên trục $x$ của GD rất lớn, trong khi lượng cập nhật trên trục $y$ lại quá nhỏ khiến GD không đến được điểm cực tiểu. Momentum ban đầu cũng gặp khó khăn tương tự, nhưng nhờ quán tính kìm hãm lượng dao động trên trục $x$ đồng thời đẩy nhanh hơn trên $y$ nên Momentum di chuyển được tốt hơn. Với các thuật toán tỉ lệ học thích ứng, chúng ta có thể thấy RMSprop và Adam tối ưu độ lớn bước cập nhật trên cả trục $x$ và $y$ để di chuyển tốt hơn theo chiều dài của rãnh hẹp. Các biểu đồ độ lớn bước cập nhật cũng cho thấy rõ cách Adam kết hợp Momentum và RMSprop: vừa bước dài hơn theo trục $y$ và hạn chế di chuyển trên trục $x$, vừa kìm hãm dao động khi hướng của gradient thay đổi. Khi bị lố qua khỏi điểm cực tiểu, Adam cũng thực hiện đi ngược lại hiệu quả hơn Momentum.
 
 \subsection{Phân tích đường đi trong rãnh hẹp có hướng trùng và không trùng với trọng số}
+\label{exp:aligned-nonaligned}
 
-Từ nội dung đã trình bày ở Chương 3, các thuật toán tỉ lệ học thích ứng thay đổi tỉ lệ học theo từng trọng số riêng biệt. Vì vậy, dạng địa hình rãnh hẹp có các hướng trùng với trục của trọng số sẽ là trường hợp mà các thuật toán tỉ lệ học thích ứng phát huy hiệu quả cao nhất. Ngược lại, trường hợp rãnh hẹp chéo góc so với các trục của trọng số sẽ gây ra nhiều khó khăn nhất cho các thuật toán ấy.
+Từ nội dung đã trình bày ở Chương \ref{Chapter3}, các thuật toán tỉ lệ học thích ứng thay đổi tỉ lệ học theo từng trọng số riêng biệt. Vì vậy, dạng địa hình rãnh hẹp có các hướng trùng với trục của trọng số sẽ là trường hợp mà các thuật toán tỉ lệ học thích ứng phát huy hiệu quả cao nhất. Ngược lại, trường hợp rãnh hẹp chéo góc so với các trục của trọng số sẽ gây ra nhiều khó khăn nhất cho các thuật toán ấy.
 
 Trong thí nghiệm này, thay vì tối ưu trực tiếp trên hàm giả lập, chúng tôi tạo một bộ dữ liệu ngẫu nhiên gồm 10000 phần tử có phân phối đều trên một trục, với giá trị của các điểm dữ liệu trên trục còn lại được quyết định bởi một hàm có 2 tham số. Mức độ chênh lệch giữa 2 tham số sẽ tạo ra địa hình rãnh hẹp, và sự phụ thuộc giữa các tham số trong hàm sẽ khiến cho các chiều của rãnh hẹp không còn trùng với tham số. Chúng tôi thực hiện ``fit'' một đường thẳng hồi quy trên bộ dữ liệu này bằng phương pháp Stochastic Gradient Descent. Kích thước minibatch mà chúng tôi sử dụng là 50.
 
@@ -145,11 +148,12 @@ Trong thí nghiệm này, thay vì tối ưu trực tiếp trên hàm giả lậ
 	\label{fig:aligned-nonaligned}
 \end{figure}
 
-Hình \ref{fig:aligned-nonaligned}a cho thấy kết quả tương tự thí nghiệm trước, với Adam và RMSprop bước những bước dài hơn trên hướng bằng phẳng của rãnh hẹp (tương ứng với trục $w_1$) trong khi SGD và Momentum bị dao động và rất khó di chuyển theo trục $w_1$. Tuy nhiên, vì sử dụng gradient của các minibatch để di chuyển nên sự dao động của SGD và Momentum cũng có phần được cải thiện hơn so với thí nghiệm trước sử dụng gradient của bề mặt lỗi.
+Hình \ref{fig:aligned-nonaligned}a cho thấy kết quả tương tự thí nghiệm \ref{exp:step-size}, với Adam và RMSprop bước những bước dài hơn trên hướng bằng phẳng của rãnh hẹp (tương ứng với trục $w_1$) trong khi SGD và Momentum bị dao động và rất khó di chuyển theo trục $w_1$. Tuy nhiên, vì sử dụng gradient của các minibatch để di chuyển nên sự dao động của SGD và Momentum cũng có phần được cải thiện hơn so với thí nghiệm trước sử dụng gradient của bề mặt lỗi.
 
 Trong trường hợp các hướng của rãnh hẹp không trùng với trục của trọng số (hình \ref{fig:aligned-nonaligned}b), chúng ta có thể thấy Adam và RMSprop gặp nhiều khó khăn hơn trong việc điều chỉnh tỉ lệ học. Adam và RMSprop chỉ thực hiện những bước cập nhật rất nhỏ. Cũng vì những bước cập nhật quá nhỏ mà Adam cũng không thể tích tụ được lượng quán tính để tăng tốc, vì vậy các bước đi của Adam và RMSprop khá tương đồng với nhau. SGD và Momentum hầu như không bị ảnh hưởng bởi hướng của rãnh hẹp.
 
 \subsection{Vấn đề đặc trưng thưa và nhiễu}
+\label{exp:sparse-noisy}
 
 Đặc trưng thưa là những đặc trưng mang giá trị 0 hoặc gần bằng 0 tại đa số các điểm dữ liệu; ngược lại, ta có đặc trưng đặc. số lần các đặc trưng thưa được cập nhật là rất ít hoặc cập nhật với lượng rất nhỏ, từ đó kéo dài quá trình huấn luyện mạng nơ-ron nhiều tầng ẩn. Thêm nữa, đặc trưng thưa xuất hiện ở hầu hết các mạng nơ-ron sâu hiện nay. Đó là lý do tại sao vấn đề về đặc trưng thưa này cần được giải quyết.
 
@@ -168,7 +172,7 @@ Bằng việc sử dụng tỉ lệ học riêng biệt cho từng hướng, thu
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=140 mm]{images/noise.png}
+	\includegraphics[width=140 mm]{images/noise.jpeg}
 	\caption{Đường đi của các thuật toán trong bề mặt lỗi (a) và độ lỗi của từng thuật toán trường hợp nhiều nhiễu (b).}
 	\label{fig:noise}
 \end{figure}
@@ -176,6 +180,7 @@ Bằng việc sử dụng tỉ lệ học riêng biệt cho từng hướng, thu
 Một khó khăn khác khi huấn luyện mạng nơ-ron là huấn luyện trên dữ liệu nhiều nhiễu. Để thực hiện quan sát cách các thuật toán xử lý nhiễu, thí nghiệm sử dụng một tập dữ liệu gồm $n$ cặp $(x,y)$ với $y$ là giá trị nhãn. Sau đó, thực hiện thêm nhiễu vào trong giá trị $y$ để cho ra $\hat y$ là giá trị mà ta quan sát được. Mô hình sử dụng linear regression và hàm chi phí MSE để huấn luyện dựa trên $n$ cặp $(x,\hat y)$. Kết quả được mô tả trong hình \ref{fig:noise} sau 150 epochs. Ta dễ dàng nhận thấy được Momentum thực hiện bước cập nhất đầu rất nhanh nhưng sau đó lại hội tụ tại một điểm có độ lỗi cao hơn Adam và RMSprop. Ta nhận thấy trong \ref{fig:noise}b, Adam và RMSprop cùng hội tụ về cùng độ lỗi nhưng do Adam có thêm quán tính mà thời gian hội tụ sớm hơn. Vẫn chưa có lý do tại sao các thuật toán tỉ lệ học thích ứng lại có thể hoạt động tốt trong trường hợp này. Một bài báo của Balles Lukas và Hennig Phillip \cite{balles2018dissecting} cho rằng vì Adam không thực sự sử dụng kết quả của gradient mà thay vào đó xác định hướng chỉ dựa vào dấu của gradient. Chính vì vậy mà Adam không bị ảnh hưởng bởi độ nhiễu có trong dữ liệu trong khi Momentum cố gắng fit nhiễu vào trong kết quả dự đoán. Đây được coi là lý do tại sao Momentum hội tụ tại một điểm có độ lỗi cao hơn.
 
 \subsection{Huấn luyện mô hình VGG16}
+\label{exp:vgg16}
 
 Chúng tôi thực hiện huấn luyện kiến trúc mạng tích chập nhiều tầng ẩn VGG16 của Karen Simonyan và Andrew Zisserman \cite{simonyan2014verydeep} trên tập dữ liệu ImageNet. Đây là một kiến trúc mạng nơ-ron nhiều tầng ẩn được sử dụng rộng rãi trong rất nhiều bài toán khác nhau, không chỉ riêng bài toán phân lớp do khả năng trích xuất đặc trưng rất mạnh. Kiến trúc mạng VGG16 cũng thường được sử dụng làm thước đo đánh giá độ hiệu quả của các thuật toán huấn luyện mạng nơ-ron nhiều tầng ẩn \cite{zhuang2020adabelief} \cite{schneider2018deepobs}. Các thiết lập huấn luyện như kích thước minibatch, kích thước và quá trình tiền xử lý ảnh đầu vào được giữ nguyên như trong bài báo gốc của VGG16 \cite{simonyan2014verydeep}.
 
@@ -191,6 +196,7 @@ Với mỗi thuật toán tối ưu, chúng tôi cố gắng dò tìm bộ siêu
 Quá trình huấn luyện mô hình VGG16 trên tập dữ liệu ImageNet (hình \ref{fig:vgg16-loss}) cho thấy Adam là thuật toán tối ưu hiệu quả nhất trong số các thuật toán được thí nghiệm khi có độ lỗi giảm nhanh chóng và ổn định. Adagrad và Momentum bị dao động mạnh trong suốt quá trình huấn luyện và không đạt được độ lỗi thấp. Chỉ có RMSprop là có độ lỗi gần với Adam nhất, nhưng RMSprop cũng có biên độ dao động lớn hơn.
 
 \subsection{Huấn luyện mô hình ngôn ngữ}
+\label{exp:lstm}
 
 Chúng tôi sử dụng thiết lập giống trong bài báo của Zaremba và cộng sự \cite{zaremba2014recurrent} cho mô hình LSTM-medium. Sử dụng kiến trúc mạng RNN gồm 2 tầng Long Short-term Memory (LSTM), mỗi tầng có 650 nơ-ron với số bước unroll là 35. Chúng tôi khởi khởi tạo hai tầng ẩn này bằng giá trị 0 và sử dụng trạng thái ẩn cuối cùng của minibatch $t$ làm giá trị khởi tạo của trạng thái ẩn của minibatch $t+1$ với kích thước của một minibatch là 20.
 
@@ -204,3 +210,32 @@ Các giá trị trọng số trong mạng được khởi tạo theo phân phố
 \end{figure}
 
 Hình \ref{fig:ptb} cho ta kết quả chạy của mô hình LSTM trên tập Penn Tree Bank trong 39 epoch. Từ đó, ta thấy được rằng Adam cho độ lỗi nhỏ nhất ngay từ những epoch đầu tiên, theo ngay sau đó là Momentum. Mặc dù RMSProp cho độ lỗi giảm mạnh nhưng rất nhanh chững lại và không thể xuống điểm có độ lỗi thấp hơn nữa.
+
+\begin{table}
+	\begin{adjustbox}{width=1\textwidth}
+	\small
+	\begin{tabular}{|l|>{\raggedright\arraybackslash}m{0.17\textwidth}|>{\raggedright\arraybackslash}m{0.14\textwidth}|>{\raggedright\arraybackslash}m{0.14\textwidth}|>{\raggedright\arraybackslash}m{0.125\textwidth}|>{\raggedright\arraybackslash}m{0.125\textwidth}|}
+		\hline
+		\textbf{Thuật toán} & \textbf{Thời gian thực hiện (giây)} & \textbf{Độ~lỗi huấn~luyện} & \textbf{Độ Perp. huấn~luyện} & \textbf{Độ~lỗi kiểm~thử} & \textbf{Độ Perp. kiểm~thử} \\
+		\hline
+		\multirow{2}{*}{SGD} & \multirow{2}{*}{\textbf{23.55$\pm$0.12}} & 0.38 & 1.47 & 4.50 & 90.40 \\
+							 &                                 & 0.59 & 1.80 & 6.05 & 422.40 \\
+		\hline
+		\multirow{2}{*}{Momentum} & \multirow{2}{*}{24.4$\pm$0.05} & 0.37 & 1.45 & \textbf{4.41} & \textbf{82.23} \\
+								  &                                & 0.53 & 1.69 & 5.38 & \textbf{217.09} \\
+		\hline
+		\multirow{2}{*}{Adagrad} & \multirow{2}{*}{25.32$\pm$1.96} & 0.43 & 1.54 & 4.69 & 108.62 \\
+								 &                                 & 0.54 & 1.71 & 5.49 & 242.95 \\
+		\hline
+		\multirow{2}{*}{RMSprop} & \multirow{2}{*}{25.57$\pm$0.40} & 0.43 & 1.54 & 4.71 & 111.44 \\
+								 &                                 & 0.59 & 1.80 & 6.00 & 402.50 \\
+		\hline
+		\multirow{2}{*}{Adam} & \multirow{2}{*}{27.82$\pm$0.13} & 0.37 & \textbf{1.44} & \textbf{4.48} & 88.18 \\
+							  &                                 & 0.51 & 1.67 & 5.20 & 180.83 \\
+		\hline
+	\end{tabular}
+	\end{adjustbox}
+\caption{\label{tab:lstm-results}Kết quả và thời gian thực hiện một epoch của các thuật toán.}
+\end{table}
+
+Tuy nhiên, khi nhìn vào bảng kết quả chạy chi tiết \ref{tab:lstm-results} ta có thể thấy Adam có thời gian để hoàn thành một epoch là lớn nhất trong 5 thuật toán. Trong khi đó, thuật toán Momentum có độ lỗi nhỏ gần bằng Adam nhưng lại có thời gian hoàn thành 1 epoch nhanh thứ nhì trong số 5 thuật toán (chỉ đứng sau SGD). Ngoài ra, mặc dù Adam có độ lỗi trong huấn luyện là nhỏ Momentum nhưng lại cho độ lỗi ngoài tập huấn luyện cao hơn. Hiện tượng vẫn chưa có lời giải thích cụ thể. Một bài báo của Zhou Pan và cộng sự đề xuất cách giải thích liên quan tới cực tiểu nhọn (sharp minima) và cực tiểu bằng (flat minima) \cite{zhou2020towards}. Bài báo cho rằng thuật toán Adam hội tụ dễ dàng về các điểm cực tiểu nhọn trong khi Momentum và SGD có xu hướng hội tụ về điểm cực tiểu bằng với quan điểm rằng các cực tiểu bằng cho độ khái quát hóa cao hơn các cực tiểu nhọn \cite{sepp1997flat}. Tuy nhiên quan điểm này vẫn còn nhiều tranh cãi và vẫn còn nhiều ý kiến trái chiều về quan điểm này.

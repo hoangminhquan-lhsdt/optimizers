@@ -27,18 +27,18 @@ Bài toán huấn luyện mạng nơ-ron nhiều tầng ẩn nhận dữ liệu 
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=120 mm]{images/cricial-point-contour.png}
-	\caption{Đồ thị contour cho những điểm critical point: vùng bằng phẳng có một cực tiểu (trái), điểm yên ngựa (giữa), vùng rãnh hẹp (phải).}
-	\label{fig:cricial-point-contour}
+	\includegraphics[width=120 mm]{images/resnet-loss.png}
+	\caption{Bề mặt lỗi của mô hình ResNet-110 (trái) và bề mặt lỗi của mô hình ResNet-56 (phải) \cite{li2018visualizing}.}
+	\label{fig:resnet-loss}
 \end{figure}
 
 Việc huấn luyện, hay tối ưu hoá mạng nơ-ron có thể hiểu là quá trình đi tìm cực tiểu của hàm chi phí bằng cách thay đổi giá trị của bộ trọng số. Từ đó, ta cũng có thể hiểu quá trình tối ưu hóa mạng nơ-ron là quá trình di chuyển trong bề mặt lỗi (hình \ref{fig:resnet-loss}) dựa trên hướng của véc-tơ đạo hàm riêng, còn được gọi là gradient. Tuy nhiên, việc di chuyển trong bề mặt lỗi gặp nhiều khó khăn. Li Hao và cộng sự \cite{li2018visualizing} cho thấy rằng sự phức tạp của bề mặt lỗi ngày càng tăng khi số tầng ẩn trọng mạng nơ-ron ngày càng tăng. Sự hỗn loạn này được cấu thành từ nhiều ``critical point'' (``critical point'' là những điểm có gradient bằng 0 như cực tiểu địa phương, điểm yên ngựa) hợp với các vùng bằng phẳng, và vùng rãnh hẹp (hình \ref{fig:cricial-point-contour}).
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=120 mm]{images/resnet-loss.png}
-	\caption{Bề mặt lỗi của mô hình ResNet-110 (trái) và bề mặt lỗi của mô hình ResNet-56 (phải) \cite{li2018visualizing}.}
-	\label{fig:resnet-loss}
+	\includegraphics[width=120 mm]{images/cricial-point-contour.png}
+	\caption{Đồ thị contour cho những điểm critical point: vùng bằng phẳng có một cực tiểu (trái), điểm yên ngựa (giữa), vùng rãnh hẹp (phải).}
+	\label{fig:cricial-point-contour}
 \end{figure}
 
 Các điểm cực tiểu địa phương từng được xem như là nguyên nhân chính gây ra sự khó khăn trong việc tối ưu hoá mạng nơ-ron có nhiều tầng ẩn, nhưng nghiên cứu của Quynh Nguyen và Matthias Hein \cite{nguyen2017thelosssurface} đã chỉ ra rằng việc đi tìm cực tiểu toàn cục có thể mất nhiều thời gian nhưng cho hiệu quả không đáng kể. Yann N. Dauphin cũng cho rằng khi số lượng tầng ẩn quá lớn thì phần lớn các điểm critical point sẽ là điểm yên ngựa, và các điểm cực tiểu tìm được đều có độ lỗi ngang với cực tiểu toàn cục. Hơn nữa, các điểm yên ngựa thường được bao bọc bởi một vùng gần như bằng phẳng, là vùng mà tại đó đạo hàm gần bằng 0, làm chậm tốc độ của đa số các thuật toán tối ưu thường được sử dụng hiện nay.

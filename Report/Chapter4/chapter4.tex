@@ -1,7 +1,7 @@
 \chapter{Các kết quả thí nghiệm}
 \label{Chapter4}
 
-\textit{Trong chương này, chúng tôi tiến hành các thí nghiệm nhằm kiểm chứng lý thuyết đã trình bày ở chương \ref{Chapter3} trên các thuật toán SGD, Momentum, Adagrad, RMSprop và Adam. Trước hết, chúng tôi tiến hành tái tạo lại kết quả huấn luyện mạng học sâu trên bộ dữ liệu MNIST và CIFAR10 được công bố trong bài báo gốc. Tiếp theo, chúng tôi cũng thực hiện các thí nghiệm nhằm phân tích độ lớn của bước cập nhật của trọng số trong rãnh hẹp; và phân tích đường đi của các thuật toán trong rãnh hẹp có hướng trùng và không trùng với trọng số. Thí nghiệm kiểm chứng mức độ hiệu quả của các thuật toán trên đặc trưng thưa cũng được thực hiện. Cuối cùng, chúng tôi huấn luyện các mô hình mạng nơ-ron nhiều tầng ẩn được sử dụng trong thực tế để thấy rõ tốc độ tối ưu của các thuật toán. }
+\textit{Trong chương này, chúng tôi tiến hành các thí nghiệm nhằm kiểm chứng lý thuyết về thuật toán Adam đã trình bày ở chương 3. Trước hết, để so sánh kết quả cài đặt của chúng tôi với kết quả được công bố trong bài báo gốc, chúng tôi thí nghiệm huấn luyên mạng “Multi-layer Neural Network” trên bộ dữ liệu ảnh nhỏ là MNIST và mạng "Convolutional Neural Network" trên bộ dữ liệu ảnh trung là CIFAR10. Tiếp theo, chúng tôi thực hiện thí nghiệm trực quan hóa cách Adam và các thuật toán khác di chuyển trong trường hợp bề mặt lỗi có dạng rãnh hẹp và rãnh rất hẹp; dữ liệu được sử dụng trong thí nghiệm này là dữ liệu tự tạo và ít chiều để có thể trực quan hóa. Cuối cùng, để thấy rõ hơn về hiệu quả của Adam so với các thuật toán khác trong ngữ cảnh thực tế, chúng tôi thí nghiệm huấn luyện mạng "Convolutional Neural Network" trên bộ dữ liệu ảnh lớn là ImageNet và mạng "Long Short-term Memory" trên bộ ngữ liệu là Penn Treebank.}
 
 \section{Các thiết lập thí nghiệm}
 
@@ -50,7 +50,7 @@ Trong thí nghiệm Multi-layer Neural Network, kết quả mà chúng tôi cài
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=140 mm]{images/mlp.png}
+	\includegraphics[width=160 mm]{images/mlp.png}
 	\caption{Kết quả thí nghiệm Multi-layer Neural Network giữa thuật toán mà chúng tôi cài đặt so với bài báo. Bên trái: kết quả mà bài báo công bố. Bên phải: kết quả do chúng tôi tự cài đặt lại.}
 	\label{fig:exp-mlp}
 \end{figure}
@@ -96,7 +96,9 @@ Về mặt thời gian tính toán, bảng \ref{tab:cnn-results} cho thấy vớ
 
 Ngoài việc tìm bộ siêu tham số cho kết quả tốt nhất, chúng tôi cũng cố gắng tái tạo kết quả mà bài báo đã công bố. Chúng tôi thực hiện quá trình tái tạo này để kiểm tra tính khả thi của các kết quả mà bài báo đã công bố (phụ lục \ref{Appendix2}). Nhìn chung, chúng tôi có thể tái tạo các kết quả thí nghiệm mà bài báo công bố. Tuy nhiên, các kết quả tốt nhất của chúng tôi có độ lỗi thấp hơn đáng kể so với bài báo, đặc biệt là trong thí nghiệm Convolutional Neural Network. Vì không biết chính xác quá trình cài đặt và các siêu tham số đã được sử dụng trong bài báo gốc nên chúng tôi không thể khẳng định nguyên nhân của sự chênh lệch này.
 
-\subsection{Phân tích độ lớn bước cập nhật của các trọng số trong rãnh hẹp}
+\subsection{So sánh Adam với các thuật toán khác trong trường hợp bề mặt lỗi có dạng rãnh hẹp}
+
+\subsubsection{Rãnh hẹp với các hướng có độ cong khác nhau trùng với trục trọng số}
 \label{exp:step-size}
 
 Trong thí nghiệm này, chúng tôi kiểm chứng các khó khăn của dạng địa hình rãnh hẹp và cách các thuật toán khác nhau di chuyển trong đó. Vùng rãnh hẹp là vùng mà độ cong giữa các chiều có sự chênh lệch rất lớn. Cụ thể hơn, một số hướng sẽ có độ cong rất lớn trong khi các hướng khác lại rất bằng phẳng. Vì vậy, để có thể di chuyển hiệu quả trong địa hình này, chúng ta cần giảm kích thước bước cập nhật trên các chiều có độ cong lớn để tránh hiện tượng dao động, đồng thời cập nhật những bước dài hơn trên các chiều bằng phẳng có giá trị gradient nhỏ.
@@ -110,9 +112,13 @@ Chúng tôi sử dụng một hàm lỗi giả lập có 2 tham số với sự 
 	\label{fig:aligned-step-size}
 \end{figure}
 
-Hình \ref{fig:aligned-step-size} cho thấy cách mỗi thuật toán di chuyển trong rãnh hẹp. GD rõ ràng là thuật toán gặp nhiều khó khăn nhất khi liên tục bị dao động giữa 2 bên vách. Độ lớn bước cập nhật trên trục $x$ của GD rất lớn, trong khi lượng cập nhật trên trục $y$ lại quá nhỏ khiến GD không đến được điểm cực tiểu. Momentum ban đầu cũng gặp khó khăn tương tự, nhưng nhờ quán tính kìm hãm lượng dao động trên trục $x$ đồng thời tăng độ dài các bước cập nhật trên $y$ nên Momentum di chuyển tốt hơn. Với các thuật toán tỉ lệ học thích ứng, chúng ta có thể thấy RMSprop và Adam tối ưu độ lớn bước cập nhật trên cả trục $x$ và $y$ để di chuyển tốt hơn theo chiều dài của rãnh hẹp. Các biểu đồ độ lớn bước cập nhật cũng cho thấy rõ cách Adam kết hợp Momentum và RMSprop: vừa bước dài hơn theo trục $y$ vừa hạn chế di chuyển trên trục $x$.
+Phân tích kết quả chạy thí nghiệm ở hình \ref{fig:aligned-step-size}, ta thấy Adam là thuật toán tối ưu độ lớn bước cập nhật trên cả trục $x$ và trục $y$ tốt nhất. Ta thấy rằng, trong khi các thuật toán khác có độ lớn bước cập nhật đầu khá lớn (RMSProp là 3 ở cả hai trục) hoặc rất khác nhau (Momentum có độ lớn trên trục $x$ lớn hơn trên trục $y$ gấp gần 4 lần), Adam giữ độ lớn của bước cập nhật đầu tiên khá gần nhau và ở giá trị nhỏ (độ lớn bước cập nhật trên cả hai trục là xấp xỉ nhau và gần bằng 1).
 
-\subsection{Phân tích đường đi trong rãnh hẹp có hướng trùng và không trùng với trọng số}
+Adam giúp giảm dao động tốt hơn Momentum. Trên trục có độ dốc cao $x$, mặc dù độ lớn bước cập nhật của Adam và Momentum đều giảm dần khi tiến càng gần về cực tiểu nhưng Adam cho biên độ dao động nhỏ hơn Momentum rất nhiều thể hiện Adam hạn chế dao động tốt hơn Momentum. Ngược lại trên trục có độ dốc thấp $y$, Adam tăng cường bước cập nhật hiệu quả hơn Momentum khi biên độ dao động độ lớn bước cập nhật của Adam lớn hơn Momentum.
+
+Sự dao động trên cả hai trục cũng giúp cho Adam hoạt động tốt hơn RMSprop với độ lớn bước cập nhật giảm dần ở cả hai trục. Ngoài ra, Adam còn khắc phục nhược điểm gây ra do xấp xỉ bậc hai ở vùng gần cực tiểu tốt hơn RMSprop. Điều này được thể hiện ở các bước cập nhật cuối trên trục có độ dốc cao, RMSprop cho bước cập nhật cuối lớn hơn đáng kể các thuật toán như Adam và Momentum. Đó là lý do vì sao Adam có độ lỗi thấp hơn RMSprop mặc dù đường đi của Adam đi lố qua cực tiểu nhiều hơn RMSprop.
+
+\subsubsection{Rãnh hẹp với các hướng có độ cong khác nhau không trùng với các trục trọng số}
 \label{exp:aligned-nonaligned}
 
 Từ nội dung đã trình bày ở chương \ref{Chapter3}, các thuật toán tỉ lệ học thích ứng thay đổi tỉ lệ học theo từng trọng số riêng biệt. Vì vậy, dạng địa hình rãnh hẹp có các hướng trùng với trục của trọng số sẽ là trường hợp mà các thuật toán tỉ lệ học thích ứng phát huy hiệu quả cao nhất. Ngược lại, trường hợp rãnh hẹp chéo góc so với các trục của trọng số sẽ gây ra nhiều khó khăn nhất cho các thuật toán ấy.
@@ -121,19 +127,19 @@ Trong thí nghiệm này, thay vì tối ưu trực tiếp trên hàm giả lậ
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=140 mm]{images/aligned-nonaligned.png}
-	\caption{Đường đi của các thuật toán trong rãnh hẹp có hướng trùng với trọng số (a) và không trùng với trọng số (b).}
+	\includegraphics[width=100 mm]{images/nonaligned.png}
+	\caption{Đường đi của các thuật toán trong rãnh hẹp có hướng không trùng với trọng số (b).}
 	\label{fig:aligned-nonaligned}
 \end{figure}
 
-Hình \ref{fig:aligned-nonaligned}a cho thấy kết quả tương tự thí nghiệm \ref{exp:step-size}, với Adam và RMSprop bước những bước dài hơn trên hướng bằng phẳng của rãnh hẹp (tương ứng với trục $w_1$) trong khi các bước di chuyển của SGD và Momentum bị hao phí do dao động mạnh trên hướng có độ cong lớn $w_2$ và chỉ di chuyển được rất ít trên hướng bằng phẳng $w_1$. Tuy nhiên, vì sử dụng gradient của các minibatch để di chuyển nên sự dao động của SGD và Momentum cũng có phần được cải thiện hơn so với thí nghiệm trước sử dụng gradient của bề mặt lỗi.
+Trong trường hợp các hướng của rãnh hẹp không trùng với trục của trọng số (hình \ref{fig:aligned-nonaligned}b), thuật toán Adam không còn hiệu quả như khi trùng với trục trọng số. Mặc dù Adam vẫn cho biên độ dao động nhỏ hơn Momentum theo hướng có độ dốc cao nhưng độ lớn bước cập nhật trên hướng có độ dốc thấp đã không còn lớn như trường hợp rãnh hẹp trùng với trục trọng số. Tuy nhiên, nhờ sử dụng thêm quán tính mà Adam vẫn giữ được kích thước bước cập nhật lớn hơn RMSprop càng về sau của quá trình huấn luyện; đồng thời Adam điều chỉnh hướng đi tốt hơn và có thể triệu tiêu hiện tượng ``zig zag'' của RMSprop. Từ thí nghiệm cho thấy, vì Adam kết hợp sử dụng quán tính với tỉ lệ học thích ứng nên thuật toán vẫn có thể hoạt động tốt trong trường hợp rãnh hẹp không trùng với trục của trọng số. Điều này cho thấy Adam phù hợp với nhiều dạng địa hình khác nhau trong bề mặt lỗi.
 
-Trong trường hợp các hướng của rãnh hẹp không trùng với trục của trọng số (hình \ref{fig:aligned-nonaligned}b), đường đi của SGD và Momentum hầu như không thay đổi so với trước. Tuy nhiên, trong trường hợp này, các thuật toán tỉ lệ học thích ứng không còn hiệu quả như trường hợp rãnh hẹp trùng với trục trọng số. Mặc dù đi đúng theo hướng bằng phẳng của rãnh hẹp nhưng RMSprop chỉ thực hiện những bước nhỏ và có hiện tượng ``zig-zag'' nhẹ. Adam trong trường hợp này phát huy hiệu quả của việc sử dụng thêm quán tính khi có thể điều chỉnh hướng đi tốt hơn và triệt tiêu hiện tượng ``zig-zag'' của RMSprop, đồng thời cập nhật được những bước dài hơn về điểm cực tiểu.
-
-\subsection{Vấn đề đặc trưng thưa}
+\subsection{So sánh Adam với các thuật toán khác trong trường hợp bề mặt lỗi có dạng rãnh rất hẹp}
 \label{exp:sparse-noisy}
 
 Đặc trưng thưa là những đặc trưng mang giá trị 0 hoặc gần bằng 0 tại đa số các điểm dữ liệu; ngược lại, ta có đặc trưng đặc. Số lần các đặc trưng thưa được cập nhật là rất ít hoặc cập nhật với lượng rất nhỏ, từ đó kéo dài quá trình huấn luyện mạng nơ-ron nhiều tầng ẩn. Thêm nữa, đặc trưng thưa xuất hiện ở hầu hết các bài toán ứng dụng mạng nơ-ron sâu hiện nay nên đây là vấn đề cần được giải quyết.
+
+Để quan sát cách các thuật toán tối ưu hoạt động với dữ liệu thưa, thí nghiệm sử dụng dữ liệu là $n$ cặp $(x,y)$, với $n = 1000$ được khởi tạo ngẫu nhiên. Sau đó, chọn $90\%$ trong số $n$ cặp và gán giá trị $x = 0$ với mục đích là khiến cho đặc trưng $x$ thưa. Sử dụng hàm mục tiêu có dạng $y = wx + b$, các thuật toán được sử dụng để tối ưu hàm chi phí $MSE = \frac{1}{n}\sum_{i=1}^n(y - wx - b)^2$. Kết quả độ lỗi sau 20 epoch với kích thước minibatch bằng 100 được thể hiện như trong hình \ref{fig:sparse}b và hình \ref{fig:sparse}a thể hiện đường đi của các thuật toán trên bề mặt lỗi. Vì đặc trưng có giá trị gần bằng 0 chiếm đa số nên hướng tương ứng của đặc trưng đó trên mặt phẳng lỗi là một vùng có độ cong thấp cho độ lỗi các hướng gần bằng nhau. Kết hợp với hướng $b$ ứng với đặc trưng đặc có độ cong cao, bề mặt lỗi trong trường hợp này hình thành một rãnh rất hẹp do sự khác nhau giữa hai hướng là rất lớn.
 
 \begin{figure}[htp]
 	\centering
@@ -142,11 +148,11 @@ Trong trường hợp các hướng của rãnh hẹp không trùng với trục
 	\label{fig:sparse}
 \end{figure}
 
-Để quan sát cách các thuật toán tối ưu hoạt động với dữ liệu thưa, thí nghiệm sử dụng dữ liệu là n cặp (x,y), với n = 1000 được khởi tạo ngẫu nhiên. Sau đó, chọn 90$\%$ trong số $n$ cặp và gán giá trị $x = 0$ với mục đích là khiến cho đặc trưng $x$ thưa. Sử dụng hàm mục tiêu có dạng $y = wx + b$, các thuật toán được sử dụng để tối ưu hàm chi phí $MSE = \frac{1}{n}\sum_{i=1}^n(y - wx - b)^2$. Kết quả độ lỗi sau 20 epoch với kích thước minibatch bằng 100 được thể hiện như trong hình \ref{fig:sparse}b và hình \ref{fig:sparse}a thể hiện đường đi của các thuật toán trên bề mặt lỗi.
+Nhìn chung, thí nghiệm cho thấy thuật toán Adam là thuật toán hoạt động tốt nhất (cả về mặt độ lỗi lẫn thời gian huấn luyện) trong trường hợp bề mặt lỗi có dạng rãnh rất hẹp. Trong trường hợp này, một hệ số quán tính lớn cũng không đem lại nhiều lợi ích cho việc di chuyển theo hướng có độ cong thấp vì sẽ dẫn đến dao động cao trên hướng có độ cong cao và gần cực tiểu nên Momentum chỉ có thể di chuyển chậm theo hướng w. Vì cơ chế của tỉ lệ học thích ứng nên Adam và RMSprop có thể giảm bước cập nhật theo hướng có độ cong cao là b và tăng cường độ dài bước cập nhật trên hướng có độ cong thấp w hiệu quả hơn Momentum. Tuy nhiên, vì có khả năng tăng tốc bằng quán tính nên Adam cho thời gian huấn luyện chỉ bằng một nửa RMSprop để tới được điểm cực tiểu có độ lỗi nhỏ hơn các thuật toán khác.
 
-Nhìn chung các thuật toán sử dụng tỉ lệ học thích ứng cho độ lỗi thấp hơn. Trong số 4 thuật toán, SGD cho độ lỗi cao nhất. Mặc dù trong các bước đầu tiên SGD dẫn trước Momentum về mặt độ lỗi nhưng càng về sau độ lỗi giảm ngày càng ít, cuối cùng dừng tại điểm có độ lỗi cao hơn Momentum đáng kể. Vì thuật toán Momentum sử dụng một hệ số quán tính cao thích hợp để di chuyển trên hướng có độ cong thấp w nhưng hệ số này lại gây ra dao động lớn trên trục $b$ dẫn đến độ lỗi giảm trên trục $w$ không bù lại được lượng độ lỗi tăng trên trục $b$. Đó là lý do vì sao thuật toán Momentum lại cho độ lỗi cao khi bắt đầu huấn luyện. Tuy nhiên, nhờ sử dụng lượng quán tính tích tụ này mà Momentum có thể thực hiện những bước cập nhật lớn hơn SGD trên hướng ứng với đặc trưng thưa. Nhờ kết hợp quán tính và tỉ lệ học thích ứng, thuật toán Adam cho độ lỗi nhỏ nhất trong thời gian ngắn nhất, ngay sau đó là RMSprop với thời gian lâu hơn rất nhiều.
+\subsection{So sánh Adam với các thuật toán khác trong ngữ cảnh thực tế}
 
-\subsection{Huấn luyện mô hình VGG16}
+\subsubsection{Huấn luyện mô hình VGG16}
 \label{exp:vgg16}
 
 Chúng tôi thực hiện huấn luyện kiến trúc mạng tích chập nhiều tầng ẩn VGG16 của Karen Simonyan và Andrew Zisserman \cite{simonyan2014verydeep} trên tập dữ liệu ImageNet. Đây là một kiến trúc mạng nơ-ron nhiều tầng ẩn được sử dụng rộng rãi trong rất nhiều bài toán khác nhau do khả năng trích xuất đặc trưng rất mạnh. Kiến trúc mạng VGG16 cũng thường được sử dụng làm thước đo đánh giá độ hiệu quả của các thuật toán huấn luyện mạng nơ-ron nhiều tầng ẩn \cite{zhuang2020adabelief}\cite{schneider2018deepobs} do số lượng trọng số cũng như số lượng tầng ẩn rất lớn (khoảng 138 triệu trọng số và 16 tầng ẩn). Các thiết lập huấn luyện như kích thước minibatch, kích thước và quá trình tiền xử lý ảnh đầu vào được giữ nguyên như trong bài báo gốc của VGG16 \cite{simonyan2014verydeep}.
@@ -160,9 +166,9 @@ Với mỗi thuật toán tối ưu, chúng tôi cố gắng dò tìm bộ siêu
 	\label{fig:vgg16-loss}
 \end{figure}
 
-Quá trình huấn luyện mô hình VGG16 trên tập dữ liệu ImageNet (hình \ref{fig:vgg16-loss}) cho thấy Adam là thuật toán hiệu quả nhất trong số các thuật toán được thí nghiệm khi có độ lỗi giảm nhanh chóng và ổn định. Trái lại, Adagrad không những có độ dao động khá cao mà còn có xu hướng cho độ lỗi tăng trong những epoch cuối của quá trình huấn luyện, trở thành thuật toán có độ lỗi cao nhất. Mặc dù thuật toán Momentum cho độ lỗi cao thứ hai (sau Adagrad) nhưng độ chênh lệch giữa hai hạng khá xa nhau. Chỉ RMSprop là có độ lỗi gần với Adam nhất, nhưng RMSprop cũng có biên độ dao động lớn hơn.
+Quá trình huấn luyện mô hình VGG16 trên tập dữ liệu ImageNet (hình \ref{fig:vgg16-loss}) cho thấy Adam là thuật toán hiệu quả nhất trong số các thuật toán được thí nghiệm khi có độ lỗi giảm nhanh chóng và ổn định. Trái lại, Adagrad không những có độ dao động khá cao mà còn có xu hướng cho độ lỗi tăng trong những epoch cuối của quá trình huấn luyện, trở thành thuật toán có độ lỗi cao nhất. Thuật toán Momentum cho độ lỗi thấp thứ ba (sau RMSprop và Adam) nhưng sự chênh lệch độ lỗi giữa Momentum và Adam là rất lớn. Chỉ RMSprop là có độ lỗi gần với Adam nhất, nhưng RMSprop cũng có biên độ dao động lớn hơn.
 
-\subsection{Huấn luyện mô hình ngôn ngữ}
+\subsubsection{Huấn luyện mô hình ngôn ngữ}
 \label{exp:lstm}
 
 Chúng tôi sử dụng thiết lập giống trong bài báo của Zaremba và cộng sự \cite{zaremba2014recurrent} cho mô hình LSTM-medium. Sử dụng kiến trúc mạng RNN gồm 2 tầng Long short-term memory (LSTM), mỗi tầng có 650 nơ-ron với số bước unroll là 35. Chúng tôi khởi khởi tạo hai tầng ẩn này bằng giá trị 0 và sử dụng trạng thái ẩn cuối cùng của minibatch $t$ làm giá trị khởi tạo của trạng thái ẩn của minibatch t+1 với kích thước của một minibatch là 20.
@@ -176,7 +182,7 @@ Các giá trị trọng số trong mạng được khởi tạo theo phân phố
 	\label{fig:ptb}
 \end{figure}
 
-Hình \ref{fig:ptb} cho ta kết quả chạy của mô hình LSTM trên tập Penn Treebank trong 39 epoch. Nhìn chung Adam vẫn có độ lỗi nhỏ nhất và thời gian tiêu tốn ít nhất để tìm được đến độ lỗi này. Ta thấy được rằng Adam cho độ lỗi nhỏ nhất ngay từ những epoch đầu tiên, theo ngay sau đó là Momentum. Trong khi các thuật toán vẫn còn tiếp tục di chuyển về vùng có độ lỗi nhỏ hơn, RMSprop và Adagrad bị chững lại tại điểm có độ lỗi khá cao. Thuật toán SGD vẫn tiếp tục đi xuống mặc dù tốc độ di chuyển chậm hơn Adam và Momentum. Có thể thấy rằng trong trường hợp trên, hai thuật toán SGD và Momentum cho độ lỗi thấp hơn RMSprop và Adam đáng kể. Giả thiết cho rằng việc giới hạn trung bình của gradient đã khiến cho trường hợp giá trị gradient rất khác nhau xảy ra rất ít, do đó thế mạnh của các thuật toán sử dụng tỉ lệ học thích ứng chưa được phát huy.
+Hình \ref{fig:ptb} cho ta kết quả chạy của mô hình LSTM trên tập Penn Treebank trong 39 epoch. Nhìn chung Adam vẫn có độ lỗi nhỏ nhất và thời gian tiêu tốn ít nhất để tìm được đến độ lỗi này. Ta thấy được rằng Adam cho độ lỗi nhỏ nhất ngay từ những epoch đầu tiên, theo ngay sau đó là Momentum. Trong khi Adam vẫn còn tiếp tục di chuyển về vùng có độ lỗi nhỏ hơn, RMSprop và Adagrad đã bị chững lại tại điểm có độ lỗi khá cao. Thuật toán SGD vẫn tiếp tục đi xuống mặc dù tốc độ di chuyển chậm hơn Adam và Momentum. Có thể thấy rằng trong trường hợp trên, hai thuật toán SGD và Momentum cho độ lỗi thấp rất gần với Adam, trong đó Momentum đuổi kịp Adam tại những epoch cuối còn SGD mặc dù di chuyển chậm nhưng có xu hướng tiến gần hơn tới Adam và có thể đạt cùng độ lỗi với số lượng epoch lớn hơn. Giả thiết cho rằng việc giới hạn trung bình của gradient đã khiến cho trường hợp giá trị gradient rất khác nhau xảy ra rất ít, những vùng này là thế mạnh của các thuật toán Momentum và SGD giải thích lý do tại sao hai thuật toán này có thể bắt kịp với Adam.
 
 \begin{figure}[htp]
 	\centering
@@ -185,7 +191,7 @@ Hình \ref{fig:ptb} cho ta kết quả chạy của mô hình LSTM trên tập P
 	\label{fig:ptb2}
 \end{figure}
 
-Hình \ref{fig:ptb2} là kết quả chạy của mô hình khi không giới hạn độ lớn của trung bình gradient. Nhìn tổng thể, ta có thể thấy thứ tự của các thuật toán đã có sự thay đổi và cách biệt độ lỗi giữa các độ lớn của lớn hơn. Trong trường hợp này, SGD chững lại khá nhanh và cho độ lỗi cao nhất trong 5 thuật toán. Đây có thể là hiện tượng thuật toán gặp khó khăn di chuyển trong các vùng rãnh hẹp dẫn đến độ lỗi giảm rất chậm, tạo cảm giác thuật toán bị chững lại. Tiếp theo, ta có thuật toán Adagrad có khởi đầu tốt hơn nhưng cũng không thể cho độ lỗi xuống thấp hơn 0,44. Thuật toán RMSprop mặc dù có xuất phát điểm tệ hơn nhưng có thể đi về điểm có độ lỗi nhỏ hơn Adagrad (0,42). Sự cách biệt 0.02 có thể là kết quả của việc sử dụng tỉ lệ suy biến trong RMSprop giúp cho tỉ lệ học không bị tiêu biến quá nhanh. Nhờ vậy mà thuật toán RMSprop chiếm vị trí thứ ba trong năm thuật toán cho độ lỗi thấp nhất. Nếu ở thí nghiệm trước, thuật toán Momentum gần như đuổi kịp Adam thì ở thí nghiệm này đã có một sự cách biệt giữa độ lỗi của hai thuật toán (từ 0,002 tăng lên 0,009). Thuật toán Adam vẫn cho độ lỗi trong tập huấn luyện là nhỏ nhất trong 5 thuật toán.
+Hình \ref{fig:ptb2} là kết quả chạy của mô hình khi không giới hạn độ lớn của trung bình gradient. Nhìn tổng thể, ta có thể thấy Adam vẫn là thuật toán cho độ lỗi thấp nhất trong các thuật toán. Nếu ở trường hợp trước, SGD có thể gần như bắt kịp Adam thì ở đây SGD chững lại khá sớm và cho độ lỗi cao nhất trong năm thuật toán. Đây có thể là minh chứng cho giả thiết được đặt ra ở trường hợp trên. Ở đây bề mặt lỗi gồm nhiều vùng rãnh hẹp, các vùng này khiến SGD có độ lỗi giảm rất chậm tạo cảm giác thuật toán bị chững lại. Mặc dù Adagrad và RMSprop đã có sự cải thiện về mặt độ lỗi nhưng vẫn không thể tiến gần đến độ lỗi của Adam trước khi bị đi ngang. Nếu ở thí nghiệm trước, thuật toán Momentum gần như đuổi kịp Adam thì ở thí nghiệm này đã có một sự cách biệt giữa độ lỗi của hai thuật toán (từ 0,002 tăng lên 0,009). Thuật toán Adam vẫn cho độ lỗi trong tập huấn luyện là nhỏ nhất trong các thuật toán.
 
 Các giá trị độ lỗi và thời gian chạy tương ứng với từng thuật toán được trình bày trong bảng \ref{tab:lstm-results}. Độ lỗi được thể hiện trong bảng bao gồm độ lỗi thấp nhất và cao nhất trong quá trình huấn luyện trên cả hai tập huấn luyện và tập kiểm thử.
 

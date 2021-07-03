@@ -99,40 +99,36 @@ Ngoài việc tìm bộ siêu tham số cho kết quả tốt nhất, chúng tô
 \subsection{So sánh Adam với các thuật toán khác trong trường hợp bề mặt lỗi có dạng rãnh hẹp}
 
 \subsubsection{Rãnh hẹp với các hướng có độ cong khác nhau trùng với trục trọng số}
-\label{exp:step-size}
+\label{exp:aligned}
 
-Trong thí nghiệm này, chúng tôi kiểm chứng các khó khăn của dạng địa hình rãnh hẹp và cách các thuật toán khác nhau di chuyển trong đó. Vùng rãnh hẹp là vùng mà độ cong giữa các chiều có sự chênh lệch rất lớn. Cụ thể hơn, một số hướng sẽ có độ cong rất lớn trong khi các hướng khác lại rất bằng phẳng. Vì vậy, để có thể di chuyển hiệu quả trong địa hình này, chúng ta cần giảm kích thước bước cập nhật trên các chiều có độ cong lớn để tránh hiện tượng dao động, đồng thời cập nhật những bước dài hơn trên các chiều bằng phẳng có giá trị gradient nhỏ.
+Trong thí nghiệm này, chúng tôi kiểm chứng các khó khăn của dạng địa hình rãnh hẹp bằng cách so sánh cách Adam và các thuật toán khác nhau di chuyển trong đó. Vùng rãnh hẹp là vùng mà độ cong giữa các chiều có sự chênh lệch rất lớn. Cụ thể hơn, một số hướng sẽ có độ cong rất lớn trong khi các hướng khác lại rất bằng phẳng. Vì vậy, để có thể di chuyển hiệu quả trong địa hình này, chúng ta cần giảm kích thước bước cập nhật trên các chiều có độ cong lớn để tránh hiện tượng dao động, đồng thời cập nhật những bước dài hơn trên các chiều bằng phẳng có giá trị gradient nhỏ.
 
-Chúng tôi sử dụng một hàm lỗi giả lập có 2 tham số với sự chênh lệch độ cong trên mỗi trục là rất lớn để tạo thành rãnh hẹp. Gradient của hàm mục tiêu tại vị trí đang xét mà các thuật toán sử dụng có thể được coi như gradient của cả tập dữ liệu. Tất cả các thuật toán đều có cùng một điểm xuất phát.
+Trong thí nghiệm này, chúng tôi tạo một bộ dữ liệu ngẫu nhiên gồm 10000 phần tử có sự chênh lệch độ cong trên mỗi trục rất lớn để tạo được địa hình rãnh hẹp. Chúng tôi thực hiện ``fit'' một đường thẳng hồi quy trên bộ dữ liệu này bằng phương pháp Stochastic Gradient Descent với cùng một điểm xuất phát. Kích thước minibatch mà chúng tôi sử dụng là 50.
 
 \begin{figure}[htp]
 	\centering
-	\includegraphics[width=140 mm]{images/step-size.png}
+	\includegraphics[width=140 mm]{images/aligned.png}
 	\caption{Đường đi, độ lớn bước cập nhật theo từng chiều, và độ lỗi của các thuật toán trong quá trình tối ưu hàm giả lập.}
-	\label{fig:aligned-step-size}
+	\label{fig:aligned}
 \end{figure}
 
-Phân tích kết quả chạy thí nghiệm ở hình \ref{fig:aligned-step-size}, ta thấy Adam là thuật toán tối ưu độ lớn bước cập nhật trên cả trục $x$ và trục $y$ tốt nhất. Ta thấy rằng, trong khi các thuật toán khác có độ lớn bước cập nhật đầu khá lớn (RMSProp là 3 ở cả hai trục) hoặc rất khác nhau (Momentum có độ lớn trên trục $x$ lớn hơn trên trục $y$ gấp gần 4 lần), Adam giữ độ lớn của bước cập nhật đầu tiên khá gần nhau và ở giá trị nhỏ (độ lớn bước cập nhật trên cả hai trục là xấp xỉ nhau và gần bằng 1).
-
-Adam giúp giảm dao động tốt hơn Momentum. Trên trục có độ dốc cao $x$, mặc dù độ lớn bước cập nhật của Adam và Momentum đều giảm dần khi tiến càng gần về cực tiểu nhưng Adam cho biên độ dao động nhỏ hơn Momentum rất nhiều thể hiện Adam hạn chế dao động tốt hơn Momentum. Ngược lại trên trục có độ dốc thấp $y$, Adam tăng cường bước cập nhật hiệu quả hơn Momentum khi biên độ dao động độ lớn bước cập nhật của Adam lớn hơn Momentum.
-
-Sự dao động trên cả hai trục cũng giúp cho Adam hoạt động tốt hơn RMSprop với độ lớn bước cập nhật giảm dần ở cả hai trục. Ngoài ra, Adam còn khắc phục nhược điểm gây ra do xấp xỉ bậc hai ở vùng gần cực tiểu tốt hơn RMSprop. Điều này được thể hiện ở các bước cập nhật cuối trên trục có độ dốc cao, RMSprop cho bước cập nhật cuối lớn hơn đáng kể các thuật toán như Adam và Momentum. Đó là lý do vì sao Adam có độ lỗi thấp hơn RMSprop mặc dù đường đi của Adam đi lố qua cực tiểu nhiều hơn RMSprop.
+Kết quả thí nghiệm cho thấy Adam và RMSprop hoạt động tốt hơn Momentum và SGD trong trường hợp rãnh hẹp. Từ hình \ref{fig:aligned}, ta thấy rằng Adam và RMSprop thực hiện được những bước đi rất dài trên trục phẳng của rãnh hẹp và không gặp hiện tượng dao động như SGD và Momentum. Việc Adam và RMSprop thực hiện những bước đi dài về phía cực tiểu chính là nhờ tính chất thích ứng tỉ lệ học cho từng trọng số, khi độ lớn của gradient theo hướng $w_1$ rất nhỏ thì các thuật toán này sẽ đẩy độ lớn bước cập nhật của hướng đó lên cao hơn. Nhờ sự điều chỉnh này mà độ lỗi của Adam và RMSprop đều giảm rất nhanh, với RMSprop có tốc độ giảm nhanh hơn. Trong khi đường đi của Adam hướng về cực tiểu, đường đi của SGD và Momentum cho thấy sự dao động rõ rệt gây ra bởi hướng của gradient. Dù Momentum phần nào hạn chế được sự dao động này nhờ tích tụ quán tính nhưng biên độ dao động của độ lỗi lớn hơn và có cần nhiều thời gian hơn so với Adam và RMSprop. Điều đó cho thấy lượng quán tính tích tụ của Momentum không đủ để triệt tiêu dao động cũng như tăng tốc hiệu quả trên hướng bằng phẳng.
 
 \subsubsection{Rãnh hẹp với các hướng có độ cong khác nhau không trùng với các trục trọng số}
-\label{exp:aligned-nonaligned}
+\label{exp:nonaligned}
 
 Từ nội dung đã trình bày ở chương \ref{Chapter3}, các thuật toán tỉ lệ học thích ứng thay đổi tỉ lệ học theo từng trọng số riêng biệt. Vì vậy, dạng địa hình rãnh hẹp có các hướng trùng với trục của trọng số sẽ là trường hợp mà các thuật toán tỉ lệ học thích ứng phát huy hiệu quả cao nhất. Ngược lại, trường hợp rãnh hẹp chéo góc so với các trục của trọng số sẽ gây ra nhiều khó khăn nhất cho các thuật toán ấy.
 
-Trong thí nghiệm này, thay vì tối ưu trực tiếp trên hàm giả lập, chúng tôi tạo một bộ dữ liệu ngẫu nhiên gồm 10000 phần tử có phân phối đều trên một trục, với giá trị của các điểm dữ liệu trên trục còn lại được quyết định bởi một hàm có 2 tham số. Cách thiết lập này giúp đạt được 2 mục đích: (1) xuất hiện địa hình rãnh hẹp thông qua điều chỉnh mức độ chênh lệch giữa 2 tham số; (2) chiều của rãnh hẹp không còn trùng với tham số. Chúng tôi thực hiện ``fit'' một đường thẳng hồi quy trên bộ dữ liệu này bằng phương pháp Stochastic Gradient Descent. Kích thước minibatch mà chúng tôi sử dụng là 50.
+Trong thí nghiệm này chúng tôi tạo một bộ dữ liệu ngẫu nhiên gồm 10000 phần tử có phân phối đều trên một trục, với giá trị của các điểm dữ liệu trên trục còn lại được quyết định bởi một hàm có 2 tham số. Cách thiết lập này khiến cho chiều của rãnh hẹp không còn trùng với tham số. Tương tự với thí nghiệm \ref{exp:aligned}, chúng tôi cũng thực hiện ``fit'' một đường thẳng hồi quy trên bộ dữ liệu này bằng phương pháp Stochastic Gradient Descent và sử dụng kích thước minibatch là 50.
 
 \begin{figure}[htp]
 	\centering
 	\includegraphics[width=100 mm]{images/nonaligned.png}
-	\caption{Đường đi của các thuật toán trong rãnh hẹp có hướng không trùng với trọng số (b).}
-	\label{fig:aligned-nonaligned}
+	\caption{Đường đi của các thuật toán trong rãnh hẹp có hướng không trùng với trọng số.}
+	\label{fig:nonaligned}
 \end{figure}
 
-Trong trường hợp các hướng của rãnh hẹp không trùng với trục của trọng số (hình \ref{fig:aligned-nonaligned}b), thuật toán Adam không còn hiệu quả như khi trùng với trục trọng số. Mặc dù Adam vẫn cho biên độ dao động nhỏ hơn Momentum theo hướng có độ dốc cao nhưng độ lớn bước cập nhật trên hướng có độ dốc thấp đã không còn lớn như trường hợp rãnh hẹp trùng với trục trọng số. Tuy nhiên, nhờ sử dụng thêm quán tính mà Adam vẫn giữ được kích thước bước cập nhật lớn hơn RMSprop càng về sau của quá trình huấn luyện; đồng thời Adam điều chỉnh hướng đi tốt hơn và có thể triệu tiêu hiện tượng ``zig zag'' của RMSprop. Từ thí nghiệm cho thấy, vì Adam kết hợp sử dụng quán tính với tỉ lệ học thích ứng nên thuật toán vẫn có thể hoạt động tốt trong trường hợp rãnh hẹp không trùng với trục của trọng số. Điều này cho thấy Adam phù hợp với nhiều dạng địa hình khác nhau trong bề mặt lỗi.
+Trong trường hợp các hướng của rãnh hẹp không trùng với trục của trọng số (hình \ref{fig:nonaligned}), thuật toán Adam không còn hiệu quả như trường hợp rãnh hẹp trùng với trục trọng số. Mặc dù Adam vẫn cho biên độ dao động nhỏ hơn Momentum theo hướng có độ dốc cao nhưng độ lớn bước cập nhật trên hướng có độ dốc thấp đã không còn lớn như trường hợp rãnh hẹp trùng với trục trọng số. Vì vậy mà Adam có thời gian huấn luyện lâu hơn Momentum. Tuy nhiên, nhờ sử dụng thêm quán tính mà Adam vẫn giữ được kích thước bước cập nhật lớn hơn RMSprop càng về sau của quá trình huấn luyện nên thời gian huấn luyện ngắn hơn; đồng thời Adam điều chỉnh hướng đi tốt hơn và có thể triệt tiêu hiện tượng ``zig zag" của RMSprop. Từ thí nghiệm cho thấy, vì Adam kết hợp sử dụng quán tính với tỉ lệ học thích ứng nên thuật toán vẫn có thể cho đường đi ít dao động hơn Momentum và có thời gian huấn luyện ngắn hơn RMSprop trong trường hợp rãnh hẹp không trùng với trục của trọng số. Điều này cho thấy Adam phù hợp với nhiều dạng địa hình khác nhau trong bề mặt lỗi.
 
 \subsection{So sánh Adam với các thuật toán khác trong trường hợp bề mặt lỗi có dạng rãnh rất hẹp}
 \label{exp:sparse-noisy}
